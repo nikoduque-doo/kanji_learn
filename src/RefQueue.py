@@ -35,4 +35,4 @@ class RefQueue():
     while point != None:
       print(point, end=" ")
       point = point.getNext()
-    print("<- tail")
+    print("< tail")
