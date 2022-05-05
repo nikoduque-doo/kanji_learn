@@ -1,14 +1,19 @@
-import jisho_scrape
 
-my_dict = {}
+import flashcardgroups_operations as fsg
+
+my_dict = fsg.load_existing_fgroups()
+        
 if __name__ == "__main__":
-    continueOperation = "Y"
-    
-    while(continueOperation == "Y"):
-        searchedWord = input("Enter the Word you want to translate: ")
-        jisho_scrape.add_word(searchedWord, my_dict)
-        continueOperation = input("Continue searching words? (Y/N)")
-        while(continueOperation != "Y" and continueOperation != "N"):
-            continueOperation = input("Continue searching words? (Y/N)")
-    
-    print(my_dict)
+    print("Welcome!")
+    groupReadorAcc = input("Do you want to create a new group of flashcards or access an existing one? (C/A) ")
+    while(groupReadorAcc != "C" and groupReadorAcc != "A"):
+        groupReadorAcc = input("Do you want to create a new group of flashcards or read an existing one? (C/A) ")
+        
+    if(groupReadorAcc == "A"):
+        if(my_dict):
+            fsg.access_group(my_dict)
+        else:
+            print("No flashcard groups available, create a group")
+            fsg.create_group(my_dict)
+    elif(groupReadorAcc == "C"):
+        fsg.create_group(my_dict)
