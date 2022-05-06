@@ -25,3 +25,14 @@ class ArrQueue():
 
   def isFull(self):
     return (self.write + 1) % self.size == self.erase
+
+  def __str__(self):
+    string = ""
+    if self.isEmpty() == False:
+      for element in self.arr:
+        if element != None:
+          string += str(element) + " "
+    else:
+      string = "[]"
+    
+    return string
