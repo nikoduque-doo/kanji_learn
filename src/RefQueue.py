@@ -31,7 +31,9 @@ class RefQueue():
     return False
 
   def peek(self):
-    return self.head
+    if not self.isEmpty():
+      return self.head.getValue()
+    return None
 
   def __str__(self):
     s = "< "
