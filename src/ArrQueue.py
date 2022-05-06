@@ -5,6 +5,14 @@ class ArrQueue():
     self.erase = 0
     self.arr = [None]*(size+1)
     
+  def __str__(self):
+    string = "< "
+    eye = self.erase
+    while eye != self.write:
+      string += str(self.arr[eye]) + " < "
+      eye = (eye + 1) % self.size
+    return string
+    
   def enqueue(self, item):
     if not self.isFull():
       self.arr[self.write] = item
@@ -25,14 +33,3 @@ class ArrQueue():
 
   def isFull(self):
     return (self.write + 1) % self.size == self.erase
-
-  def __str__(self):
-    string = ""
-    if self.isEmpty() == False:
-      for element in self.arr:
-        if element != None:
-          string += str(element) + " "
-    else:
-      string = "[]"
-    
-    return string
