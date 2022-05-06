@@ -5,6 +5,14 @@ class RefQueue():
     self.head = None
     self.tail = None
     
+  def __str__(self):
+    s = "< "
+    point = self.head
+    while point != None:
+      s += str(point.getValue()) + " < "
+      point = point.getNext()
+    return s
+    
   def enqueue(self, data):
     tempVar = Node(data)
     if not self.isEmpty():
@@ -31,11 +39,3 @@ class RefQueue():
     if not self.isEmpty():
       return self.head.getValue()
     return None
-
-  def __str__(self):
-    s = "< "
-    point = self.head
-    while point != None:
-      s += str(point.getValue())+" < "
-      point = point.getNext()
-    return s
