@@ -4,7 +4,7 @@ import jisho_scrape
 import ArrQueue
 import RefQueue
 
-#Base para buscar en una cola y eliminar de la misma
+#Base para buscar en una cola y eliminar de la misma. +get random
 def queue_search(item, q):
   first_element = q.peek()
   if next(iter(first_element.keys())) == item:
@@ -16,11 +16,29 @@ def queue_search(item, q):
         return True
       q.enqueue(q.dequeue())
     return False
+  #Falta Guardar Cambios en fgroups
 
 def queue_delete(item, q):
   if queue_search(item, q):
     q.dequeue()
-#Falta Guardar Cambios en fgroups
+    
+from random import randint
+
+def queue_get_rand(q):
+  first_element = q.peek()
+  counter = 0
+  if not q.isEmpty():
+    q.enqueue(q.dequeue())
+    counter += 1
+    while first_element != q.peek():
+      q.enqueue(q.dequeue())
+      counter += 1
+  else:
+    return None
+  num = randint(0,counter - 1)
+  for i in range(0,num):
+    q.enqueue(q.dequeue())
+  return q.peek()
 
 
 def load_existing_fgroups():
