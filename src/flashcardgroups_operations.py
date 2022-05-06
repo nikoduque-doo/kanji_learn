@@ -4,6 +4,24 @@ import jisho_scrape
 import ArrQueue
 import RefQueue
 
+#Base para buscar en una cola y eliminar de la misma
+def queue_search(item, q):
+  first_element = q.peek()
+  if next(iter(first_element.keys())) == item:
+    return True
+  else:
+    q.enqueue(q.dequeue())
+    while first_element != q.peek():
+      if next(iter(q.peek().keys())) == item:
+        return True
+      q.enqueue(q.dequeue())
+    return False
+
+def queue_delete(item, q):
+  if queue_search(item, q):
+    q.dequeue()
+#Falta Guardar Cambios en fgroups
+
 
 def load_existing_fgroups():
     pickle_in = open(os.path.dirname(__file__) + "/../other/my_dict.pickle", "rb")
