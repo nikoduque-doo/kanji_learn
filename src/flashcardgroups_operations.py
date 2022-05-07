@@ -8,7 +8,9 @@ from random import randint
 #Base para buscar en una cola y eliminar de la misma. +get random
 def queue_search(item, q):
   first_element = q.peek()
-  if next(iter(first_element.keys())) == item:
+  if first_element == None:
+    return False
+  elif next(iter(first_element.keys())) == item:
     return True
   else:
     q.enqueue(q.dequeue())
