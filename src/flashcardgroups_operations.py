@@ -3,6 +3,7 @@ import pickle
 import jisho_scrape
 import ArrQueue
 import RefQueue
+from random import randint
 
 #Base para buscar en una cola y eliminar de la misma. +get random
 def queue_search(item, q):
@@ -22,8 +23,6 @@ def queue_delete(item, q):
   if queue_search(item, q):
     q.dequeue()
     
-from random import randint
-
 def queue_get_rand(q):
   first_element = q.peek()
   counter = 0
