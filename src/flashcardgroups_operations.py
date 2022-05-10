@@ -74,35 +74,43 @@ def create_group(gen_dict:dict):
     
     save_changes_to_fgroups(gen_dict)
 
+def add_singular_word(struc):
+    word_searched = get_word_data()
+    word_inserted = {word_searched.name_dict : word_searched.data_dict}
+    if(type(struc) == dict):
+      struc[word_searched.name_dict] = word_searched.data_dict
+    elif (type(struc) == ArrQueue.ArrQueue or type(struc) == RefQueue.RefQueue):
+      struc.enqueue(word_inserted)
+
 
 def access_group(gen_dict:dict):
     print("What flashcard group would you like to access?")
     for key in gen_dict.keys():
-        print(key)
-    key_access = input("Input your selection: ")
+        print(key, end= " | ")
+    key_access = input("\nInput your selection: ")
     while(key_access not in gen_dict.keys()):
         key_access = input("No such flashcard group exists. Input your selection: ")
     
     operation = input("Choose an operation to perform on {}: Add a word (A), Print(P), Delete(D)".format(key_access))
     if(operation == "A"):
-        word_searched = get_word_data()
-        word_inserted = {word_searched.name_dict : word_searched.data_dict}
-        if(type(gen_dict[key_access]) == dict):
-            gen_dict[key_access][word_searched.name_dict] = word_searched.data_dict
-        elif (type(gen_dict[key_access]) == ArrQueue.ArrQueue or type(gen_dict[key_access]) == RefQueue.RefQueue):
-            gen_dict[key_access].enqueue(word_inserted)
-
+        add_singular_word(gen_dict[key_access])
         save_changes_to_fgroups(gen_dict)
 
     elif(operation == "P"):
-            if type(gen_dict[key_access]) == dict:
-                print("{}: {}".format(key_access, gen_dict[key_access]))
-            else:
-                print("{}: {}".format(key_access, gen_dict[key_access]))
+        if type(gen_dict[key_access]) == dict:
+            print("{}: {}".format(key_access, gen_dict[key_access]))
+        else:
+            print("{}: {}".format(key_access, gen_dict[key_access]))
     
     elif(operation == "D"):
-        gen_dict.pop(key_access)
-        save_changes_to_fgroups(gen_dict)
+      gen_dict.pop(key_access)
+      save_changes_to_fgroups(gen_dict)
+    
+    elif(operation == "dev"):
+      filename = input("filename = ")
+
+      
+
 
 
                 

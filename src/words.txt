@@ -1,1 +1,4 @@
 dog
+cat
+horse
+whale
