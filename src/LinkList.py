@@ -153,4 +153,4 @@ class LinkList:
                 print(current.getValue())
                 current = current.getNext()
         else:
-            print("List is empty")
+            print("List is empty") 
