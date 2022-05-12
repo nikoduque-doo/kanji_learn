@@ -19,7 +19,6 @@ class dict_word:
     def __str__(self) -> str:
         return self.name_dict + ": " + json.dumps(self.data_dict, indent= 4, ensure_ascii=False)
 
-
 def request_word(word_requested):
     req = Word.request(word_requested)
     organizedDict = dict_word(word_requested)
@@ -39,23 +38,26 @@ def request_word(word_requested):
         
         return organizedDict
 
-def add_word(word_requested):
+def add_word(word_requested, group: False):
     try:
         reqDict = request_word(word_requested)
     except:
         print("Word not recognized or not found")
     else:
-        print("The kanji for {} is  {}, its part of speech is {} and it means: {}".format(reqDict.name_dict, reqDict.get_data("kanji"), reqDict.get_data("part_of_speech"), reqDict.get_data("meaning")))
+        if(group == False):
+            print("The kanji for {} is {}, its part of speech is {} and it means: {}".format(reqDict.name_dict, reqDict.get_data("kanji"), reqDict.get_data("part_of_speech"), reqDict.get_data("meaning")))
 
-        addTo = input("Do you want to add this word to your custom list? (Y/N)")
-        while(addTo != "Y" and addTo != "N"):
             addTo = input("Do you want to add this word to your custom list? (Y/N)")
-    
-        if(addTo == "Y"):
-            print("Done! Word added successfully")
-            return reqDict
+            while(addTo != "Y" and addTo != "N"):
+                addTo = input("Do you want to add this word to your custom list? (Y/N)")
+        
+            if(addTo == "Y"):
+                print("Done! Word added successfully")
+                return reqDict
+            else:
+                print("Word not added")
         else:
-            print("Word not added")
+            return reqDict
 
 def add_words_from_file(filename):
 
