@@ -101,7 +101,7 @@ class LinkList:
         found = False
         actual = self.head
         while actual is not None and not found:
-            if actual.getValue is val:
+            if actual.getValue() is val:
                 found = True
             else:
                 actual = actual.getNext()
@@ -123,7 +123,7 @@ class LinkList:
             found = False
             actual = self.head
             while actual is not None and not found:
-                if actual.getValue is val:
+                if actual.getValue() is val:
                     found = True
                     ret = actual
                 else:
