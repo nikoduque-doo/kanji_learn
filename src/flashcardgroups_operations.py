@@ -41,7 +41,6 @@ def queue_get_rand(q):
     q.enqueue(q.dequeue())
   return q.peek()
 
-
 def load_existing_fgroups():
     pickle_in = open(os.path.dirname(__file__) + "/../other/my_dict.pickle", "rb")
     current_dict = pickle.load(pickle_in)
@@ -53,9 +52,14 @@ def save_changes_to_fgroups(dict_saved:dict):
     pickle.dump(dict_saved,pickle_out)
     pickle_out.close()
 
-def get_word_data():
-    searchedWord = input("Enter the Word you want to translate: ")
-    word_to_be_added = jisho_scrape.add_word(searchedWord)
+def get_word_data(item: None):
+    group = False
+    if(item == None):
+      searchedWord = input("Enter the Word you want to translate: ")
+    else:
+      searchedWord = item
+      group = True
+    word_to_be_added = jisho_scrape.add_word(searchedWord, group)
     return word_to_be_added
 
 def create_group(gen_dict:dict):
@@ -74,38 +78,46 @@ def create_group(gen_dict:dict):
     
     save_changes_to_fgroups(gen_dict)
 
+def add_singular_word(struc, item: None):
+    word_searched = get_word_data(item)
+    word_inserted = {word_searched.name_dict : word_searched.data_dict}
+    if(type(struc) == dict):
+      struc[word_searched.name_dict] = word_searched.data_dict
+    elif (type(struc) == ArrQueue.ArrQueue or type(struc) == RefQueue.RefQueue):
+      struc.enqueue(word_inserted)
 
 def access_group(gen_dict:dict):
     print("What flashcard group would you like to access?")
     for key in gen_dict.keys():
-        print(key)
-    key_access = input("Input your selection: ")
+        print(key, end= " | ")
+    key_access = input("\nInput your selection: ")
     while(key_access not in gen_dict.keys()):
         key_access = input("No such flashcard group exists. Input your selection: ")
     
     operation = input("Choose an operation to perform on {}: Add a word (A), Print(P), Delete(D)".format(key_access))
     if(operation == "A"):
-        word_searched = get_word_data()
-        word_inserted = {word_searched.name_dict : word_searched.data_dict}
-        if(type(gen_dict[key_access]) == dict):
-            gen_dict[key_access][word_searched.name_dict] = word_searched.data_dict
-        elif (type(gen_dict[key_access]) == ArrQueue.ArrQueue or type(gen_dict[key_access]) == RefQueue.RefQueue):
-            gen_dict[key_access].enqueue(word_inserted)
-
+        add_singular_word(gen_dict[key_access], None)
         save_changes_to_fgroups(gen_dict)
 
     elif(operation == "P"):
-            if type(gen_dict[key_access]) == dict:
-                print("{}: {}".format(key_access, gen_dict[key_access]))
-            else:
-                print("{}: {}".format(key_access, gen_dict[key_access]))
+        if type(gen_dict[key_access]) == dict:
+            print("{}: {}".format(key_access, gen_dict[key_access]))
+        else:
+            print("{}: {}".format(key_access, gen_dict[key_access]))
     
     elif(operation == "D"):
-        gen_dict.pop(key_access)
+      gen_dict.pop(key_access)
+      save_changes_to_fgroups(gen_dict)
+    
+    elif(operation == "dev"):
+      filename = input("filename = ")
+      fileused = open(os.path.dirname(__file__) + "/" + filename, "r")
+      file_list = fileused.readlines()
+      fileused.close()
+      counter = 0
+
+      for item in file_list:
+        counter += 1
+        add_singular_word(gen_dict[key_access], item)
+        print("{}/{}".format(counter, len(file_list)))
         save_changes_to_fgroups(gen_dict)
-
-
-                
-
-
-
