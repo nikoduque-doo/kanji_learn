@@ -10,6 +10,19 @@ class LinkList:
         self.tail = None
         self.count = 0
     
+    def __str__(self) -> str:
+        s = ""
+        if not self.isEmpty():
+            current = self.head
+            while current is not None:
+                s += current.getValue() + " - "
+                current = current.getNext()
+        else:
+            s = "List is empty"
+        
+        return s
+
+
     def pushFront(self, val):
         n = Node(val)
         if self.isEmpty():

@@ -71,8 +71,3 @@ def add_words_from_file(filename):
         wordslist.append(request_word(item))
 
     return wordslist
-
-"""test = add_words_from_file(os.path.dirname(__file__) + "/words.txt")
-
-for item in test:
-    print(item)"""

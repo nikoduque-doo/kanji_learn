@@ -3,6 +3,10 @@ import pickle
 import jisho_scrape
 import ArrQueue
 import RefQueue
+import LinkList
+import Stack
+import time
+from datetime import timedelta
 from random import randint
 
 #Base para buscar en una cola y eliminar de la misma. +get random
@@ -64,9 +68,8 @@ def get_word_data(item: None):
 
 def create_group(gen_dict:dict):
     name = input("Name your flashcard group: ")
-    data_structure = input("What Data Structure would you like to create it as? (D = Dictionary, Q = Queue) " )
+    data_structure = input("What Data Structure would you like to create it as? (P = Pile, Q = Queue, Q2 = Reference Queue, L = Linked List) " )
     
-    #Acá es donde se implementa la creación de las distintas est datos
     if(data_structure == "D"):
         gen_dict[name] = {}
     elif(data_structure == "Q"):
@@ -74,7 +77,10 @@ def create_group(gen_dict:dict):
         gen_dict[name] = ArrQueue.ArrQueue(size)
     elif(data_structure == "Q2"):
         gen_dict[name] = RefQueue.RefQueue()
-    #Aqui irán los demás tipos de estructuras de datos
+    elif(data_structure == "L"):
+        gen_dict[name] = LinkList.LinkList()
+    elif(data_structure == "P"):
+        gen_dict[name] = Stack.Stack()
     
     save_changes_to_fgroups(gen_dict)
 
@@ -85,6 +91,11 @@ def add_singular_word(struc, item: None):
       struc[word_searched.name_dict] = word_searched.data_dict
     elif (type(struc) == ArrQueue.ArrQueue or type(struc) == RefQueue.RefQueue):
       struc.enqueue(word_inserted)
+    elif(type(struc) == LinkList.LinkList):
+      struc.pushBack(word_inserted)
+    elif(type(struc) == Stack.Stack):
+        #gen_dict[name] = Stack.Stack()
+      struc.push(word_inserted)
 
 def access_group(gen_dict:dict):
     print("What flashcard group would you like to access?")
@@ -115,9 +126,12 @@ def access_group(gen_dict:dict):
       file_list = fileused.readlines()
       fileused.close()
       counter = 0
-
+      
+      start_time = time.monotonic()
       for item in file_list:
         counter += 1
         add_singular_word(gen_dict[key_access], item)
         print("{}/{}".format(counter, len(file_list)))
         save_changes_to_fgroups(gen_dict)
+      end_time = time.monotonic()
+      print(timedelta(seconds=end_time - start_time))

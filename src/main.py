@@ -1,4 +1,5 @@
 import flashcardgroups_operations as fsg
+import os
 
 my_dict = fsg.load_existing_fgroups()
         
@@ -9,7 +10,7 @@ if __name__ == "__main__":
         groupReadorAcc = input("Do you want to create a new group of flashcards or access an existing one? (C/A) ")
         while(groupReadorAcc != "C" and groupReadorAcc != "A"):
             groupReadorAcc = input("Do you want to create a new group of flashcards or read an existing one? (C/A) ")
-            
+
         if(groupReadorAcc == "A"):
             if(my_dict):
                 fsg.access_group(my_dict)
@@ -20,3 +21,4 @@ if __name__ == "__main__":
             fsg.create_group(my_dict)
 
         input("Do you want to exit the program?: (Y/N) ")
+        #os.system('cls')
