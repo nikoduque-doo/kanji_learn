@@ -52,7 +52,7 @@ def stack_search(item, s):
   if not s.isEmpty():
     found = True
     temp = s.pop()
-  while not s.isEmpty():
+  while not s2.isEmpty():
     s.push(s2.pop())
   if found:
     s.push(temp)
