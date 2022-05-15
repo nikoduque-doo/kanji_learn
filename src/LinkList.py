@@ -1,4 +1,5 @@
 from Node import Node
+from random import randint
 
 class LinkList:
 
@@ -167,3 +168,11 @@ class LinkList:
                 current = current.getNext()
         else:
             print("List is empty") 
+    
+    def randomElement(self):
+        totalElementos = self.count - 1
+        randomElement = randint(0, totalElementos)
+        actualElement = self.head
+        for i in range(randomElement):
+            actualElement = actualElement.getNext()
+        return actualElement.getValue()
