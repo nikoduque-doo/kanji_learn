@@ -35,6 +35,9 @@ def create_group(gen_dict:dict):
     
     if(data_structure == "D"):
         gen_dict[name] = {}
+    elif(data_structure == "A"):
+        size = int(input("How many elements would you like to add? "))
+        gen_dict[name] = [None]*(size)
     elif(data_structure == "Q"):
         size = int(input("How many elements would you like to add? "))
         gen_dict[name] = ArrQueue.ArrQueue(size)
@@ -52,6 +55,8 @@ def add_singular_word(struc, item: None):
     word_inserted = {word_searched.name_dict : word_searched.data_dict}
     if(type(struc) == dict):
       struc[word_searched.name_dict] = word_searched.data_dict
+    elif(type(struc) == list):
+      struc.append(word_inserted)
     elif (type(struc) == ArrQueue.ArrQueue or type(struc) == RefQueue.RefQueue):
       struc.enqueue(word_inserted)
     elif(type(struc) == LinkList.LinkList):
@@ -61,7 +66,12 @@ def add_singular_word(struc, item: None):
       struc.push(word_inserted)
 
 def search_word(struc, item):
-  if(type(struc) == dict):
+  found = False
+  if(type(struc) == list):
+    for element in struc:
+      if element is not None and item in element.keys():
+        found = True
+  elif(type(struc) == dict):
     found = item in struc
   elif (type(struc) == ArrQueue.ArrQueue or type(struc) == RefQueue.RefQueue):
     found = ArrQueue.queue_search(item, struc)
@@ -74,26 +84,42 @@ def search_word(struc, item):
   else:
     print("Word not found in flashcard group")
     
-#def delete_word(struc, item):
+def delete_word(struc, item):
+  if(type(struc) == dict):
+    struc.pop(item)
+  elif(type(struc) == list):
+    for element in struc:
+      if element is not None and item in element.keys():
+        struc.remove(element)
+    
+  elif (type(struc) == ArrQueue.ArrQueue or type(struc) == RefQueue.RefQueue):
+    ArrQueue.queue_delete(item, struc)
+  elif(type(struc) == LinkList.LinkList):
+    struc.remove(item)
+  #elif(type(struc) == Stack.Stack):
 
 #def get_random_word(struc, item):
 
 def access_group(gen_dict:dict):
-    print("What flashcard group would you like to access?")
+    print("What flashcard group would you like to access? ")
     for key in gen_dict.keys():
         print(key, end= " | ")
     key_access = input("\nInput your selection: ")
     while(key_access not in gen_dict.keys()):
         key_access = input("No such flashcard group exists. Input your selection: ")
     
-    operation = input("Choose an operation to perform on {}: Add a word (A), Print(P), Delete(D)".format(key_access))
+    operation = input("Choose an operation to perform on {}: Add a word (A), Print(P), Delete the Flashcard Group(D), Search (S), Remove a Word(R): ".format(key_access))
     if(operation == "A"):
         add_singular_word(gen_dict[key_access], None)
         save_changes_to_fgroups(gen_dict)
 
     elif(operation == "P"):
-        if type(gen_dict[key_access]) == dict:
-            print("{}: {}".format(key_access, gen_dict[key_access]))
+        if type(gen_dict[key_access]) == list:
+            print(key_access, end= ": ")
+            for item in gen_dict[key_access]:
+              if item is not None:
+                print(item, end= " ")
+            print()
         else:
             print("{}: {}".format(key_access, gen_dict[key_access]))
     
@@ -102,9 +128,13 @@ def access_group(gen_dict:dict):
       save_changes_to_fgroups(gen_dict)
 
     elif(operation == "S"):
-      s_word = input("What word would you like to search?")
+      s_word = input("What word would you like to search? ")
       search_word(gen_dict[key_access], s_word)
     
+    elif(operation == "R"):
+      r_word = input("What word would you like to delete? ")
+      delete_word(gen_dict[key_access], r_word)
+
     elif(operation == "dev"):
       filename = input("filename = ")
       fileused = open(os.path.dirname(__file__) + "/" + filename, "r")

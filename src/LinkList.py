@@ -136,7 +136,7 @@ class LinkList:
             found = False
             actual = self.head
             while actual is not None and not found:
-                if actual.getValue() is val:
+                if val in actual.getValue().keys():
                     found = True
                     ret = actual
                 else:
