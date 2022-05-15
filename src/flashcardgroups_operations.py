@@ -55,17 +55,18 @@ def create_group(gen_dict:dict):
 
 def add_singular_word(struc, item: None):
     word_searched = get_word_data(item)
-    word_inserted = {word_searched.name_dict : word_searched.data_dict}
-    if(type(struc) == dict):
-      struc[word_searched.name_dict] = word_searched.data_dict
-    elif(type(struc) == list):
-      struc.append(word_inserted)
-    elif (type(struc) == ArrQueue.ArrQueue or type(struc) == RefQueue.RefQueue):
-      struc.enqueue(word_inserted)
-    elif(type(struc) == LinkList.LinkList):
-      struc.pushBack(word_inserted)
-    elif(type(struc) == StaticStack.ArrStack):
-      struc.push(word_inserted)
+    if word_searched != None:
+        word_inserted = {word_searched.name_dict : word_searched.data_dict}
+        if(type(struc) == dict):
+          struc[word_searched.name_dict] = word_searched.data_dict
+        elif(type(struc) == list):
+          struc.append(word_inserted)
+        elif (type(struc) == ArrQueue.ArrQueue or type(struc) == RefQueue.RefQueue):
+          struc.enqueue(word_inserted)
+        elif(type(struc) == LinkList.LinkList):
+          struc.pushBack(word_inserted)
+        elif(type(struc) == StaticStack.ArrStack):
+          struc.push(word_inserted)
 
 def search_word(struc, item):
   found = False
