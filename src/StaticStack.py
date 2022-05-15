@@ -43,44 +43,26 @@ class ArrStack():
     return self.itemCount
 
 
-"""
-  Call like this:
-    myArrStack = stack_search(data, myArrStack) 
-    
-  If item found, returns stack with item at the top.
-  Else, returns stack with "None" at the top.
-"""
 def stack_search(item, s):
-  if s.isFull():
-    s2 = ArrStack(s.size+1)
-  else:
-    s2 = ArrStack(s.size)
+  found = False
+  temp = None
+  s2 = ArrStack(s.getSize())
   while (not s.isEmpty()) and (item != next(iter(s.top().keys()))):
     s2.push(s.pop())
-  if s.isEmpty():
-    s2.push(None)
-    return s2
-  else:
-    foundItem = s.pop()
-    if s.getSize() < s2.getSize():
-      while not s.isEmpty():
-        s2.push(s.pop())
-      s2.push(foundItem)
-      return s2
-    else:
-      while not s2.isEmpty():
-        s.push(s2.pop())
-      s.push(foundItem)
-      return s
+  if not s.isEmpty():
+    found = True
+    temp = s.pop()
+  while not s.isEmpty():
+    s.push(s2.pop())
+  if found:
+    s.push(temp)
+  return found
 
-"""
-  Call like this:
-    myArrStack = stack_delete(data, myArrStack) 
-"""
 def stack_delete(item, s):
-  s = stack_search(item, s)
-  s.pop()
-  return s
+  if stack_search(item, s):
+    s.pop()
+    return True
+  return False
 
 def stack_get_rand(s):
   rand = randint(0, s.getSize()-1)
