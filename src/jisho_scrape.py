@@ -56,6 +56,7 @@ def add_word(word_requested, group: False):
                 return reqDict
             else:
                 print("Word not added")
+                return None
         else:
             return reqDict
 
