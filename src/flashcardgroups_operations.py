@@ -33,7 +33,7 @@ def get_word_data(item: None):
 
 def create_group(gen_dict:dict):
     name = input("Name your flashcard group: ")
-    data_structure = input("What Data Structure would you like to create it as? (S = Stack, Q = Queue, Q2 = Reference Queue, L = Linked List) " )
+    data_structure = input("What Data Structure would you like to create it as? (S = Stack, Q = Queue, Q2 = Reference Queue, L = Linked List, A = Array) " )
     
     if(data_structure == "D"):
         gen_dict[name] = {}
