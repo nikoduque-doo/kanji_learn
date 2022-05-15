@@ -161,7 +161,7 @@ def access_group(gen_dict:dict):
 
     elif(operation == "dev"):
       filename = input("filename = ")
-      fileused = open(os.path.dirname(__file__) + "/" + filename, "r")
+      fileused = open(os.path.dirname(__file__) + "/../data/" + filename, "r")
       file_list = [line.rstrip('\n') for line in fileused]
       fileused.close()
       counter = 0

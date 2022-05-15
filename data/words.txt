@@ -2,3 +2,5 @@ dog
 cat
 horse
 whale
+sword
+butt
