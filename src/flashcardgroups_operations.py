@@ -80,11 +80,7 @@ def search_word(struc, item):
   elif(type(struc) == LinkList.LinkList):
     found = struc.search(item)
   elif(type(struc) == StaticStack.ArrStack):
-    tempStack = StaticStack.stack_search(item, struc)
-    if(tempStack.top() == None):
-      found = False
-    else:
-      found = True
+    found = StaticStack.stack_search(item, struc)
 
   if(found):
     print("{} is in this flashcardgroup".format(item))
