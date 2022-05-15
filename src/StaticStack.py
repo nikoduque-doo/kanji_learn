@@ -1,3 +1,5 @@
+from random import randint
+
 class ArrStack():
   def __init__(self, size=100):
     self.itemCount = 0 
@@ -34,8 +36,55 @@ class ArrStack():
 
   def top(self):
     if not self.isEmpty():
-      return self.stackArray[self.itemCount - 1]
+      return self.arr[self.itemCount - 1]
     return None
 
   def getSize(self):
     return self.itemCount
+
+
+"""
+  Call like this:
+    myArrStack = stack_search(data, myArrStack) 
+"""
+def stack_search(item, s):
+  if s.isFull():
+    s2 = ArrStack(s.size+1)
+  else:
+    s2 = ArrStack(s.size)
+  while (not s.isEmpty()) and (item != next(iter(s.top().keys()))):
+    s2.push(s.pop())
+  if s.isEmpty():
+    s2.push(None)
+    return s2
+  else:
+    foundItem = s.pop()
+    if s.getSize() < s2.getSize():
+      while not s.isEmpty():
+        s2.push(s.pop())
+      s2.push(foundItem)
+      return s2
+    else:
+      while not s2.isEmpty():
+        s.push(s2.pop())
+      s.push(foundItem)
+      return s
+
+"""
+  Call like this:
+    myArrStack = stack_delete(data, myArrStack) 
+"""
+def stack_delete(item, s):
+  s = stack_search(item, s)
+  s.pop()
+  return s
+
+def stack_get_rand(s):
+  rand = randint(0, s.getSize()-1)
+  s2 = ArrStack(s.getSize())
+  for i in range(rand):
+    s2.push(s.pop())
+  returnVal = s.top()
+  while not s2.isEmpty():
+    s.push(s2.pop())
+  return returnVal
