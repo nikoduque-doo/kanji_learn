@@ -46,6 +46,9 @@ class ArrStack():
 """
   Call like this:
     myArrStack = stack_search(data, myArrStack) 
+    
+  If item found, returns stack with item at the top.
+  Else, returns stack with "None" at the top.
 """
 def stack_search(item, s):
   if s.isFull():
