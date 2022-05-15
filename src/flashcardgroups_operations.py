@@ -1,12 +1,14 @@
 import os.path
 import pickle
 import jisho_scrape
+import time
+from datetime import timedelta
+import random
 import ArrQueue
 import RefQueue
 import LinkList
-import Stack
-import time
-from datetime import timedelta
+import StaticStack
+
 
 def load_existing_fgroups():
     pickle_in = open(os.path.dirname(__file__) + "/../other/my_dict.pickle", "rb")
@@ -31,7 +33,7 @@ def get_word_data(item: None):
 
 def create_group(gen_dict:dict):
     name = input("Name your flashcard group: ")
-    data_structure = input("What Data Structure would you like to create it as? (P = Pile, Q = Queue, Q2 = Reference Queue, L = Linked List) " )
+    data_structure = input("What Data Structure would you like to create it as? (S = Stack, Q = Queue, Q2 = Reference Queue, L = Linked List) " )
     
     if(data_structure == "D"):
         gen_dict[name] = {}
@@ -45,8 +47,9 @@ def create_group(gen_dict:dict):
         gen_dict[name] = RefQueue.RefQueue()
     elif(data_structure == "L"):
         gen_dict[name] = LinkList.LinkList()
-    elif(data_structure == "P"):
-        gen_dict[name] = Stack.Stack()
+    elif(data_structure == "S"):
+        size = int(input("How many elements would you like to add? "))
+        gen_dict[name] = StaticStack.ArrStack(size)
     
     save_changes_to_fgroups(gen_dict)
 
@@ -61,8 +64,7 @@ def add_singular_word(struc, item: None):
       struc.enqueue(word_inserted)
     elif(type(struc) == LinkList.LinkList):
       struc.pushBack(word_inserted)
-    elif(type(struc) == Stack.Stack):
-        #gen_dict[name] = Stack.Stack()
+    elif(type(struc) == StaticStack.ArrStack):
       struc.push(word_inserted)
 
 def search_word(struc, item):
@@ -77,7 +79,12 @@ def search_word(struc, item):
     found = ArrQueue.queue_search(item, struc)
   elif(type(struc) == LinkList.LinkList):
     found = struc.search(item)
-  #elif(type(struc) == Stack.Stack):
+  elif(type(struc) == StaticStack.ArrStack):
+    tempStack = StaticStack.stack_search(item, struc)
+    if(tempStack.top() == None):
+      found = False
+    else:
+      found = True
 
   if(found):
     print("{} is in this flashcardgroup".format(item))
@@ -91,14 +98,28 @@ def delete_word(struc, item):
     for element in struc:
       if element is not None and item in element.keys():
         struc.remove(element)
-    
   elif (type(struc) == ArrQueue.ArrQueue or type(struc) == RefQueue.RefQueue):
     ArrQueue.queue_delete(item, struc)
   elif(type(struc) == LinkList.LinkList):
     struc.remove(item)
-  #elif(type(struc) == Stack.Stack):
+  elif(type(struc) == StaticStack.ArrStack):
+    StaticStack.stack_delete(item, struc)
 
-#def get_random_word(struc, item):
+def get_random_word(struc):
+  if(type(struc) == dict):
+    key, val = random.choice(list(struc.items()))
+    print("The random word is {}: {}".format(key,val))
+  elif(type(struc) == list):
+    ind = random.randrange(len(struc))
+    while(struc[ind] is None):
+      ind = random.randrange(len(struc))
+    print("The random word is {}".format(struc[ind]))
+  elif (type(struc) == ArrQueue.ArrQueue or type(struc) == RefQueue.RefQueue):
+    print(ArrQueue.queue_get_rand(struc))
+  elif(type(struc) == LinkList.LinkList):
+    print(struc.randomElement())
+  elif(type(struc) == StaticStack.ArrStack):
+    print(StaticStack.stack_get_rand(struc))
 
 def access_group(gen_dict:dict):
     print("What flashcard group would you like to access? ")
@@ -108,7 +129,7 @@ def access_group(gen_dict:dict):
     while(key_access not in gen_dict.keys()):
         key_access = input("No such flashcard group exists. Input your selection: ")
     
-    operation = input("Choose an operation to perform on {}: Add a word (A), Print(P), Delete the Flashcard Group(D), Search (S), Remove a Word(R): ".format(key_access))
+    operation = input("Choose an operation to perform on {}: Add a word (A), Print(P), Delete the Flashcard Group(D), Search (S), Remove a Word(R), get a Random Word (RW): ".format(key_access))
     if(operation == "A"):
         add_singular_word(gen_dict[key_access], None)
         save_changes_to_fgroups(gen_dict)
@@ -135,6 +156,9 @@ def access_group(gen_dict:dict):
       r_word = input("What word would you like to delete? ")
       delete_word(gen_dict[key_access], r_word)
 
+    elif(operation == "RW"):
+      get_random_word(gen_dict[key_access])
+
     elif(operation == "dev"):
       filename = input("filename = ")
       fileused = open(os.path.dirname(__file__) + "/" + filename, "r")
@@ -142,11 +166,11 @@ def access_group(gen_dict:dict):
       fileused.close()
       counter = 0
       
-      start_time = time.monotonic()
+      #start_time = time.monotonic()
       for item in file_list:
         counter += 1
         add_singular_word(gen_dict[key_access], item)
         print("{}/{}".format(counter, len(file_list)))
         save_changes_to_fgroups(gen_dict)
-      end_time = time.monotonic()
-      print(timedelta(seconds=end_time - start_time))
+      #end_time = time.monotonic()
+      #print(timedelta(seconds=end_time - start_time))

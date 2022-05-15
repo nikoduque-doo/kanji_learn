@@ -21,5 +21,5 @@ if __name__ == "__main__":
         elif(groupReadorAcc == "C"):
             fsg.create_group(my_dict)
 
-        input("Do you want to exit the program?: (Y/N) ")
+        exit_status = input("Do you want to exit the program?: (Y/N) ")
         os.system('cls')
