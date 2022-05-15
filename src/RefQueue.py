@@ -14,7 +14,7 @@ class RefQueue():
     return s
     
   def enqueue(self, data):
-    tempVar = Node(data)
+    tempVar = Node.Node(data)
     if not self.isEmpty():
       self.tail.setNext(tempVar)
     else: 

@@ -1,3 +1,5 @@
+from random import randint
+
 class ArrQueue():
   def __init__(self, size=100):
     self.size = size + 1
@@ -33,3 +35,37 @@ class ArrQueue():
 
   def isFull(self):
     return (self.write + 1) % self.size == self.erase
+
+def queue_search(item, q):
+  first_element = q.peek()
+  if first_element == None:
+    return False
+  elif next(iter(first_element.keys())) == item:
+    return True
+  else:
+    q.enqueue(q.dequeue())
+    while first_element != q.peek():
+      if next(iter(q.peek().keys())) == item:
+        return True
+      q.enqueue(q.dequeue())
+    return False
+
+def queue_delete(item, q):
+  if queue_search(item, q):
+    q.dequeue()
+    
+def queue_get_rand(q):
+  first_element = q.peek()
+  counter = 0
+  if not q.isEmpty():
+    q.enqueue(q.dequeue())
+    counter += 1
+    while first_element != q.peek():
+      q.enqueue(q.dequeue())
+      counter += 1
+  else:
+    return None
+  num = randint(0,counter - 1)
+  for i in range(0,num):
+    q.enqueue(q.dequeue())
+  return q.peek()

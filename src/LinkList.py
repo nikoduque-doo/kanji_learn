@@ -15,7 +15,7 @@ class LinkList:
         if not self.isEmpty():
             current = self.head
             while current is not None:
-                s += current.getValue() + " - "
+                s += "{} - ".format(current.getValue())
                 current = current.getNext()
         else:
             s = "List is empty"
@@ -114,7 +114,7 @@ class LinkList:
         found = False
         actual = self.head
         while actual is not None and not found:
-            if actual.getValue() is val:
+            if val in actual.getValue().keys():
                 found = True
             else:
                 actual = actual.getNext()

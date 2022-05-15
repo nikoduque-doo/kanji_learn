@@ -7,43 +7,6 @@ import LinkList
 import Stack
 import time
 from datetime import timedelta
-from random import randint
-
-#Base para buscar en una cola y eliminar de la misma. +get random
-def queue_search(item, q):
-  first_element = q.peek()
-  if first_element == None:
-    return False
-  elif next(iter(first_element.keys())) == item:
-    return True
-  else:
-    q.enqueue(q.dequeue())
-    while first_element != q.peek():
-      if next(iter(q.peek().keys())) == item:
-        return True
-      q.enqueue(q.dequeue())
-    return False
-  #Falta Guardar Cambios en fgroups
-
-def queue_delete(item, q):
-  if queue_search(item, q):
-    q.dequeue()
-    
-def queue_get_rand(q):
-  first_element = q.peek()
-  counter = 0
-  if not q.isEmpty():
-    q.enqueue(q.dequeue())
-    counter += 1
-    while first_element != q.peek():
-      q.enqueue(q.dequeue())
-      counter += 1
-  else:
-    return None
-  num = randint(0,counter - 1)
-  for i in range(0,num):
-    q.enqueue(q.dequeue())
-  return q.peek()
 
 def load_existing_fgroups():
     pickle_in = open(os.path.dirname(__file__) + "/../other/my_dict.pickle", "rb")
@@ -97,6 +60,24 @@ def add_singular_word(struc, item: None):
         #gen_dict[name] = Stack.Stack()
       struc.push(word_inserted)
 
+def search_word(struc, item):
+  if(type(struc) == dict):
+    found = item in struc
+  elif (type(struc) == ArrQueue.ArrQueue or type(struc) == RefQueue.RefQueue):
+    found = ArrQueue.queue_search(item, struc)
+  elif(type(struc) == LinkList.LinkList):
+    found = struc.search(item)
+  #elif(type(struc) == Stack.Stack):
+
+  if(found):
+    print("{} is in this flashcardgroup".format(item))
+  else:
+    print("Word not found in flashcard group")
+    
+#def delete_word(struc, item):
+
+#def get_random_word(struc, item):
+
 def access_group(gen_dict:dict):
     print("What flashcard group would you like to access?")
     for key in gen_dict.keys():
@@ -119,11 +100,15 @@ def access_group(gen_dict:dict):
     elif(operation == "D"):
       gen_dict.pop(key_access)
       save_changes_to_fgroups(gen_dict)
+
+    elif(operation == "S"):
+      s_word = input("What word would you like to search?")
+      search_word(gen_dict[key_access], s_word)
     
     elif(operation == "dev"):
       filename = input("filename = ")
       fileused = open(os.path.dirname(__file__) + "/" + filename, "r")
-      file_list = fileused.readlines()
+      file_list = [line.rstrip('\n') for line in fileused]
       fileused.close()
       counter = 0
       

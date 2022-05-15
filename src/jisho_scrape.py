@@ -67,7 +67,7 @@ def add_words_from_file(filename):
     wordslist = []
 
     for item in file_list:
-        
+        print(item)
         wordslist.append(request_word(item))
 
     return wordslist
