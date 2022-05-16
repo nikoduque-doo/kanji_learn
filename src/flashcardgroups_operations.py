@@ -74,6 +74,7 @@ def add_singular_word(struc, item: None):
           struc.push(word_inserted)
 
 def search_word(struc, item):
+  start_time = time.monotonic()
   found = False
   if(type(struc) == list):
     for element in struc:
@@ -92,6 +93,8 @@ def search_word(struc, item):
     print("{} is in this flashcardgroup".format(item))
   else:
     print("Word not found in flashcard group")
+  end_time = time.monotonic()
+  print(timedelta(seconds=end_time - start_time))
     
 def delete_word(struc, item):
   if(type(struc) == dict):
@@ -148,18 +151,30 @@ def access_group(gen_dict:dict):
     
     elif(operation == "D"):
       gen_dict.pop(key_access)
+      start_time = time.monotonic()
       save_changes_to_fgroups(gen_dict)
+      end_time = time.monotonic()
+      print(timedelta(seconds=end_time - start_time))
 
     elif(operation == "S"):
       s_word = input("What word would you like to search? ")
+      start_time = time.monotonic()
       search_word(gen_dict[key_access], s_word)
+      end_time = time.monotonic()
+      print(timedelta(seconds=end_time - start_time))
     
     elif(operation == "R"):
       r_word = input("What word would you like to delete? ")
+      start_time = time.monotonic()
       delete_word(gen_dict[key_access], r_word)
+      end_time = time.monotonic()
+      print(timedelta(seconds=end_time - start_time))
 
     elif(operation == "RW"):
+      start_time = time.monotonic()
       get_random_word(gen_dict[key_access])
+      end_time = time.monotonic()
+      print(timedelta(seconds=end_time - start_time))
 
     elif(operation == "dev"):
       filename = input("filename = ")
@@ -168,11 +183,11 @@ def access_group(gen_dict:dict):
       fileused.close()
       counter = 0
       
-      #start_time = time.monotonic()
+      start_time = time.monotonic()
       for item in file_list:
         counter += 1
         add_singular_word(gen_dict[key_access], item)
         print("{}/{}".format(counter, len(file_list)))
         save_changes_to_fgroups(gen_dict)
-      #end_time = time.monotonic()
-      #print(timedelta(seconds=end_time - start_time))
+      end_time = time.monotonic()
+      print(timedelta(seconds=end_time - start_time))

@@ -73,13 +73,3 @@ def stack_get_rand(s):
   while not s2.isEmpty():
     s.push(s2.pop())
   return returnVal
-
-test = ArrStack(5)
-test.push({1:1})
-test.push({2:2})
-test.push({3:3})
-test.push({4:4})
-test.push({5:5})
-#print(test)
-stack_delete(3,test)
-#print(test)
