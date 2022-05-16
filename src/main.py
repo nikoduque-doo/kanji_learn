@@ -1,5 +1,8 @@
 import flashcardgroups_operations as fsg
 import os
+import sys
+
+sys.setrecursionlimit(1000000000)
 
 my_dict = fsg.load_existing_fgroups()
         
