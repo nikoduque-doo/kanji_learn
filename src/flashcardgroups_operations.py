@@ -11,13 +11,18 @@ import StaticStack
 
 
 def load_existing_fgroups():
-    pickle_in = open(os.path.dirname(__file__) + "/../other/my_dict.pickle", "rb")
-    current_dict = pickle.load(pickle_in)
-    pickle_in.close()
+    try:
+      pickle_in = open(os.path.expandvars(R"%HOMEPATH%/Documents") + "/my_dict.pickle", "rb")
+      current_dict = pickle.load(pickle_in)
+      pickle_in.close()
+    except:
+      pickle_in = open(os.path.expandvars(R"%HOMEPATH%/Documents") + "/my_dict.pickle", "wb")
+      pickle_in.close()
+      current_dict = {}
     return current_dict
 
 def save_changes_to_fgroups(dict_saved:dict):
-    pickle_out = open(os.path.dirname(__file__) + "/../other/my_dict.pickle", "wb")
+    pickle_out = open(os.path.expandvars(R"%HOMEPATH%/Documents") + "/my_dict.pickle", "wb")
     pickle.dump(dict_saved,pickle_out)
     pickle_out.close()
 
