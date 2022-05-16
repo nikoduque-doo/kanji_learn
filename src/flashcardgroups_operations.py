@@ -126,7 +126,7 @@ def access_group(gen_dict:dict):
     while(key_access not in gen_dict.keys()):
         key_access = input("No such flashcard group exists. Input your selection: ")
     
-    operation = input("Choose an operation to perform on {}: \n\t(A)Add a word\n\t(P)Print\n\t(D)Delete the Flashcard Group\n\t(S)Search\n\t(R) Remove a Word\n\t(RW) get a Random Word\n>".format(key_access))
+    operation = input("Choose an operation to perform on {}: \n\t(A)  Add a word\n\t(P)  Print\n\t(D)Delete the Flashcard Group\n\t(S)  Search\n\t(R) Remove a Word\n\t(RW) get a Random Word\n>".format(key_access))
     if(operation == "A"):
         add_singular_word(gen_dict[key_access], None)
         save_changes_to_fgroups(gen_dict)
