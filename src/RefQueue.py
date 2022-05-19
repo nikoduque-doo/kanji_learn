@@ -1,4 +1,4 @@
-import Node
+import Nodes import Node
 
 class RefQueue():
   def __init__(self):
@@ -14,7 +14,7 @@ class RefQueue():
     return s
     
   def enqueue(self, data):
-    tempVar = Node.Node(data)
+    tempVar = Node(data)
     if not self.isEmpty():
       self.tail.setNext(tempVar)
     else: 
