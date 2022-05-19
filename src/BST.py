@@ -1,8 +1,9 @@
-from TNode import TNode
+from Nodes import BSTNode
+from RefQueue import RefQueue
 
 class BST:
   def __init__(self, k):
-    self.root = TNode(k)
+    self.root = BSTNode(k)
 
   def __str__(self):
     return self.inOrder(self.root)+"]"
@@ -40,15 +41,15 @@ class BST:
   def getNext(self, node):
     if node.getRight() != None:
       return self.leftDescendant(node.getRight())
-    return self.rightAncestor()
+    return self.rightAncestor(node)
 
   def insert(self, k):
     lot = self.find(k, self.root)
     if lot > k:
-      lot.setLeft(TNode(k))
+      lot.setLeft(BSTNode(k))
       lot.getLeft().setParent(lot)
     elif lot < k:
-      lot.setRight(TNode(k))
+      lot.setRight(BSTNode(k))
       lot.getRight().setParent(lot)
 
   def delete(self, k):
@@ -73,3 +74,12 @@ class BST:
             node.getLeft().setParent(node.getParent())
         else:
           self.root = node.getLeft()
+
+  def rangeSearch(self, min, max):
+    q = RefQueue()
+    node = self.find(min, self.root)
+    while node != None and node <= max:
+      if node >= min:
+        q.enqueue(node.getKey())
+      node = self.getNext(node)
+    return q
