@@ -89,3 +89,6 @@ class AVLNode(BSTNode):
     self._height += num
     return self
   
+  def __isub__(self, num):
+    self._height -= num
+    return self
