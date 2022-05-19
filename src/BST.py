@@ -37,9 +37,39 @@ class BST:
       return self.rightAncestor(node.getParent())
     return None
   
+  def getNext(self, node):
+    if node.getRight() != None:
+      return self.leftDescendant(node.getRight())
+    return self.rightAncestor()
+
   def insert(self, k):
     lot = self.find(k, self.root)
     if lot > k:
       lot.setLeft(TNode(k))
+      lot.getLeft().setParent(lot)
     elif lot < k:
       lot.setRight(TNode(k))
+      lot.getRight().setParent(lot)
+
+  def delete(self, k):
+    node = self.find(k, self.root)
+    if node == k:
+      if node.getRight() != None:
+        nxt = self.getNext(node)
+        node.setKey(nxt.getKey())
+        if nxt.getParent() == node:
+          nxt.getParent().setRight(nxt.getRight())
+        else:
+          nxt.getParent().setLeft(nxt.getRight())
+        if nxt.getRight() != None:
+          nxt.getRight().setParent(nxt.getParent())
+      else:
+        if node.getParent() != None:
+          if node < node.getParent():
+            node.getParent().setLeft(node.getLeft())
+          else:
+            node.getParent().setRight(node.getLeft())
+          if node.getLeft() != None:
+            node.getLeft().setParent(node.getParent())
+        else:
+          self.root = node.getLeft()
