@@ -1,4 +1,4 @@
-from Node import Node
+from Nodes import Node
 from random import randint
 
 class LinkList:
