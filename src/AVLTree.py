@@ -6,17 +6,6 @@ class AVLTree(BST):
     BST.__init__(self, k)
     self.root = AVLNode(k)
 
-  def __str__(self):
-    return self.inOrder(self.root)+"]"
-
-  def inOrder(self, node, s = "["):
-    if node.getLeft() != None:
-      s = self.inOrder(node.getLeft(), s)
-    s += " " + str(node.getKey())
-    if node.getRight() != None:
-      s = self.inOrder(node.getRight(), s)
-    return s
-
   def fixHeavyLeft(self, node):
     left = node.getLeft()
     if left.getRight() != None:
@@ -64,10 +53,7 @@ class AVLTree(BST):
     pivot.setLeft(leftover)
     if leftover != None:
       leftover.setParent(pivot)
-    self.setNodeHeight(pivot)
-    self.setNodeHeight(uprisen)
-    if tempRoot != None:
-      self.setNodeHeight(tempRoot)
+    self.updateDeleteHeight(pivot)
 
   def rotateLeft(self, pivot):
     tempRoot = pivot.getParent()
@@ -86,10 +72,7 @@ class AVLTree(BST):
     pivot.setRight(leftover)
     if leftover != None:
       leftover.setParent(pivot)
-    self.setNodeHeight(pivot)
-    self.setNodeHeight(uprisen)
-    if tempRoot != None:
-      self.setNodeHeight(tempRoot)
+    self.updateDeleteHeight(pivot)
 
   def setNodeHeight(self, node):
     if node.getLeft() != None:
@@ -164,3 +147,4 @@ class AVLTree(BST):
           self.rebalance(node.getParent())
         else:
           self.root = node.getLeft()
+
