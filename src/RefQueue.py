@@ -1,4 +1,4 @@
-import Nodes import Node
+from Nodes import Node
 
 class RefQueue():
   def __init__(self):
