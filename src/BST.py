@@ -1,5 +1,4 @@
 from Nodes import BSTNode
-from RefQueue import RefQueue
 
 class BST:
   def __init__(self, k):
@@ -79,10 +78,10 @@ class BST:
           self.root = node.getLeft()
 
   def rangeSearch(self, min, max):
-    q = RefQueue()
+    l = []
     node = self.find(min, self.root)
     while node != None and node <= max:
       if node >= min:
-        q.enqueue(node.getKey())
+        l.append(node.getKey())
       node = self.getNext(node)
-    return q
+    return l
