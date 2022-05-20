@@ -12,7 +12,7 @@ class AVLTree(BST):
   def inOrder(self, node, s = "["):
     if node.getLeft() != None:
       s = self.inOrder(node.getLeft(), s)
-    s += " " + str(node.getKey())+","+ str(node.getHeight())
+    s += " " + str(node.getKey())
     if node.getRight() != None:
       s = self.inOrder(node.getRight(), s)
     return s
