@@ -1,5 +1,6 @@
 import flashcardgroups_operations as fsg
 import os
+import platform
 import sys
 
 sys.setrecursionlimit(1000000000)
@@ -7,6 +8,11 @@ sys.setrecursionlimit(1000000000)
 my_dict = fsg.load_existing_fgroups()
         
 if __name__ == "__main__":
+    operatingSystem = platform.system();
+    if operatingSystem == "Windows":
+        os.system('cls')
+    else:
+        os.system("clear")
     print("Welcome!")
     exit_status = "N"
     while(exit_status=="N"):
@@ -14,7 +20,10 @@ if __name__ == "__main__":
         while(groupReadorAcc != "C" and groupReadorAcc != "A"):
             groupReadorAcc = input("Do you want to create a new group of flashcards or read an existing one? (C/A) ")
 
-        os.system('cls')
+        if operatingSystem == "Windows":
+            os.system('cls')
+        else:
+            os.system("clear")
         if(groupReadorAcc == "A"):
             if(my_dict):
                 fsg.access_group(my_dict)
@@ -25,4 +34,7 @@ if __name__ == "__main__":
             fsg.create_group(my_dict)
 
         exit_status = input("Do you want to exit the program?: (Y/N) ")
-        os.system('cls')
+        if operatingSystem == "Windows":
+            os.system('cls')
+        else:
+            os.system("clear")

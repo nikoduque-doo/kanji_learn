@@ -1,4 +1,5 @@
 import os.path
+import platform
 import pickle
 import jisho_scrape
 import time
@@ -9,20 +10,31 @@ import RefQueue
 import LinkList
 import StaticStack
 
+def getPath():
+  operatingSystem = platform.system();
+  if operatingSystem == "Windows":
+    path = os.path.expandvars(R"%HOMEPATH%/Documents/") + "tankaiki"
+  elif operatingSystem == "Darwin":
+    path = os.path.expanduser(R"~/Documents/") + "tankaiki"
+  elif operatingSystem == "Linux":
+    path = os.path.expanduser(R"~/Documents/") + "tankaiki"
+  if not os.path.exists(path):
+    os.mkdir(path)
+  return path + "/"
 
 def load_existing_fgroups():
     try:
-      pickle_in = open(os.path.expandvars(R"%HOMEPATH%/Documents") + "/my_dict.pickle", "rb")
+      pickle_in = open(getPath() + "/my_dict.pickle", "rb")
       current_dict = pickle.load(pickle_in)
       pickle_in.close()
     except:
-      pickle_in = open(os.path.expandvars(R"%HOMEPATH%/Documents") + "/my_dict.pickle", "wb")
+      pickle_in = open(getPath() + "/my_dict.pickle", "wb")
       pickle_in.close()
       current_dict = {}
     return current_dict
 
 def save_changes_to_fgroups(dict_saved:dict):
-    pickle_out = open(os.path.expandvars(R"%HOMEPATH%/Documents") + "/my_dict.pickle", "wb")
+    pickle_out = open(getPath() + "/my_dict.pickle", "wb")
     pickle.dump(dict_saved,pickle_out)
     pickle_out.close()
 
