@@ -1,8 +1,29 @@
 class BinaryHeap:
-  def __init__(self, size):
-    self.arr = [None]*size
-    self.maxSize = size
-    self.itemCount = 0
+  def __init__(self, size = 256):
+    if isinstance(size, list):
+      self.arr = size
+      self.maxSize = self.itemCount = len(size)
+    else:
+      self.arr = [None]*size
+      self.maxSize = size
+      self.itemCount = 0
+
+  def __str__(self):
+    s = "| "
+    if self.itemCount > 0:
+      for i in range(int(math.log(self.itemCount, 2)+1)):
+        for j in range(2**i):
+          index = 2**i + j - 1
+          if self.arr[index] != None:
+            try:
+              s += str(self.arr[index]) + " | "
+            except:
+              break
+        if i != int(int(math.log(self.itemCount, 2))):
+          s += "\n| "
+    else:
+      s += "|"
+    return s
 
   def parent(self, i):
     return int((i-1)/2)
@@ -14,17 +35,17 @@ class BinaryHeap:
     return 2 * (i + 1)
 
   def swap(self, a, b):
-    if a < self.itemCount and b < self.itemCount:
-      self.arr[a], self.arr[a] = self.arr[b], self.arr[a]
+    self.arr[a], self.arr[b] = self.arr[b], self.arr[a]
 
   def siftUp(self, i):
     while i > 0 and self.arr[self.parent(i)] < self.arr[i]:
       self.swap(self.parent(i), i)
+      i = self.parent(i)
 
   def siftDown(self, i):
     max = i
-    left = self.leftChildren(i)
-    right = self.rightChildren(i)
+    left = self.leftChild(i)
+    right = self.rightChild(i)
     if left < self.itemCount and self.arr[max] < self.arr[left]:
       max = left
     if right < self.itemCount and self.arr[max] < self.arr[right]:
@@ -53,6 +74,9 @@ class BinaryHeap:
       self.siftUp(i)
 
   def remove(self, i):
-    self.arr[i] = self.arr[0] + 1 #Only for numeric values
+    if isinstance(self.arr[i], int):
+      self.arr[i] = self.arr[0] + 1 #Only for numeric values
+    else:
+      self.arr[i] = chr(ord(self.arr[i])+1) #Only for characters
     self.siftUp(i)
     self.extracMax()
