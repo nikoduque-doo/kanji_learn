@@ -5,7 +5,9 @@ class BST:
     self.root = BSTNode(k)
 
   def __str__(self):
-    return self.inOrder(self.root)+"]"
+    rif self.root != None:
+      return self.inOrder(self.root)+"]"
+    return "[]"
 
   def inOrder(self, node, s = "["):
     if node.getLeft() != None:
