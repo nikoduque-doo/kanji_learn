@@ -12,7 +12,10 @@ class JWord:
     self.meaning = meaning
   
   def __str__(self):
-    return "The japanese writing for {} is {}, its part of speech is {} and it means: {}".format(self.english, self.word, self.part_of_speech, self.meaning)
+    return str(self.word)
+
+  def info(self, fin = "\n"):
+    print("The japanese writing for {} is {}, its part of speech is {} and it means: {}".format(self.english, self.word, self.part_of_speech, self.meaning), end = fin)
 
   def __gt__(self, other):
     return self.compare(self.word, other.word) > 0
