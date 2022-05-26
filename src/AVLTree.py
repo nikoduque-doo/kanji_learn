@@ -2,9 +2,8 @@ from Nodes import AVLNode
 from BST import BST
 
 class AVLTree(BST):
-  def __init__(self, k):
-    BST.__init__(self, k)
-    self.root = AVLNode(k)
+  def __init__(self):
+    self.root = None
 
   def fixHeavyLeft(self, node):
     left = node.getLeft()
@@ -108,18 +107,21 @@ class AVLTree(BST):
         node = node.getParent()
 
   def insert(self, k):
-    lot = self.find(k, self.root)
-    toBeUpdated = lot 
-    if lot > k:
-      lot.setLeft(AVLNode(k))
-      lot.getLeft().setParent(lot)
-      toBeUpdated = lot.getLeft()
-    elif lot < k:
-      lot.setRight(AVLNode(k))
-      lot.getRight().setParent(lot)
-      toBeUpdated = lot.getRight()
-    self.updateInsertHeight(toBeUpdated)
-    self.rebalance(toBeUpdated)
+    if self.root != None:
+      lot = self.find(k, self.root)
+      toBeUpdated = lot 
+      if lot > k:
+        lot.setLeft(AVLNode(k))
+        lot.getLeft().setParent(lot)
+        toBeUpdated = lot.getLeft()
+      elif lot < k:
+        lot.setRight(AVLNode(k))
+        lot.getRight().setParent(lot)
+        toBeUpdated = lot.getRight()
+      self.updateInsertHeight(toBeUpdated)
+      self.rebalance(toBeUpdated)
+    else:
+      self.root = AVLNode(k)
 
   def delete(self, k):
     node = self.find(k, self.root)
