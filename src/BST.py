@@ -57,7 +57,7 @@ class BST:
         lot.getRight().setParent(lot)
         return lot.getRight()
     else:
-      self.root = lot = AVLNode(k)
+      self.root = lot = BSTNode(k)
     return lot
   
   def delete(self, k):
