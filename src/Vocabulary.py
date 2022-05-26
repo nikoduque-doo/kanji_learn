@@ -30,9 +30,12 @@ class JWord:
     if other != None:
       return self.compare(self.word, other.word) == 0
     return False
-
+  
+  def rise(self, num = 1):
+    self.word[0] = chr(ord(self.word[0]) + num)
+  
   def compare(self, this, that):
-    for i in range(max(len(this), len(that))):
+    for i in range(min(len(this), len(that))):
       if this[i] > that[i]:
         return 1
       elif that[i] > this[i]:
