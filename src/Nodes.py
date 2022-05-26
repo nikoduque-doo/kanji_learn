@@ -26,27 +26,27 @@ class BSTNode:
     self._parent = None
   
   def __gt__(self, other):
-    if type(other) == TNode:
+    if type(other) == AVLNode or type(other) == BSTNode:
       return self._key > other._key
     return self._key > other
 
   def __ge__(self, other):
-    if type(other) == TNode:
+    if type(other) == AVLNode or type(other) == BSTNode:
       return self._key >= other._key
     return self._key >= other
 
   def __lt__(self, other):
-    if type(other) == TNode:
+    if type(other) == AVLNode or type(other) == BSTNode:
       return self._key < other._key
     return self._key < other
 
   def __le__(self, other):
-    if type(other) == TNode:
+    if type(other) == AVLNode or type(other) == BSTNode:
       return self._key <= other._key
     return self._key <= other
 
   def __eq__(self, other):
-    if type(other) == TNode:
+    if type(other) == AVLNode or type(other) == BSTNode:
       return self._key == other._key
     return self._key == other
   
