@@ -46,14 +46,20 @@ class BST:
     return self.rightAncestor(node)
 
   def insert(self, k):
-    lot = self.find(k, self.root)
-    if lot > k:
-      lot.setLeft(BSTNode(k))
-      lot.getLeft().setParent(lot)
-    elif lot < k:
-      lot.setRight(BSTNode(k))
-      lot.getRight().setParent(lot)
-
+    if self.root != None:
+      lot = self.find(k, self.root)
+      if lot > k:
+        lot.setLeft(BSTNode(k))
+        lot.getLeft().setParent(lot)
+        return lot.getLeft()
+      elif lot < k:
+        lot.setRight(BSTNode(k))
+        lot.getRight().setParent(lot)
+        return lot.getRight()
+    else:
+      self.root = lot = AVLNode(k)
+    return lot
+  
   def delete(self, k):
     node = self.find(k, self.root)
     if node == k:
