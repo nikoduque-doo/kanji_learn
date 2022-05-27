@@ -2,7 +2,10 @@ WindowManager:
     FirstScreen:
     HomeScreen:
     LoadingScreen:
-
+    #Faltan hacer las siguientes 3 Screeens
+    WordScreen:
+    FlashcardScreen:
+    ViewFlashcardsScreen:
 
 <FirstScreen>:
     name: "first"
@@ -52,8 +55,8 @@ WindowManager:
                 Rectangle:
                     pos: self.pos
                     size: self.size
-            Widget:
-            Widget:
+            HomeContents:
+            RandomWord:
             BottomRightOptions:
             
 <TopBar@BoxLayout>:
@@ -88,6 +91,7 @@ WindowManager:
 <BottomRightOptions@BoxLayout>:
     size_hint: .15, .1
     orientation:'vertical'
+    padding: ('5dp', '5dp', '5dp', '5dp')
     Label:
         text:''
         size_hint: 1, .8
@@ -97,6 +101,128 @@ WindowManager:
     Button:
         text:'N+'
         size_hint: 1, .1
+
+<HomeContents@BoxLayout>:
+    orientation:'vertical'
+    RecentAdded:
+    AllFlashcards:
+
+
+<RecentAdded@BoxLayout>:
+    orientation:'vertical'
+    Label:
+        text:'Recently added:'
+        color: 0 , 0 , 0 , 1
+
+<AllFlashcards@GridLayout>:
+    cols: 2
+    Label:
+        text:'Saved Flashcards groups'
+        color: 0 , 0 , 0 , 1
+
+<RandomWord@BoxLayout>:
+    orientation: 'vertical'
+    size_hint: .3, 1
+    padding: ('5dp', '5dp', '5dp', '5dp')
+    Label:
+        text:'Random Word'
+        color: 0 , 0 , 0 , 1
+    Label:
+        # Este label sería el empleado para mostrar el kanji de la random word mostrada 
+        #text: 
+    Button:
+        text:'Reading Spoiler'
+    Button:
+        text: 'Meaning Spoiler'
+    Label:
+        text:''
+        size_hint: 1, .5
+
+
+# Estas screens faltan hacerlas!!
+<ViewFlashcardsScreen>:
+    name: "ViewFlashcards"
+    BoxLayout:
+        # Background Color!
+        orientation:'vertical'
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+            Color: 
+                rgba: 0, 0, 0, 1
+        # TopBar
+        TopBar:
+        GridLayout:
+            cols: 3
+            rows: 1
+            canvas.before:
+                Color: 
+                    rgba: .9, .9, .9, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Widget:
+            Widget:
+            BottomRightOptions:
+
+<FlashcardScreen>:
+    name: "Flashcard"
+    BoxLayout:
+        # Background Color!
+        orientation:'vertical'
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+            Color: 
+                rgba: 0, 0, 0, 1
+        # TopBar
+        TopBar:
+        GridLayout:
+            cols: 3
+            rows: 1
+            canvas.before:
+                Color: 
+                    rgba: .9, .9, .9, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Widget:
+            Widget:
+            BottomRightOptions:
+
+<WordScreen>:
+    name: "Word"
+    BoxLayout:
+        # Background Color!
+        orientation:'vertical'
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+            Color: 
+                rgba: 0, 0, 0, 1
+        # TopBar
+        TopBar:
+        GridLayout:
+            cols: 3
+            rows: 1
+            canvas.before:
+                Color: 
+                    rgba: .9, .9, .9, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Widget:
+            Widget:
+            BottomRightOptions:
 
 # Mi idea con este screen es mostrarlo justo después de dar en empezar, y mostrarlo mientras se carga el archivo pickle
 <LoadingScreen>:

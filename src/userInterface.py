@@ -14,6 +14,15 @@ class HomeScreen(Screen):
 class LoadingScreen(Screen):
     pass
 
+class WordScreen(Screen):
+    pass
+
+class FlashcardScreen(Screen):
+    pass
+
+class ViewFlashcardsScreen(Screen):
+    pass
+
 class WindowManager(ScreenManager):
     pass
 
