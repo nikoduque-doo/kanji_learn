@@ -10,6 +10,7 @@ import ArrQueue
 import RefQueue
 import LinkList
 import StaticStack
+from AVLTree import AVLTree
 
 def getPath():
   operatingSystem = platform.system();
@@ -32,6 +33,10 @@ def load_existing_fgroups():
       pickle_in = open(getPath() + "/my_dict.pickle", "wb")
       pickle_in.close()
       current_dict = {}
+    if not "my_kanji" in current_dict:
+      current_dict["my_kanji"] = AVLTree()
+    if not "groups" in current_dict:
+      current_dict["groups"] = {}
     return current_dict
 
 def save_changes_to_fgroups(dict_saved:dict):
@@ -210,3 +215,27 @@ def access_group(gen_dict:dict):
         save_changes_to_fgroups(gen_dict)
       end_time = time.monotonic()
       print(timedelta(seconds=end_time - start_time))
+
+def getSizeOfGroup(struc):
+  if(type(struc) == dict or type(struc) == list):
+    ret = len(struc)
+  elif (type(struc) == ArrQueue.ArrQueue):
+    ret = struc.get_size()
+  elif (type(struc) == RefQueue.RefQueue):
+    ret = struc.getSize()
+  elif(type(struc) == LinkList.LinkList):
+    ret = struc.size()
+  elif(type(struc) == StaticStack.ArrStack):
+    ret = struc.getSize()
+  return ret
+
+def get_groups(gen_dict:dict):
+  groups_dict = gen_dict["groups"]
+  groupsList = []
+  for key in groups_dict.keys():
+    thisGroup = []
+    thisGroup.append(key)
+    sizeOfThisGroup = getSizeOfGroup(groups_dict[key])
+    thisGroup.append(sizeOfThisGroup)
+    groupsList.append(thisGroup)
+  return groupsList

@@ -36,6 +36,9 @@ class ArrQueue():
   def isFull(self):
     return (self.write + 1) % self.size == self.erase
 
+  def get_size(self):
+    return self.size
+
 def queue_search(item, q):
   first_element = q.peek()
   if first_element == None:
