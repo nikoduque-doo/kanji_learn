@@ -4,6 +4,7 @@ from BST import BST
 class AVLTree(BST):
   def __init__(self):
     self.root = None
+    self.itemCount = 0
 
   def fixHeavyLeft(self, node):
     left = node.getLeft()
@@ -114,10 +115,12 @@ class AVLTree(BST):
         lot.setLeft(AVLNode(k))
         lot.getLeft().setParent(lot)
         toBeUpdated = lot.getLeft()
+        self.itemCount += 1
       elif lot < k:
         lot.setRight(AVLNode(k))
         lot.getRight().setParent(lot)
         toBeUpdated = lot.getRight()
+        self.itemCount += 1
       self.updateInsertHeight(toBeUpdated)
       self.rebalance(toBeUpdated)
     else:
@@ -126,6 +129,7 @@ class AVLTree(BST):
   def delete(self, k):
     node = self.find(k, self.root)
     if node == k:
+      self.itemCount -= 1
       if node.getRight() != None:
         nxt = self.getNext(node)
         node.setKey(nxt.getKey())

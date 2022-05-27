@@ -73,7 +73,7 @@ class BinaryHeap:
     elif value < self.arr[i]:
       self.siftUp(i)
 
-  def remove(self, i):
+  def remove(self, i): #missing
     if isinstance(self.arr[i], int):
       self.arr[i] = self.arr[0] + 1 #Only for numeric values
     else:

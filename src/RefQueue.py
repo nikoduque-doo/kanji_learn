@@ -4,6 +4,7 @@ class RefQueue():
   def __init__(self):
     self.head = None
     self.tail = None
+    self.itemCount = 0
     
   def __str__(self):
     s = "< "
@@ -12,9 +13,13 @@ class RefQueue():
       s += str(point.getValue()) + " < "
       point = point.getNext()
     return s
-    
+  
+  def getSize(self):
+    return self.itemCount
+
   def enqueue(self, data):
     tempVar = Node(data)
+    self.itemCount += 1
     if not self.isEmpty():
       self.tail.setNext(tempVar)
     else: 
@@ -23,6 +28,7 @@ class RefQueue():
 
   def dequeue(self):
     if not self.isEmpty():
+      self.itemCount -= 1
       tempVar = self.head.getValue()
       self.head = self.head.getNext()
       if self.isEmpty():

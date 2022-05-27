@@ -3,6 +3,7 @@ from Nodes import BSTNode
 class BST:
   def __init__(self, k):
     self.root = BSTNode(k)
+    self.itemCount = 0
 
   def __str__(self):
     if self.root != None:
@@ -20,6 +21,9 @@ class BST:
       s = self.inOrder(node.getRight(), s)
     return s
   
+  def getSize(self):
+    return self.itemCount
+
   def find(self, k, root):
     if root > k and root.getLeft() != None:
         return self.find(k, root.getLeft())
@@ -53,10 +57,12 @@ class BST:
       if lot > k:
         lot.setLeft(BSTNode(k))
         lot.getLeft().setParent(lot)
+        self.itemCount += 1
         return lot.getLeft()
       elif lot < k:
         lot.setRight(BSTNode(k))
         lot.getRight().setParent(lot)
+        self.itemCount += 1
         return lot.getRight()
     else:
       self.root = lot = BSTNode(k)
@@ -65,6 +71,7 @@ class BST:
   def delete(self, k):
     node = self.find(k, self.root)
     if node == k:
+      self.itemCount -= 1
       if node.getRight() != None:
         nxt = self.getNext(node)
         node.setKey(nxt.getKey())
