@@ -1,6 +1,7 @@
 WindowManager:
     FirstScreen:
     HomeScreen:
+    LoadingScreen:
 
 
 <FirstScreen>:
@@ -9,13 +10,99 @@ WindowManager:
         anchor_x: 'center'
         anchor_y: 'center'
         BoxLayout:
+            size_hint: .3, 1
             orientation:'vertical'
+            #Image:
+                #source: "images/tankaiki.png" ??
             Label:
                 text:'Tankaiki'
+                font_size: "35"
             Button:
+                size_hint: 1, .2
                 text:'Empezar'
+                # Para cambiar el screen desde aquí usar:
                 on_press: app.root.current = "Home"
+                # Para cambiar el screen desde el archivo .py usar:
+                #on_press: root.onClickButton(app.root)
 
 <HomeScreen>:
     name: "Home"
+    BoxLayout:
+        # Background Color!
+        orientation:'vertical'
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+            Color: 
+                rgba: 0, 0, 0, 1
+        # TopBar
+        TopBar:
+        # Window Contents
+        # Se manejan con un grid Layout,  en este caso para Home son 3 cols. Las dos primeras para mostrar contenido
+        # Y la última para las opciones de la parte derecha abajo.
+        GridLayout:
+            cols: 3
+            rows: 1
+            canvas.before:
+                Color: 
+                    rgba: .9, .9, .9, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Widget:
+            Widget:
+            BottomRightOptions:
+            
+<TopBar@BoxLayout>:
+    orientation: 'horizontal'
+    size_hint: 1, .1
+    #Image:
+    #    source:
+    BoxLayout:
+        orientation:'horizontal'
+        #Image:
+            #source: "images/tankaiki.png" ??
+        Label:
+            size_hint: .3, 1
+            color: 0 , 0 , 0 , 1
+            text:'Tankaiki'
+        Label:
+            size_hint: .5, 1
+            text:''
+        Button:
+            size_hint: .1, 1
+            text:'Home'
+            on_press: 
+                app.root.transition.direction = "right"
+                app.root.current = "Home"
+        Button:
+            size_hint: .1, 1
+            text:'Options'
+            on_press: 
+                app.root.transition.direction = "left"
+                # app.root.current = "Loading"
+
+<BottomRightOptions@BoxLayout>:
+    size_hint: .15, .1
+    orientation:'vertical'
+    Label:
+        text:''
+        size_hint: 1, .8
+    Button:
+        text:'+'
+        size_hint: 1, .1
+    Button:
+        text:'N+'
+        size_hint: 1, .1
+
+# Mi idea con este screen es mostrarlo justo después de dar en empezar, y mostrarlo mientras se carga el archivo pickle
+<LoadingScreen>:
+    name: "Loading"
+    Label:
+        text:'Loading.... Please Wait'
+
+
     
