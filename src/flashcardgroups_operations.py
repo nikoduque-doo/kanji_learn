@@ -1,9 +1,10 @@
+from datetime import timedelta
+from Vocabulary import Kanji
 import os.path
 import platform
 import pickle
 import jisho_scrape
 import time
-from datetime import timedelta
 import random
 import ArrQueue
 import RefQueue
@@ -45,7 +46,7 @@ def get_word_data(item: None):
     else:
       searchedWord = item
       group = True
-    word_to_be_added = jisho_scrape.add_word(searchedWord, group)
+    word_to_be_added = jisho_scrape.add_word(searchedWord.lower(), group)
     return word_to_be_added
 
 def create_group(gen_dict:dict):
@@ -70,28 +71,37 @@ def create_group(gen_dict:dict):
     
     save_changes_to_fgroups(gen_dict)
 
-def add_singular_word(struc, item: None):
+def add_singular_word(struc, item: None, gen_dict):
     word_searched = get_word_data(item)
     if word_searched != None:
-        word_inserted = {word_searched.name_dict : word_searched.data_dict}
+      
+        for i in range(len(word_searched.word)):
+          if 19968 <= ord(word_searched.word[i]) and ord(word_searched.word[i]) <= 40879:
+            newK = Kanji(word_searched.word[i])
+            newK.link(word_searched)
+            gen_dict["my_kanji"].insert(newK)
+            
         if(type(struc) == dict):
-          struc[word_searched.name_dict] = word_searched.data_dict
+          struc[word_searched.english] = word_searched
         elif(type(struc) == list):
-          struc.append(word_inserted)
+          struc.append(word_searched)
         elif (type(struc) == ArrQueue.ArrQueue or type(struc) == RefQueue.RefQueue):
-          struc.enqueue(word_inserted)
+          struc.enqueue(word_searched)
         elif(type(struc) == LinkList.LinkList):
-          struc.pushBack(word_inserted)
+          struc.pushBack(word_searched)
         elif(type(struc) == StaticStack.ArrStack):
-          struc.push(word_inserted)
+          struc.push(word_searched)
 
 def search_word(struc, item):
+  item = item.lower()
   start_time = time.perf_counter_ns()
+  
   found = False
   if(type(struc) == list):
     for element in struc:
-      if element is not None and item in element.keys():
+      if element is not None and element.english == item:
         found = True
+        break
   elif(type(struc) == dict):
     found = item in struc
   elif (type(struc) == ArrQueue.ArrQueue or type(struc) == RefQueue.RefQueue):
@@ -113,7 +123,7 @@ def delete_word(struc, item):
     struc.pop(item)
   elif(type(struc) == list):
     for element in struc:
-      if element is not None and item in element.keys():
+      if element is not None and element.english == item:
         struc.remove(element)
   elif (type(struc) == ArrQueue.ArrQueue or type(struc) == RefQueue.RefQueue):
     ArrQueue.queue_delete(item, struc)
@@ -139,6 +149,7 @@ def get_random_word(struc):
     print(StaticStack.stack_get_rand(struc))
 
 def access_group(gen_dict:dict):
+    print("kanji tree test: ", gen_dict["my_kanji"])
     print("What flashcard group would you like to access? ")
     for key in gen_dict.keys():
         print(key, end= " | ")
@@ -148,7 +159,7 @@ def access_group(gen_dict:dict):
     
     operation = input("Choose an operation to perform on {}: \n\t(A)  Add a word\n\t(P)  Print\n\t(D)  Delete the Flashcard Group\n\t(S)  Search\n\t(R)  Remove a Word\n\t(RW) get a Random Word\n>".format(key_access))
     if(operation == "A"):
-        add_singular_word(gen_dict[key_access], None)
+        add_singular_word(gen_dict[key_access], None, gen_dict)
         save_changes_to_fgroups(gen_dict)
 
     elif(operation == "P"):
