@@ -10,6 +10,8 @@ my_dict = fsg.load_existing_fgroups()
 
 if not "my_kanji" in my_dict:
     my_dict["my_kanji"] = AVLTree()
+if not "groups" in my_dict:
+    my_dict["groups"] = {}
 
 if __name__ == "__main__":
     operatingSystem = platform.system();
@@ -29,7 +31,7 @@ if __name__ == "__main__":
         else:
             os.system("clear")
         if(groupReadorAcc == "A"):
-            if(my_dict):
+            if(my_dict["groups"]):
                 fsg.access_group(my_dict)
             else:
                 print("No flashcard groups available, create a group")

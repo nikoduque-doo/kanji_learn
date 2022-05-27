@@ -24,7 +24,7 @@ def request_word(word_requested):
     req = Word.request(word_requested)
     newJWord = None
     include_keys = { 
-        'data' : {0 : {"slug":True, "senses" : {0 : {"english_definitions":True, "parts_of_speech":True}}}},
+        'data' : {0 : {"japanese" : {0 : {"word":True, "reading":True}}, "senses" : {0 : {"english_definitions":True, "parts_of_speech":True}}}},
     }
 
     try:
@@ -34,9 +34,10 @@ def request_word(word_requested):
     else:
         
         newJWord = JWord(word_requested,\
-                         reqDict["data"][0]["slug"],\
+                         reqDict["data"][0]["japanese"][0]["word"],\
                          reqDict["data"][0]["senses"][0]["parts_of_speech"][0],\
-                         reqDict["data"][0]["senses"][0]["english_definitions"][0])
+                         reqDict["data"][0]["senses"][0]["english_definitions"][0],\
+                         reqDict["data"][0]["japanese"][0]["reading"])
         
         return newJWord
 

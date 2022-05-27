@@ -52,35 +52,36 @@ def get_word_data(item: None):
 def create_group(gen_dict:dict):
     name = input("Name your flashcard group: ")
     data_structure = input("What Data Structure would you like to create it as? \n\tS = Stack\n\tQ = Queue\n\tQ2 = Reference Queue\n\tL = Linked List\n\tA = Array\n>")
-    
+    groups_dict = gen_dict["groups"]
+
     if(data_structure == "D"):
-        gen_dict[name] = {}
+        groups_dict[name] = {}
     elif(data_structure == "A"):
         size = int(input("How many elements would you like to add? "))
-        gen_dict[name] = [None]*(size)
+        groups_dict[name] = [None]*(size)
     elif(data_structure == "Q"):
         size = int(input("How many elements would you like to add? "))
-        gen_dict[name] = ArrQueue.ArrQueue(size)
+        groups_dict[name] = ArrQueue.ArrQueue(size)
     elif(data_structure == "Q2"):
-        gen_dict[name] = RefQueue.RefQueue()
+        groups_dict[name] = RefQueue.RefQueue()
     elif(data_structure == "L"):
-        gen_dict[name] = LinkList.LinkList()
+        groups_dict[name] = LinkList.LinkList()
     elif(data_structure == "S"):
         size = int(input("How many elements would you like to add? "))
-        gen_dict[name] = StaticStack.ArrStack(size)
+        groups_dict[name] = StaticStack.ArrStack(size)
     
     save_changes_to_fgroups(gen_dict)
 
 def add_singular_word(struc, item: None, gen_dict):
     word_searched = get_word_data(item)
     if word_searched != None:
-      
         for i in range(len(word_searched.word)):
           if 19968 <= ord(word_searched.word[i]) and ord(word_searched.word[i]) <= 40879:
             newK = Kanji(word_searched.word[i])
             newK.link(word_searched)
             gen_dict["my_kanji"].insert(newK)
-            
+        
+        
         if(type(struc) == dict):
           struc[word_searched.english] = word_searched
         elif(type(struc) == list):
@@ -151,45 +152,46 @@ def get_random_word(struc):
 def access_group(gen_dict:dict):
     print("kanji tree test: ", gen_dict["my_kanji"])
     print("What flashcard group would you like to access? ")
-    for key in gen_dict.keys():
+    groups_dict = gen_dict["groups"]
+    for key in groups_dict.keys():
         print(key, end= " | ")
     key_access = input("\nInput your selection: ")
-    while(key_access not in gen_dict.keys()):
+    while(key_access not in groups_dict.keys()):
         key_access = input("No such flashcard group exists. Input your selection: ")
     
     operation = input("Choose an operation to perform on {}: \n\t(A)  Add a word\n\t(P)  Print\n\t(D)  Delete the Flashcard Group\n\t(S)  Search\n\t(R)  Remove a Word\n\t(RW) get a Random Word\n>".format(key_access))
     if(operation == "A"):
-        add_singular_word(gen_dict[key_access], None, gen_dict)
+        add_singular_word(groups_dict[key_access], None, gen_dict)
         save_changes_to_fgroups(gen_dict)
 
     elif(operation == "P"):
-        if type(gen_dict[key_access]) == list:
+        if type(groups_dict[key_access]) == list:
             print(key_access, end= ": ")
-            for item in gen_dict[key_access]:
+            for item in groups_dict[key_access]:
               if item is not None:
                 print(item, end= " ")
             print()
         else:
-            print("{}: {}".format(key_access, gen_dict[key_access]))
+            print("{}: {}".format(key_access, groups_dict[key_access]))
     
     elif(operation == "D"):
-      gen_dict.pop(key_access)
+      groups_dict.pop(key_access)
       save_changes_to_fgroups(gen_dict)
 
     elif(operation == "S"):
       s_word = input("What word would you like to search? ")
-      search_word(gen_dict[key_access], s_word)
+      search_word(groups_dict[key_access], s_word)
     
     elif(operation == "R"):
       r_word = input("What word would you like to delete? ")
       start_time = time.perf_counter_ns()
-      delete_word(gen_dict[key_access], r_word)
+      delete_word(groups_dict[key_access], r_word)
       end_time = time.perf_counter_ns()
       print(end_time - start_time, "ns")
 
     elif(operation == "RW"):
       start_time = time.perf_counter_ns()
-      get_random_word(gen_dict[key_access])
+      get_random_word(groups_dict[key_access])
       end_time = time.perf_counter_ns()
       print(end_time - start_time, "ns")
 
@@ -203,7 +205,7 @@ def access_group(gen_dict:dict):
       start_time = time.monotonic()
       for item in file_list:
         counter += 1
-        add_singular_word(gen_dict[key_access], item)
+        add_singular_word(groups_dict[key_access], item)
         print("{}/{}".format(counter, len(file_list)))
         save_changes_to_fgroups(gen_dict)
       end_time = time.monotonic()

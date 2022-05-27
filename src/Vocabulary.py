@@ -1,21 +1,22 @@
 from AVLTree import AVLTree
 
 class JWord:
-  __slots__ = ("english", "word", "part_of_speech", "meaning")
+  __slots__ = ("english", "word", "part_of_speech", "meaning", "reading")
   jwCount = 0
 
-  def __init__(self, english, word, use, meaning):
+  def __init__(self, english, word, use, meaning, reading):
     JWord.jwCount += 1
     self.english = english
     self.word = word
     self.part_of_speech = use
     self.meaning = meaning
+    self.reading = reading
   
   def __str__(self):
     return str(self.word)
 
   def info(self, fin = "\n"):
-    print("The japanese writing for {} is {}, its part of speech is {} and it means: {}".format(self.english, self.word, self.part_of_speech, self.meaning), end = fin)
+    print("The japanese writing for {} is {}, it is read like {}, its part of speech is {} and it means: {}".format(self.english, self.word, self.reading, self.part_of_speech, self.meaning), end = fin)
 
   def __gt__(self, other):
     return self.compare(self.word, other.word) > 0
