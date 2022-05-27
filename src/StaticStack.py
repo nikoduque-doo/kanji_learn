@@ -47,7 +47,7 @@ def stack_search(item, s):
   found = False
   temp = None
   s2 = ArrStack(s.getSize())
-  while (not s.isEmpty()) and (item != next(iter(s.top().keys()))):
+  while (not s.isEmpty()) and (item != s.top().english):
     s2.push(s.pop())
   if not s.isEmpty():
     found = True
