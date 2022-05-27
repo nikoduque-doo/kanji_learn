@@ -1,3 +1,5 @@
+from math import log
+
 class BinaryHeap:
   def __init__(self, size = 256):
     if isinstance(size, list):
@@ -11,7 +13,7 @@ class BinaryHeap:
   def __str__(self):
     s = "| "
     if self.itemCount > 0:
-      for i in range(int(math.log(self.itemCount, 2)+1)):
+      for i in range(int(log(self.itemCount, 2)+1)):
         for j in range(2**i):
           index = 2**i + j - 1
           if self.arr[index] != None:
@@ -19,7 +21,7 @@ class BinaryHeap:
               s += str(self.arr[index]) + " | "
             except:
               break
-        if i != int(int(math.log(self.itemCount, 2))):
+        if i != int(int(log(self.itemCount, 2))):
           s += "\n| "
     else:
       s += "|"
