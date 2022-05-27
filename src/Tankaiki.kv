@@ -2,7 +2,7 @@ WindowManager:
     FirstScreen:
     HomeScreen:
     LoadingScreen:
-    #Faltan hacer las siguientes 3 Screeens
+    #Faltan hacer las siguientes 3 Screens
     WordScreen:
     FlashcardScreen:
     ViewFlashcardsScreen:
@@ -10,13 +10,15 @@ WindowManager:
 <FirstScreen>:
     name: "first"
     AnchorLayout:
+        padding: ('5dp', '5dp', '5dp', '5dp')
         anchor_x: 'center'
         anchor_y: 'center'
         BoxLayout:
             size_hint: .3, 1
             orientation:'vertical'
-            #Image:
-                #source: "images/tankaiki.png" ??
+            Image:
+                source: "images/tankaiki.png"
+                allow_stretch: True
             Label:
                 text:'Tankaiki'
                 font_size: "35"
@@ -66,10 +68,12 @@ WindowManager:
     #    source:
     BoxLayout:
         orientation:'horizontal'
-        #Image:
-            #source: "images/tankaiki.png" ??
+        Image:
+            source: "images/tankaiki.png"
+            size_hint: .15, 1
+            allow_stretch: True
         Label:
-            size_hint: .3, 1
+            size_hint: .15, 1
             color: 0 , 0 , 0 , 1
             text:'Tankaiki'
         Label:

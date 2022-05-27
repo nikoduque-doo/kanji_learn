@@ -5,8 +5,8 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 class FirstScreen(Screen):
     pass
     # Para hacer el cambio de screen desde el código de python hay que hacerlo así
-    # def onClickButton(self, widget):
-    #    widget.current = "Home"
+    #def onClickButton(self, widget):
+        #widget.current = "Home"
 
 class HomeScreen(Screen):
     pass
