@@ -48,7 +48,11 @@ def add_word(word_requested, group: False):
         print("Word not recognized or not found")
     else:
         if(group == False):
-            reqJWord.info()
+            if reqJWord != None:
+                reqJWord.info()
+            else:
+                print("Word not added")
+                return None
 
             addTo = input("Do you want to add this word to your custom list? (Y/N)")
             while(addTo != "Y" and addTo != "N"):
