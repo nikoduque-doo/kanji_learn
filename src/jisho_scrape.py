@@ -1,4 +1,5 @@
 from jisho_api.word import Word
+from Vocabulary import JWord
 import os.path
 import json
 #utilizando el api de el diccionario Jisho, se extraen datos de la página (scraping) y se organizan en un
@@ -21,7 +22,7 @@ class dict_word:
 
 def request_word(word_requested):
     req = Word.request(word_requested)
-    organizedDict = dict_word(word_requested)
+    newJWord = None
     include_keys = { 
         'data' : {0 : {"slug":True, "senses" : {0 : {"english_definitions":True, "parts_of_speech":True}}}},
     }
@@ -32,20 +33,21 @@ def request_word(word_requested):
         print("Word not recognized or not found")
     else:
         
-        organizedDict.add_data("kanji", reqDict["data"][0]["slug"])
-        organizedDict.add_data("part_of_speech", reqDict["data"][0]["senses"][0]["parts_of_speech"][0])
-        organizedDict.add_data("meaning", reqDict["data"][0]["senses"][0]["english_definitions"][0])
+        newJWord = JWord(word_requested,\
+                         reqDict["data"][0]["slug"],\
+                         reqDict["data"][0]["senses"][0]["parts_of_speech"][0],\
+                         reqDict["data"][0]["senses"][0]["english_definitions"][0])
         
-        return organizedDict
+        return newJWord
 
 def add_word(word_requested, group: False):
     try:
-        reqDict = request_word(word_requested)
+        reqJWord = request_word(word_requested)
     except:
         print("Word not recognized or not found")
     else:
         if(group == False):
-            print("The kanji for {} is {}, its part of speech is {} and it means: {}".format(reqDict.name_dict, reqDict.get_data("kanji"), reqDict.get_data("part_of_speech"), reqDict.get_data("meaning")))
+            reqJWord.info()
 
             addTo = input("Do you want to add this word to your custom list? (Y/N)")
             while(addTo != "Y" and addTo != "N"):
@@ -53,12 +55,12 @@ def add_word(word_requested, group: False):
         
             if(addTo == "Y"):
                 print("Done! Word added successfully")
-                return reqDict
+                return reqJWord
             else:
                 print("Word not added")
                 return None
         else:
-            return reqDict
+            return reqJWord
 
 def add_words_from_file(filename):
 

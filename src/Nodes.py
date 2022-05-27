@@ -85,6 +85,9 @@ class AVLNode(BSTNode):
   def getHeight(self):
     return self._height
   
+  def setHeight(self, num):
+    self._height = num
+  
   def __iadd__(self, num):
     self._height += num
     return self

@@ -40,12 +40,12 @@ def queue_search(item, q):
   first_element = q.peek()
   if first_element == None:
     return False
-  elif next(iter(first_element.keys())) == item:
+  elif first_element.english == item:
     return True
   else:
     q.enqueue(q.dequeue())
     while first_element != q.peek():
-      if next(iter(q.peek().keys())) == item:
+      if q.peek().english == item:
         return True
       q.enqueue(q.dequeue())
     return False

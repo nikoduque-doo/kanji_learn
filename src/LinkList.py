@@ -115,7 +115,7 @@ class LinkList:
         found = False
         actual = self.head
         while actual is not None and not found:
-            if val in actual.getValue().keys():
+            if val == actual.getValue().english:
                 found = True
             else:
                 actual = actual.getNext()

@@ -65,5 +65,22 @@ class Kanji:
   def __str__(self):
     return self.char
 
+  def __gt__(self, other):
+    return self.char > other.char
+
+  def __ge__(self, other):
+    return self.char >= other.char
+
+  def __lt__(self, other):
+    return self.char < other.char
+
+  def __le__(self, other):
+    return self.char <= other.char
+
+  def __eq__(self, other):
+    if other != None:
+      return self.char == other.char
+    return False
+
   def link(self, word):
     self.tree.insert(word)

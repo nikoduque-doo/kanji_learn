@@ -1,3 +1,4 @@
+from AVLTree import AVLTree
 import flashcardgroups_operations as fsg
 import os
 import platform
@@ -6,7 +7,10 @@ import sys
 sys.setrecursionlimit(1000000000)
 
 my_dict = fsg.load_existing_fgroups()
-        
+
+if not "my_kanji" in my_dict:
+    my_dict["my_kanji"] = AVLTree()
+
 if __name__ == "__main__":
     operatingSystem = platform.system();
     if operatingSystem == "Windows":
