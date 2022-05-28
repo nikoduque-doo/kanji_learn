@@ -40,6 +40,8 @@ def load_existing_fgroups():
       current_dict["groups"] = {}
     if not "practice_q" in current_dict:
       current_dict["practice_box"] = BinaryHeap()
+    if not "tags" in current_dict:
+      current_dict["tags"] = AVLTree()
     return current_dict
 
 def save_changes_to_fgroups(dict_saved:dict):
