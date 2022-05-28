@@ -1,5 +1,7 @@
-from datetime import timedelta
-from Vocabulary import Kanji
+from datetime import timedelta, datetime, date
+from Vocabulary import Kanji, JWord
+from AVLTree import AVLTree
+from BinaryHeap import BinaryHeap
 import os.path
 import platform
 import pickle
@@ -10,7 +12,6 @@ import ArrQueue
 import RefQueue
 import LinkList
 import StaticStack
-from AVLTree import AVLTree
 
 def getPath():
   operatingSystem = platform.system();
@@ -37,6 +38,8 @@ def load_existing_fgroups():
       current_dict["my_kanji"] = AVLTree()
     if not "groups" in current_dict:
       current_dict["groups"] = {}
+    if not "practice_q" in current_dict:
+      current_dict["practice_box"] = BinaryHeap()
     return current_dict
 
 def save_changes_to_fgroups(dict_saved:dict):
@@ -86,7 +89,8 @@ def add_singular_word(struc, item: None, gen_dict):
             newK.link(word_searched)
             gen_dict["my_kanji"].insert(newK)
         
-        
+
+        groupSize = getSizeOfGroup(struc)
         if(type(struc) == dict):
           struc[word_searched.english] = word_searched
         elif(type(struc) == list):
@@ -97,6 +101,10 @@ def add_singular_word(struc, item: None, gen_dict):
           struc.pushBack(word_searched)
         elif(type(struc) == StaticStack.ArrStack):
           struc.push(word_searched)
+
+        if groupSize < getSizeOfGroup(struc):
+          gen_dict["practice_box"].insert(word_searched)
+
 
 def search_word(struc, item):
   item = item.lower()
@@ -239,3 +247,47 @@ def get_groups(gen_dict:dict):
     thisGroup.append(sizeOfThisGroup)
     groupsList.append(thisGroup)
   return groupsList
+
+def raiseQuestion(jw:JWord):
+  ans = input("Type the kana reading for {}, what does it mean?\n>".format(jw.word))
+  while ans == "":
+    ans = input(">")
+  print("The correct writing is: {}, it means: {}".format(jw.reading, jw.meaning))
+  grade = input("Rate your answer from 0 to 5.\
+                \n\t(0) Utter failure.\
+                \n\t(1) Wrong, but recognized the answer.\
+                \n\t(2) Wrong. Seems easy to remember, though.\
+                \n\t(3) Correct, but required a lot of effort.\
+                \n\t(4) Correct. Felt dobious, nonetheless.\
+                \n\t(5) Perfect recall.\n>")
+  valid = False
+  while not valid:
+    try:
+      grade = int(grade[0])
+    except:
+      grade = input("Bad input, try again: ")
+      continue
+    if grade <= 5 and 0 <= grade:
+      valid = True
+  return grade
+
+def practice_vocab(struc:BinaryHeap):
+  practicing = "Y"
+  todayID = datetime.now().timetuple().tm_yday + date.today().year*1000
+  while practicing == "Y":
+    if struc.peek() == None:
+      print("You haven't saved any words yet!")
+    elif struc.peek().getDueDay() > todayID:
+      print("There aren't any words available for practice at the moment.")
+      if struc.peek().getDueDay() == todayID + 1:
+        print("The next word will be available tomorrow.")
+      else:
+        print("The next word will be available in {} days.".format(struc.peek().getDueDay()-todayID))
+    else:
+      j_word = struc.extractMax()
+      grade = raiseQuestion(j_word)
+      j_word.updatePriority(grade)
+      struc.insert(j_word)
+      practicing = input("Do you want to continue practicing? (Y/N)\n>")
+      while practicing != "Y" and practicing != "N":
+        practicing = input(">")

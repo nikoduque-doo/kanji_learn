@@ -102,9 +102,9 @@ if __name__ == "__main__":
 
     exit_status = "Y"
     while(exit_status=="N"):
-        groupReadorAcc = input("Do you want to create a new group of flashcards or access an existing one? (C/A) ")
-        while(groupReadorAcc != "C" and groupReadorAcc != "A"):
-            groupReadorAcc = input("Do you want to create a new group of flashcards or read an existing one? (C/A) ")
+        groupReadorAcc = input("Do you want to:\n\t(C) create a new group of flashcards\n\t(A) access an existing one or\n\t(P) practice your vocabulary?\n>")
+        while(groupReadorAcc != "C" and groupReadorAcc != "A" and groupReadorAcc != "P"):
+            groupReadorAcc = input("Do you want to:\n\t(C) create a new group of flashcards\n\t(A) access an existing one or\n\t(P) practice your vocabulary?\n>")
 
         if operatingSystem == "Windows":
             os.system('cls')
@@ -118,6 +118,8 @@ if __name__ == "__main__":
                 fsg.create_group(my_dict)
         elif(groupReadorAcc == "C"):
             fsg.create_group(my_dict)
+        elif(groupReadorAcc == "P"):
+            fsg.practice_vocab(my_dict["practice_box"])
 
         exit_status = input("Do you want to exit the program?: (Y/N) ")
         if operatingSystem == "Windows":
