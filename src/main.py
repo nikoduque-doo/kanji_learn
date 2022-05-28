@@ -7,6 +7,7 @@ import sys
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.properties import StringProperty
 from kivy.uix.stacklayout import StackLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
@@ -15,6 +16,7 @@ from kivy.uix.label import Label
 sys.setrecursionlimit(1000000000)
 
 my_dict = fsg.load_existing_fgroups()
+chosen = None
 
 class FirstScreen(Screen):
     pass
@@ -35,6 +37,9 @@ class FlashcardScreen(Screen):
     pass
 
 class ViewFlashcardsScreen(Screen):
+    pass
+
+class FlashcardGroupScreen(Screen):
     pass
 
 class WindowManager(ScreenManager):
@@ -82,8 +87,40 @@ class FlashcardsContent(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         
-    def onValidate(self, Widget):
-        print("hello")
+    def onValidate(self, thisWidget, Widget):
+        chosen = thisWidget.text
+        if (chosen not in my_dict["groups"].keys()):
+            thisWidget.text = "Not an group. Try again"
+            chosen = None
+        else:
+            Widget.current = "FlashcardGroup"
+        
+
+class FlashCardGroupContents(BoxLayout):
+    if chosen != None:
+        labelText = StringProperty(chosen)
+    else:
+        labelText = StringProperty("No flashcardSelected")
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        
+    def onPressAddButton(self, Widget):
+        Widget.current = "AddWord"
+        # groups_dict = my_dict["groups"]
+        # fsg.addAction(groups_dict[chosen], my_dict)
+        
+        
+class ViewAllWords(StackLayout):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs) 
+        #words = fsg.access_group(chosen, my_dict["groups"])
+
+class AddWordContents(BoxLayout):
+    if chosen != None:
+        labelText = StringProperty(chosen)
+    else:
+        labelText = StringProperty("No flashcardSelected")
+
 
 
 kv = Builder.load_file('Tankaiki.kv')

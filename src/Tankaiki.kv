@@ -6,6 +6,8 @@ WindowManager:
     WordScreen:
     FlashcardScreen:
     ViewFlashcardsScreen:
+    FlashcardGroupScreen:
+    AddWord:
 
 <FirstScreen>:
     name: "first"
@@ -123,7 +125,7 @@ WindowManager:
         text:'View All'
         size_hint: .3, .2
         on_press: 
-            app.root.transition.direction = "right"
+            app.root.transition.direction = "left"
             app.root.current = "ViewFlashcards"
 
 <RandomWord@BoxLayout>:
@@ -199,7 +201,7 @@ WindowManager:
             id: input
             text:''
             multiline: False
-            on_text_validate: root.onValidate(self)
+            on_text_validate: root.onValidate(self, app.root)
             size_hint: .5, .25
     Label:
         text:''
@@ -215,7 +217,7 @@ WindowManager:
 
 <ViewAllFlashcards>:
 
-<FlashcardGroupScreen>:
+<FlashcardGroupScreen@Screen>:
     name: "FlashcardGroup"
     BoxLayout:
         # Background Color!
@@ -231,7 +233,7 @@ WindowManager:
         # TopBar
         TopBar:
         GridLayout:
-            cols: 3
+            cols: 2
             rows: 1
             canvas.before:
                 Color: 
@@ -239,9 +241,51 @@ WindowManager:
                 Rectangle:
                     pos: self.pos
                     size: self.size
-            Widget:
-            Widget:
+            FlashCardGroupContents:
             BottomRightOptions:
+
+<FlashCardGroupContents>:
+    orientation: 'vertical'
+    BoxLayout:
+        orientation:'horizontal'
+        Label:
+            text: root.labelText
+        Button:
+            text:'+'
+            on_press: root.onPressAddButton(app.root)
+    ViewAllWords:
+
+<ViewAllWords>: ## Crear en Python!!
+
+<AddWord@Screen>:
+    name: "AddWord"
+    BoxLayout:
+        # Background Color!
+        orientation:'vertical'
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+            Color: 
+                rgba: 0, 0, 0, 1
+        # TopBar
+        TopBar:
+        GridLayout:
+            cols: 2
+            rows: 1
+            canvas.before:
+                Color: 
+                    rgba: .9, .9, .9, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            AddWordContents:
+            BottomRightOptions:
+
+<AddWordContents>:
+
 
 <WordScreen>:
     name: "Word"

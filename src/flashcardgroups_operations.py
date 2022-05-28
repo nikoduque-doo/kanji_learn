@@ -49,6 +49,19 @@ def save_changes_to_fgroups(dict_saved:dict):
     pickle.dump(dict_saved,pickle_out)
     pickle_out.close()
 
+def getSizeOfGroup(struc):
+  if(type(struc) == dict or type(struc) == list):
+    ret = len(struc)
+  elif (type(struc) == ArrQueue.ArrQueue):
+    ret = struc.get_size()
+  elif (type(struc) == RefQueue.RefQueue):
+    ret = struc.getSize()
+  elif(type(struc) == LinkList.LinkList):
+    ret = struc.size()
+  elif(type(struc) == StaticStack.ArrStack):
+    ret = struc.getSize()
+  return ret
+
 def get_word_data(item: None):
     group = False
     if(item == None):
@@ -164,6 +177,10 @@ def get_random_word(struc):
   elif(type(struc) == StaticStack.ArrStack):
     print(StaticStack.stack_get_rand(struc))
 
+def addAction(struc, gen_dict):
+  add_singular_word(struc, None, gen_dict)
+  save_changes_to_fgroups(gen_dict)
+
 def access_group(gen_dict:dict):
     print("kanji tree test: ", gen_dict["my_kanji"])
     print("Practice heap test:\n", gen_dict["practice_box"])
@@ -227,18 +244,7 @@ def access_group(gen_dict:dict):
       end_time = time.monotonic()
       print(timedelta(seconds=end_time - start_time))
 
-def getSizeOfGroup(struc):
-  if(type(struc) == dict or type(struc) == list):
-    ret = len(struc)
-  elif (type(struc) == ArrQueue.ArrQueue):
-    ret = struc.get_size()
-  elif (type(struc) == RefQueue.RefQueue):
-    ret = struc.getSize()
-  elif(type(struc) == LinkList.LinkList):
-    ret = struc.size()
-  elif(type(struc) == StaticStack.ArrStack):
-    ret = struc.getSize()
-  return ret
+
 
 def get_groups(gen_dict:dict):
   groups_dict = gen_dict["groups"]
@@ -250,6 +256,11 @@ def get_groups(gen_dict:dict):
     thisGroup.append(sizeOfThisGroup)
     groupsList.append(thisGroup)
   return groupsList
+
+def access_group(key, groups_dict):
+  groups_dict[key]
+  ## Faltaría poder mostrar todas las palabras guardadas en la estructura 
+
 
 def raiseQuestion(jw:JWord):
   ans = input("Type the kana reading for {}, what does it mean?\n>".format(jw.word))
