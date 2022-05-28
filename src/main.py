@@ -120,6 +120,8 @@ class FlashcardsContent(BoxLayout):
         else:
             Widget.current = "FlashcardGroup"
         
+# El problema está en esta clase...
+# labelText no se actualiza cuando chosen se actualiza...
 
 class FlashCardGroupContents(BoxLayout):
     if chosen != None:
