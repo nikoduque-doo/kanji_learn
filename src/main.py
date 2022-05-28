@@ -8,6 +8,7 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import StringProperty
+from kivy.metrics import dp
 from kivy.uix.stacklayout import StackLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
@@ -19,8 +20,9 @@ sys.setrecursionlimit(1000000000)
 my_dict = fsg.load_existing_fgroups()
 chosen = None
 
-def takeMeHome(self, widget):
-    widget.current = "Home"
+def takeMeHome(widget):
+    pass
+    #widget.current = "Home"
 
 class FirstScreen(Screen):
     pass
@@ -62,7 +64,7 @@ class AllFlashcards(StackLayout):
                 self.add_widget(l)
         if(my_dict["groups"]):
             view_all_btn = Button(text = "View All")
-            view_all_btn.bind(onpress = takeMeHome(AllFlashcards))
+            view_all_btn.bind(on_press = takeMeHome)#(AllFlashcards))
             groups = fsg.get_groups(my_dict)
             for group in groups:
                 if (numberOfButtons == 11):
@@ -72,6 +74,23 @@ class AllFlashcards(StackLayout):
                 numberOfButtons += 1
         else:
             b = Label(text="No flashcards groups saved", size_hint=(.8, .2), color=(0, 0, 0, 1), halign="right", valign="middle")
+            self.add_widget(b)
+
+
+from random import randint as r
+class AllFlashcards2(StackLayout):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        """b1 = Button(text="update", size_hint=(.5,None), size=(0,dp(40)))
+        b1.bind(on_release = self.update)
+        self.add_widget(b1)"""
+        for i in my_dict["groups"].keys():
+            struc_size = str(fsg.getSizeOfGroup(my_dict["groups"][i]))
+            b = Button(text=i+": "+struc_size, size_hint=(.5,None), size=(0,dp(40)))
+            #b.bind(on_release = self.update)
+            self.add_widget(b)
+        for i in range(r(7,15)):
+            b = Button(text=str(i), size_hint=(.5,None), size=(0,dp(40)))
             self.add_widget(b)
 
 class ViewAllFlashcards(StackLayout):

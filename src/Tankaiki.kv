@@ -112,6 +112,8 @@ WindowManager:
     orientation:'vertical'
     RecentAdded:
     AllFlashcards:
+    ScrollableGroups:
+        AllFlashcards2:
 
 
 <RecentAdded@BoxLayout>:
@@ -127,6 +129,25 @@ WindowManager:
         #on_press: 
             #app.root.transition.direction = "right"
             #app.root.current = "ViewFlashcards"
+
+
+
+<ScrollableGroups@ScrollView>
+
+<RecentAdded@BoxLayout>:
+    orientation:'vertical'
+    Label:
+        text:'Recently added:'
+        color: 0 , 0 , 0 , 1
+
+<AllFlashcards2>:  
+    size_hint_y: None
+    Button:
+        text:'View All'
+        size_hint: .3, .2
+        on_press: 
+            app.root.transition.direction = "right"
+            app.root.current = "ViewFlashcards"
 
 <RandomWord@BoxLayout>:
     orientation: 'vertical'
