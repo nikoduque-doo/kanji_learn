@@ -11,10 +11,14 @@ from kivy.uix.stacklayout import StackLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
+from kivy.uix.button import Button
 
 sys.setrecursionlimit(1000000000)
 
 my_dict = fsg.load_existing_fgroups()
+
+def takeMeHome(self, widget):
+    widget.current = "Home"
 
 class FirstScreen(Screen):
     pass
@@ -52,6 +56,8 @@ class AllFlashcards(StackLayout):
                 l = Label(size_hint=(.1, .2))
                 self.add_widget(l)
         if(my_dict["groups"]):
+            view_all_btn = Button(text = "View All")
+            view_all_btn.bind(onpress = takeMeHome(AllFlashcards))
             groups = fsg.get_groups(my_dict)
             for group in groups:
                 if (numberOfButtons == 11):
@@ -60,7 +66,7 @@ class AllFlashcards(StackLayout):
                 self.add_widget(b)
                 numberOfButtons += 1
         else:
-            b = Label(text="No flashcards groups saved", size_hint=(.3, .2), color=(0, 0, 0, 1))
+            b = Label(text="No flashcards groups saved", size_hint=(.8, .2), color=(0, 0, 0, 1), halign="right", valign="middle")
             self.add_widget(b)
 
 class ViewAllFlashcards(StackLayout):
