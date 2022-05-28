@@ -20,9 +20,7 @@ sys.setrecursionlimit(1000000000)
 my_dict = fsg.load_existing_fgroups()
 chosen = None
 
-def takeMeHome(widget):
-    pass
-    #widget.current = "Home"
+
 
 class FirstScreen(Screen):
     pass
@@ -52,6 +50,9 @@ class WindowManager(ScreenManager):
     pass
 
 class AllFlashcards(StackLayout):
+    # def takeMeHome(self, instance):
+    #     App.manager.current = "ViewFlashcards"
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         numberOfButtons = 0
@@ -63,8 +64,9 @@ class AllFlashcards(StackLayout):
                 l = Label(size_hint=(.1, .2))
                 self.add_widget(l)
         if(my_dict["groups"]):
-            view_all_btn = Button(text = "View All")
-            view_all_btn.bind(on_press = takeMeHome)#(AllFlashcards))
+            # view_all_btn = Button(text = "View All", size_hint=(.3, .2))
+            # view_all_btn.bind(on_press = self.takeMeHome)#(AllFlashcards))
+            # self.add_widget(view_all_btn)
             groups = fsg.get_groups(my_dict)
             for group in groups:
                 if (numberOfButtons == 11):
@@ -75,6 +77,8 @@ class AllFlashcards(StackLayout):
         else:
             b = Label(text="No flashcards groups saved", size_hint=(.8, .2), color=(0, 0, 0, 1), halign="right", valign="middle")
             self.add_widget(b)
+    
+
 
 
 from random import randint as r
