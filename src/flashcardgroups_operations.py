@@ -38,7 +38,7 @@ def load_existing_fgroups():
       current_dict["my_kanji"] = AVLTree()
     if not "groups" in current_dict:
       current_dict["groups"] = {}
-    if not "practice_q" in current_dict:
+    if not "practice_box" in current_dict:
       current_dict["practice_box"] = BinaryHeap()
     if not "tags" in current_dict:
       current_dict["tags"] = AVLTree()
@@ -274,7 +274,8 @@ def raiseQuestion(jw:JWord):
       valid = True
   return grade
 
-def practice_vocab(struc:BinaryHeap):
+def practice_vocab(gen_dict):
+  struc = gen_dict["practice_box"]
   practicing = "Y"
   todayID = datetime.now().timetuple().tm_yday + date.today().year*1000
   while practicing == "Y":
@@ -293,6 +294,9 @@ def practice_vocab(struc:BinaryHeap):
       grade = raiseQuestion(j_word)
       j_word.updatePriority(grade)
       struc.insert(j_word)
+
+      save_changes_to_fgroups(gen_dict)
+
       practicing = input("Do you want to continue practicing? (Y/N)\n>")
       while practicing != "Y" and practicing != "N":
         practicing = input(">")

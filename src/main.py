@@ -86,7 +86,7 @@ class FlashcardsContent(BoxLayout):
         print("hello")
 
 
-kv = Builder.load_file('Tankaiki.kv')
+#kv = Builder.load_file('Tankaiki.kv')
 
 class TankaikiApp(App):
     def build(self):
@@ -95,12 +95,12 @@ class TankaikiApp(App):
 
 
 if __name__ == "__main__":
-    TankaikiApp().run()
+    #TankaikiApp().run()
     operatingSystem = platform.system()
 
 
 
-    exit_status = "Y"
+    exit_status = "N"
     while(exit_status=="N"):
         groupReadorAcc = input("What do you want to do?\n\t(C) create a new group of flashcards\n\t(A) access an existing group of flashcards\n\t(P) practice your vocabulary\n>")
         while(groupReadorAcc != "C" and groupReadorAcc != "A" and groupReadorAcc != "P"):
@@ -119,7 +119,7 @@ if __name__ == "__main__":
         elif(groupReadorAcc == "C"):
             fsg.create_group(my_dict)
         elif(groupReadorAcc == "P"):
-            fsg.practice_vocab(my_dict["practice_box"])
+            fsg.practice_vocab(my_dict)
 
         exit_status = input("Do you want to exit the program?: (Y/N) ")
         if operatingSystem == "Windows":
