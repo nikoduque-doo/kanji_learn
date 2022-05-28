@@ -164,6 +164,7 @@ def get_random_word(struc):
 
 def access_group(gen_dict:dict):
     print("kanji tree test: ", gen_dict["my_kanji"])
+    print("Practice heap test:\n", gen_dict["practice_box"])
     print("What flashcard group would you like to access? ")
     groups_dict = gen_dict["groups"]
     for key in groups_dict.keys():
@@ -277,12 +278,14 @@ def practice_vocab(struc:BinaryHeap):
   while practicing == "Y":
     if struc.peek() == None:
       print("You haven't saved any words yet!")
+      practicing = "N"
     elif struc.peek().getDueDay() > todayID:
       print("There aren't any words available for practice at the moment.")
       if struc.peek().getDueDay() == todayID + 1:
         print("The next word will be available tomorrow.")
       else:
         print("The next word will be available in {} days.".format(struc.peek().getDueDay()-todayID))
+      practicing = "N"
     else:
       j_word = struc.extractMax()
       grade = raiseQuestion(j_word)
