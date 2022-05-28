@@ -8,9 +8,9 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.stacklayout import StackLayout
-from kivy.uix.button import Button
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
-from kivy.metrics import dp
 
 sys.setrecursionlimit(1000000000)
 
@@ -53,15 +53,38 @@ class AllFlashcards(StackLayout):
                 self.add_widget(l)
         if(my_dict["groups"]):
             groups = fsg.get_groups(my_dict)
-            print(groups)
             for group in groups:
                 if (numberOfButtons == 11):
                     break
-                b = Button(text=str(group[0] + "\n" + str(group[1])), size_hint=(.3, .2))
+                b = Label(text=str(group[0] + "\n" + str(group[1])), size_hint=(.3, .2), color=(0, 0, 0, 1))
                 self.add_widget(b)
                 numberOfButtons += 1
-        b = Button(text="View All", size_hint=(.3, .2))
-        self.add_widget(b)
+        else:
+            b = Label(text="No flashcards groups saved", size_hint=(.3, .2), color=(0, 0, 0, 1))
+            self.add_widget(b)
+
+class ViewAllFlashcards(StackLayout):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        if(my_dict["groups"]):
+            groups = fsg.get_groups(my_dict)
+            for group in groups:
+                b = Label(text=str(group[0] + "\n" + str(group[1])), size_hint=(.3, .2), color=(0, 0, 0, 1))
+                self.add_widget(b)
+        else:
+            b = Label(text="No flashcards groups saved", size_hint=(.3, .2), color=(0, 0, 0, 1))
+            self.add_widget(b)
+
+# class ScrollViewAllFlashcards(ScrollView):
+#     pass
+        
+class FlashcardsContent(BoxLayout):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        
+    def onValidate(self, Widget):
+        print("hello")
+
 
 kv = Builder.load_file('Tankaiki.kv')
 
