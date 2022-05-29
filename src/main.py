@@ -58,6 +58,14 @@ class FlashcardGroupScreen(Screen):
         fgsc = FlashcardGroupScreenContents()
         fgsc.on_pre_enter()
         self.add_widget(fgsc)
+    
+    @classmethod
+    def setText(self, struc_name):
+        global labelText
+        labelText = struc_name
+        sm.add_widget(FlashcardGroupScreen())
+        sm.current = "FlashcardGroup"
+        sm.remove_widget(sm.children[1])
 
 class NewGroup(Screen):
     pass
@@ -128,7 +136,7 @@ class JButton(Button):
         print(my_dict["recent"])
         print("Tags tree")
         print(my_dict["tags"])
-        FlashcardsContent.setText(self.custom_label)
+        FlashcardGroupScreen.setText(self.custom_label)
 
 class AllFlashcards2(StackLayout):
     def __init__(self, **kwargs):
@@ -181,14 +189,6 @@ class FlashcardsContent(BoxLayout):
             sm.add_widget(FlashcardGroupScreen())
             sm.current = "FlashcardGroup"
             sm.remove_widget(sm.children[1])
-    
-    @classmethod
-    def setText(self, struc_name):
-        global labelText
-        labelText = struc_name
-        sm.add_widget(FlashcardGroupScreen())
-        sm.current = "FlashcardGroup"
-        sm.remove_widget(sm.children[1])
 
 # Falta poner las palabras !!
 
@@ -234,8 +234,8 @@ class ViewAllWords(StackLayout):
 
 class AddGroupW(StackLayout):
     def searchvalidate(self, thisWidget, Widget):
-        chosen = thisWidget.text
-        if (chosen not in my_dict["groups"].keys()):
+        chosen = thisWidget.text.strip()
+        if (chosen not in my_dict["groups"].keys() and chosen != ""):
             self.clear_widgets()
 
             layout1 = BoxLayout(orientation='vertical')
@@ -262,7 +262,10 @@ class AddGroupW(StackLayout):
 
             self.add_widget(layout1)
         else:
-            thisWidget.text = "Group with the same name already exists"
+            if chosen == "":
+                thisWidget.text = "No name was given"
+            else:
+                thisWidget.text = "Group with the same name already exists"
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
