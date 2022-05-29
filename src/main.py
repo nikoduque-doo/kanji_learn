@@ -85,6 +85,21 @@ class FlashcardGroupScreen(Screen):
         sm.remove_widget(sm.children[1])
 
 
+class AddWord(Screen):
+    def on_pre_enter(self):
+        awc = AddWordContents()
+        awc.on_pre_enter()
+
+
+class WordConfirmation(Screen):
+    pass
+
+class WordNotAdded(Screen):
+    pass
+
+class NewGroup(Screen):
+    pass
+
 ##########| Section pertaining recent words start |##########
 #############################################################
 
@@ -320,9 +335,12 @@ class FlashCardGroupContents(BoxLayout):
         
     def onPressAddButton(self, Widget):
         # Falta arreglar este botón de navegación!!
-        Widget.current = "AddWord"
-        # groups_dict = my_dict["groups"]
-        # fsg.addAction(groups_dict[chosen], my_dict)
+        sm.add_widget(AddWord())
+        sm.transition.direction = "left"
+        sm.current = "AddWord"
+        sm.remove_widget(sm.children[1])
+        ######## Flow Idea:
+        ######## Add Word -> GetWordData() -> WordConfirmation -> 1) Yes -> AddWord() -> WordInfo o 2) No -> WordNotAdded
         
         
 class ViewAllWords(StackLayout):
@@ -370,11 +388,77 @@ class AddGroupW(StackLayout):
 
 
 class AddWordContents(BoxLayout):
-    if chosen != None:
-        labelText = StringProperty(chosen)
-    else:
-        labelText = StringProperty("No flashcardSelected")
+        # if chosen != None:
+     #     labelText = StringProperty(chosen)
+     # else:
+     #     labelText = StringProperty("No flashcardSelected")
+     def on_pre_enter(self):
+         lfcg = LabelFlashcardGroup()
+         lfcg.on_pre_enter()
 
+     def onValidate(self, widget):
+         global word
+         word = widget.text
+         global word_data
+         word_data = fsg.get_word_data_graphic(word)
+         print(word_data)
+         if word_data != None:
+             sm.add_widget(WordConfirmation())
+             sm.transition.direction = "left"
+             sm.current = "WordConfirmation"
+             sm.remove_widget(sm.children[1])
+         else:
+             sm.add_widget(WordNotAdded())
+             sm.transition.direction = "left"
+             sm.current = "WordNotAdded"
+             sm.remove_widget(sm.children[1])
+
+
+class WordConfirmationContents(BoxLayout):
+    def on_pre_enter(self):
+        lfg = LabelFlashcardGroup()
+        lfg.on_pre_enter()
+
+
+class WordInformation(BoxLayout):
+    def on_pre_enter(self):
+        self.clear_widgets()
+        self.__init__()
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        l1 = Label(text = "English: " + str(word_data.english), color = (0, 0, 0, 1))
+        self.add_widget(l1)
+        l2 = Label(text = "Kanji: " + str(word_data.word), font_name='mona', color = (0, 0, 0, 1))
+        self.add_widget(l2)
+        l3 = Label(text = "Reading: " + str(word_data.reading), font_name='mona', color = (0, 0, 0, 1))
+        self.add_widget(l3)
+        l4 = Label(text = "Part of speech: " + str(word_data.part_of_speech), color = (0, 0, 0, 1))
+        self.add_widget(l4)
+        l5 = Label(text = "Meaning: " + str(word_data.meaning), color = (0, 0, 0, 1))
+        self.add_widget(l5)
+
+
+#self.english, self.word, self.reading, self.part_of_speech, self.meaning
+class WordConfirmationButtons(BoxLayout):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        bYes = Button(text = "Save Word")
+        bYes.bind(on_release = self.saveWord)
+        self.add_widget(bYes)
+        bNo = Button(text = "Don't save word")
+        bNo.bind(on_release = self.notSaveWord)
+        self.add_widget(bNo)
+
+    def saveWord(self, instance):
+        groups_dict = my_dict["groups"]
+        fsg.addAction(groups_dict[labelText], word, my_dict)
+        FlashcardGroupScreen.setText(labelText)
+
+    def notSaveWord(self, instance):
+        global word_data
+        word_data = None
+        FlashcardGroupScreen.setText(labelText)
+        
 
 class TankaikiApp(App):
     def build(self):
