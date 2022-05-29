@@ -111,7 +111,15 @@ class AllFlashcards(StackLayout):
         else:
             b = Label(text="No flashcards groups saved", size_hint=(.8, .2), color=(0, 0, 0, 1), halign="right", valign="middle")
             self.add_widget(b)
+
+class JButton(Button):
+    def __init__(self, custom_label, **kwargs):
+        super().__init__(**kwargs)
+        self.custom_label = custom_label
     
+    def update(self, self2):
+        FlashcardsContent.setText(self.custom_label)
+
 class AllFlashcards2(StackLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -120,8 +128,8 @@ class AllFlashcards2(StackLayout):
         self.add_widget(b1)"""
         for i in my_dict["groups"].keys():
             struc_size = str(fsg.getSizeOfGroup(my_dict["groups"][i]))
-            b = Button(text=i+": "+struc_size, size_hint=(.5,None), size=(0,dp(40)))
-            #b.bind(on_release = self.update)
+            b = JButton(text=i+": "+struc_size, size_hint=(.5,None), size=(0,dp(40)), custom_label=i)
+            b.bind(on_release = b.update)
             self.add_widget(b)
         # for i in range(r(7,15)):
         #     b = Button(text=str(i), size_hint=(.5,None), size=(0,dp(40)))
@@ -163,7 +171,15 @@ class FlashcardsContent(BoxLayout):
             sm.add_widget(FlashcardGroupScreen())
             sm.current = "FlashcardGroup"
             sm.remove_widget(sm.children[1])
-        
+    
+    @classmethod
+    def setText(self, struc_name):
+        global labelText
+        labelText = struc_name
+        sm.add_widget(FlashcardGroupScreen())
+        sm.current = "FlashcardGroup"
+        sm.remove_widget(sm.children[1])
+
 # Falta poner las palabras !!
 
 class FlashcardGroupScreenContents(BoxLayout):
