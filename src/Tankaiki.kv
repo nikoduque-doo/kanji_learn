@@ -281,6 +281,7 @@ WindowManager:
         Button:
             text:'+'
             on_press: root.onPressAddButton(app.root)
+            size_hint: .15,.15
     ViewAllWords:
 
 <LabelFlashcardGroup>:
@@ -315,6 +316,77 @@ WindowManager:
             BottomRightOptions:
 
 <AddWordContents>:
+    BoxLayout:
+        orientation:'vertical'
+        LabelFlashcardGroup:
+        Label:
+            text:'Enter the word in english you want to add, then press enter:'
+            color: 0, 0, 0, 1
+            size_hint: 1, .1
+        TextInput:
+            text: ''
+            multiline: False
+            on_text_validate: root.onValidate(self)
+            size_hint: 1,.1
+        Label:
+            text:''
+            size_hint_y: .6
+
+<WordConfirmation>:
+    name: "WordConfirmation"
+    BoxLayout:
+        # Background Color!
+        orientation:'vertical'
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+            Color: 
+                rgba: 0, 0, 0, 1
+        # TopBar
+        TopBar:
+        GridLayout:
+            cols: 3
+            rows: 1
+            canvas.before:
+                Color: 
+                    rgba: .9, .9, .9, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Widget:
+            Widget:
+            BottomRightOptions:
+
+<WordNotAdded>:
+    name: "WordNotAdded"
+    BoxLayout:
+        # Background Color!
+        orientation:'vertical'
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+            Color: 
+                rgba: 0, 0, 0, 1
+        # TopBar
+        TopBar:
+        GridLayout:
+            cols: 3
+            rows: 1
+            canvas.before:
+                Color: 
+                    rgba: .9, .9, .9, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Widget:
+            Widget:
+            BottomRightOptions:
 
 
 <WordScreen>:

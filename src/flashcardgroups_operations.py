@@ -1,4 +1,6 @@
 from datetime import timedelta, datetime, date
+from keyword import iskeyword
+from this import d
 from Vocabulary import Kanji, JWord
 from AVLTree import AVLTree
 from BinaryHeap import BinaryHeap
@@ -77,6 +79,12 @@ def get_word_data(item: None):
     word_to_be_added = jisho_scrape.add_word(searchedWord.lower(), group)
     return word_to_be_added
 
+def get_word_data_graphic(word):
+  searchedWord = word
+  word_to_be_added = jisho_scrape.add_word_graphic(searchedWord.lower())
+  return word_to_be_added
+
+
 """def create_group(gen_dict:dict):
     name = input("Name your flashcard group: ")
     data_structure = input("What Data Structure would you like to create it as? \n\tS = Stack\n\tQ = Queue\n\tQ2 = Reference Queue\n\tL = Linked List\n\tA = Array\n>")
@@ -148,7 +156,32 @@ def add_singular_word(struc, item: None, gen_dict):
         elif(type(struc) == StaticStack.ArrStack):
           struc.push(word_searched)
 
+def add_word_with_graphic(struc, word, gen_dict):
+  word_searched = get_word_data_graphic(word)
+  if word_searched != None:
+        for i in range(len(word_searched.word)):
+          if 19968 <= ord(word_searched.word[i]) and ord(word_searched.word[i]) <= 40879:
+            newK = Kanji(word_searched.word[i])
+            newK.link(word_searched)
+            gen_dict["my_kanji"].insert(newK)
+        
 
+        wordTreeSize = gen_dict["my_words"].getSize()
+        gen_dict["my_words"].insert(word_searched)
+        if wordTreeSize < gen_dict["my_words"].getSize():
+          gen_dict["recent"].enqueue(word_searched)
+          gen_dict["practice_box"].insert(word_searched)
+
+        if(type(struc) == dict):
+          struc[word_searched.english] = word_searched
+        elif(type(struc) == list):
+          struc.append(word_searched)
+        elif (type(struc) == ArrQueue.ArrQueue or type(struc) == RefQueue.RefQueue):
+          struc.enqueue(word_searched)
+        elif(type(struc) == LinkList.LinkList):
+          struc.pushBack(word_searched)
+        elif(type(struc) == StaticStack.ArrStack):
+          struc.push(word_searched)
 
 def search_word(struc, item):
   item = item.lower()
@@ -206,8 +239,8 @@ def get_random_word(struc):
   elif(type(struc) == StaticStack.ArrStack):
     print(StaticStack.stack_get_rand(struc))
 
-def addAction(struc, gen_dict):
-  add_singular_word(struc, None, gen_dict)
+def addAction(struc, word, gen_dict):
+  add_word_with_graphic(struc, word, gen_dict)
   save_changes_to_fgroups(gen_dict)
 
 def access_group(gen_dict:dict):

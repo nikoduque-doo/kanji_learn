@@ -67,6 +67,20 @@ def add_word(word_requested, group: False):
         else:
             return reqJWord
 
+def add_word_graphic(word_requested):
+    try:
+        reqJWord = request_word(word_requested)
+    except:
+        ret = None
+    else:
+        if reqJWord != None:
+            reqJWord.info()
+            ret = reqJWord
+        else:
+            ret = None
+    return ret
+    
+
 def add_words_from_file(filename):
 
     fileused = open(filename, "r")
