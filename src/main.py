@@ -152,11 +152,16 @@ class AllFlashcards2(StackLayout):
         #     b = Button(text=str(i), size_hint=(.5,None), size=(0,dp(40)))
         #     self.add_widget(b)
 
-    def onClickButton(self):
-        sm.add_widget(ViewFlashcardsScreen())
-        sm.transition.direction = "left"
-        sm.current = "ViewFlashcards"
-        sm.remove_widget(sm.children[1])
+class RecentFlashcards(BoxLayout):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        struc_size = str(fsg.getSizeOfGroup(my_dict["recent"]))
+        b = Button(text="Recently added"+": "+struc_size, size_hint=(.5,None), size=(0,dp(40)))
+        b.bind(on_release = RecentFlashcards.onClickButton)
+        self.add_widget(b)
+
+    def onClickButton(obj):
+        FlashcardGroupScreen.setText("Recently added")
 
 class ViewAllFlashcards(StackLayout):
     def __init__(self, **kwargs):

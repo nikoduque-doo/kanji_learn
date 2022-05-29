@@ -49,16 +49,21 @@ WindowManager:
         # Window Contents
         # Se manejan con un grid Layout,  en este caso para Home son 3 cols. Las dos primeras para mostrar contenido
         # Y la última para las opciones de la parte derecha abajo.
-        GridLayout:
-            cols: 3
-            rows: 1
+        BoxLayout:
+            #cols: 3
+            #rows: 1
             canvas.before:
                 Color: 
                     rgba: .9, .9, .9, 1
                 Rectangle:
                     pos: self.pos
                     size: self.size
-            HomeContents:
+            BoxLayout:
+                orientation: "vertical"
+                spacing: "50dp"
+                pos_hint: {"y": .3}
+                RecentFlashcards:
+                HomeContents:
             RandomWord:
             BottomRightOptions:
             
@@ -113,12 +118,17 @@ WindowManager:
 
 
 <HomeContents@BoxLayout>:
+    #size_hint_y: .75
     orientation:'vertical'
-    RecentAdded:
+    #RecentFlashcards:
     # AllFlashcards:
     ScrollableGroups:
+        size_hint_y: .9
         AllFlashcards2:
 
+
+<RecentFlashcards@BoxLayout>:
+    orientation:'vertical'
 
 <RecentAdded@BoxLayout>:
     orientation:'vertical'
@@ -137,12 +147,6 @@ WindowManager:
 
 
 <ScrollableGroups@ScrollView>
-
-<RecentAdded@BoxLayout>:
-    orientation:'vertical'
-    Label:
-        text:'Recently added:'
-        color: 0 , 0 , 0 , 1
 
 <AllFlashcards2>:  
     size_hint_y: None
