@@ -71,7 +71,6 @@ class FlashcardGroupScreen(Screen):
     def setWord(self, jw:JWord):
         b = Button(text = jw, size_hint=(.5, .5), font_name='mona')
         self.add_widget(b)
-        print("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",jw)
 
     def addRecentWords(self):
         my_dict["recent"].traverse(self.setWord)
@@ -122,7 +121,6 @@ class RecentWordsScreen(Screen):
     def setWord(self, jw:JWord):
         b = Button(text = jw, size_hint=(.5, .5), font_name='mona')
         self.add_widget(b)
-        print("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",jw)
 
     def addRecentWords(self):
         my_dict["recent"].traverse(self.setWord)
