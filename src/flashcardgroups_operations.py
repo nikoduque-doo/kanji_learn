@@ -36,6 +36,8 @@ def load_existing_fgroups():
       current_dict = {}
     if not "my_kanji" in current_dict:
       current_dict["my_kanji"] = AVLTree()
+    if not "my_words" in current_dict:
+      current_dict["my_words"] = AVLTree()
     if not "groups" in current_dict:
       current_dict["groups"] = {}
     if not "practice_box" in current_dict:
@@ -126,7 +128,11 @@ def add_singular_word(struc, item: None, gen_dict):
             gen_dict["my_kanji"].insert(newK)
         
 
-        groupSize = getSizeOfGroup(struc)
+        wordTreeSize = gen_dict["my_words"].getSize()
+        gen_dict["my_words"].insert(word_searched)
+        if wordTreeSize < gen_dict["my_words"].getSize():
+          gen_dict["practice_box"].insert(word_searched)
+
         if(type(struc) == dict):
           struc[word_searched.english] = word_searched
         elif(type(struc) == list):
@@ -138,8 +144,6 @@ def add_singular_word(struc, item: None, gen_dict):
         elif(type(struc) == StaticStack.ArrStack):
           struc.push(word_searched)
 
-        if groupSize < getSizeOfGroup(struc):
-          gen_dict["practice_box"].insert(word_searched)
 
 
 def search_word(struc, item):
