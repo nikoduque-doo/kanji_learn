@@ -2,7 +2,7 @@ from AVLTree import AVLTree
 from datetime import datetime, date
 
 class JWord:
-  __slots__ = ("english", "word", "part_of_speech", "meaning", "reading", "easiness", "streak", "interval", "dueDay")
+  __slots__ = ("english", "word", "part_of_speech", "meaning", "reading", "easiness", "streak", "interval", "dueDay", "dateCreated")
   jwCount = 0
 
   def __init__(self, english, word, use, meaning, reading):
@@ -17,6 +17,7 @@ class JWord:
     self.interval = 0
     self.dueDay = 0 
     self.setDateID()
+    self.dateCreated = self.dueDay
 
   def __str__(self):
     return str(self.word)

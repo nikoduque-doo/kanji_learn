@@ -44,6 +44,9 @@ def load_existing_fgroups():
       current_dict["practice_box"] = BinaryHeap()
     if not "tags" in current_dict:
       current_dict["tags"] = AVLTree()
+    if not "recent" in current_dict:
+      current_dict["recent"] = RefQueue()
+    update_recent_words(current_dict)
     return current_dict
 
 def save_changes_to_fgroups(dict_saved:dict):
@@ -131,6 +134,7 @@ def add_singular_word(struc, item: None, gen_dict):
         wordTreeSize = gen_dict["my_words"].getSize()
         gen_dict["my_words"].insert(word_searched)
         if wordTreeSize < gen_dict["my_words"].getSize():
+          gen_dict["recent"].enqueue(word_searched)
           gen_dict["practice_box"].insert(word_searched)
 
         if(type(struc) == dict):
@@ -336,3 +340,22 @@ def practice_vocab(gen_dict):
       practicing = input("Do you want to continue practicing? (Y/N)\n>")
       while practicing != "Y" and practicing != "N":
         practicing = input(">")
+
+def update_recent_words(gen_dict):
+  q = gen_dict["recent"]
+  timeRange = 5
+  today = datetime.now().timetuple().tm_yday + date.today().year*1000
+  while q.peek() != None and futureDateCode(q.peek().dateCreated, timeRange) < today:
+    q.unqueue()
+  save_changes_to_fgroups(gen_dict)
+
+def futureDateCode(originalDate, num):
+  year = int(originalDate/1000)
+  limit = 365
+  if year%4 == 0:
+    limit += 1
+  yearIncrease = int((num + originalDate - (year*1000) - 0.1)//limit)
+  days = ((num + originalDate - (year*1000)) % limit)
+  days = limit if days == 0 else days
+
+  return ((year+yearIncrease)*1000) + days
