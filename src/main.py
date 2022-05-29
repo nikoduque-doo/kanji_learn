@@ -1,11 +1,13 @@
 from cProfile import label
 from cgitb import text
-from unicodedata import numeric
+from tkinter import N
+from unicodedata import name, numeric
 import flashcardgroups_operations as fsg
 import os
 import platform
 import sys
 from random import randint as r
+from Vocabulary import JWord
 
 from kivy.app import App
 from kivy.lang import Builder
@@ -18,6 +20,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
+from kivy.core.text import LabelBase
 
 sys.setrecursionlimit(1000000000)
 
@@ -50,13 +53,27 @@ class FlashcardScreen(Screen):
 class ViewFlashcardsScreen(Screen):
     pass
 
+
+LabelBase.register(name="mona", fn_regular="mona.ttf")
+
 class FlashcardGroupScreen(Screen):
     def on_pre_enter(self):
         self.clear_widgets()
         fgsc = FlashcardGroupScreenContents()
         fgsc.on_pre_enter()
         self.add_widget(fgsc)
+
+        my_dict["recent"].traverse(self.setWord)
+
     
+    def setWord(self, jw:JWord):
+        b = Button(text = jw, size_hint=(.5, .5), font_name='mona')
+        self.add_widget(b)
+        print("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",jw)
+
+    def addRecentWords(self):
+        my_dict["recent"].traverse(self.setWord)
+
     @classmethod
     def setText(self, struc_name):
         global labelText
@@ -65,6 +82,7 @@ class FlashcardGroupScreen(Screen):
         sm.transition.direction = "left"
         sm.current = "FlashcardGroup"
         sm.remove_widget(sm.children[1])
+
 
 class NewGroup(Screen):
     pass

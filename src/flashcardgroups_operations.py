@@ -46,8 +46,9 @@ def load_existing_fgroups():
       current_dict["practice_box"] = BinaryHeap()
     if not "tags" in current_dict:
       current_dict["tags"] = AVLTree()
-    if not "recent" in current_dict:
+    if not "recento" in current_dict:
       current_dict["recent"] = RefQueue.RefQueue()
+    current_dict["recent"].enqueue(JWord("english", "右壁", "Noun", "thing", "asd"))
     update_recent_words(current_dict)
     return current_dict
 

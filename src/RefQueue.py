@@ -13,6 +13,12 @@ class RefQueue():
       s += str(point.getValue()) + " < "
       point = point.getNext()
     return s
+
+  def traverse(self, f):
+    point = self.head
+    while point != None:
+      f(point.getValue().word[0])
+      point = point.getNext()
   
   def getSize(self):
     return self.itemCount
