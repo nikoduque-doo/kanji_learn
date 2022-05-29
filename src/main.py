@@ -1,9 +1,11 @@
 from cProfile import label
+from cgitb import text
 from unicodedata import numeric
 import flashcardgroups_operations as fsg
 import os
 import platform
 import sys
+from random import randint as r
 
 from kivy.app import App
 from kivy.lang import Builder
@@ -15,6 +17,7 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
+from kivy.uix.textinput import TextInput
 
 sys.setrecursionlimit(1000000000)
 
@@ -56,15 +59,29 @@ class FlashcardGroupScreen(Screen):
         fgsc.on_pre_enter()
         self.add_widget(fgsc)
 
+class NewGroup(Screen):
+    pass
+
 class WindowManager(ScreenManager):
     pass
 
 class TopBar(BoxLayout):
     def onClickHomeButton(self):
+        sm.remove_widget(sm.children[0])
         sm.add_widget(HomeScreen())
         sm.transition.direction = "right"
         sm.current = "Home"
-        sm.remove_widget(sm.children[1])
+        
+        
+
+class BottomRightOptions(BoxLayout):
+    def onClickAddGroup(self, Widget):
+        sm.remove_widget(sm.children[0])
+        sm.add_widget(NewGroup())
+        sm.transition.direction = "right"
+        sm.current = "NewGroup"
+        
+
 
 class AllFlashcards(StackLayout):
     # def takeMeHome(self, instance):
@@ -95,10 +112,6 @@ class AllFlashcards(StackLayout):
             b = Label(text="No flashcards groups saved", size_hint=(.8, .2), color=(0, 0, 0, 1), halign="right", valign="middle")
             self.add_widget(b)
     
-
-
-
-from random import randint as r
 class AllFlashcards2(StackLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -142,7 +155,7 @@ class FlashcardsContent(BoxLayout):
     def onValidate(self, thisWidget):
         chosen = thisWidget.text
         if (chosen not in my_dict["groups"].keys()):
-            thisWidget.text = "Not an group. Try again"
+            thisWidget.text = "Not a group. Try again"
             chosen = None
         else:
             global labelText
@@ -192,6 +205,42 @@ class ViewAllWords(StackLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs) 
         #words = fsg.access_group(chosen, my_dict["groups"])
+
+class AddGroupW(StackLayout):
+    def searchvalidate(self, thisWidget, Widget):
+        chosen = thisWidget.text
+        if (chosen not in my_dict["groups"].keys()):
+            self.clear_widgets()
+
+            layout1 = BoxLayout(orientation='vertical')
+            lbl1 = Label(text = "What kind of Data Structure should it be?", color = (0 , 0 , 0 , 1), size_hint = (1, .2))
+            layout1.add_widget(lbl1)
+            
+            struc_choice = "L"
+
+            layout2 = BoxLayout(orientation='vertical')
+            Arrbtn = Button(text = "Array")
+            #Arrbtn.bind(on_press = )
+            LLbtn = Button(text = "Linked List")
+            LLbtn.bind(on_press = lambda x:fsg.create_group(my_dict, chosen, "L"))
+            Qbtn = Button(text = "Queue")
+            Q2btn = Button(text = "Reference Queue")
+            Sbtn = Button(text = "Stack")
+            layout2.add_widget(Arrbtn)
+            layout2.add_widget(LLbtn)
+            layout2.add_widget(Qbtn)
+            layout2.add_widget(Q2btn)
+            layout2.add_widget(Sbtn)
+            layout1.add_widget(layout2)
+            
+
+            self.add_widget(layout1)
+        else:
+            thisWidget.text = "Group with the same name already exists"
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
 
 class AddWordContents(BoxLayout):
     if chosen != None:

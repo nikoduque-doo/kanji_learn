@@ -72,7 +72,7 @@ def get_word_data(item: None):
     word_to_be_added = jisho_scrape.add_word(searchedWord.lower(), group)
     return word_to_be_added
 
-def create_group(gen_dict:dict):
+"""def create_group(gen_dict:dict):
     name = input("Name your flashcard group: ")
     data_structure = input("What Data Structure would you like to create it as? \n\tS = Stack\n\tQ = Queue\n\tQ2 = Reference Queue\n\tL = Linked List\n\tA = Array\n>")
     groups_dict = gen_dict["groups"]
@@ -93,7 +93,28 @@ def create_group(gen_dict:dict):
         size = int(input("How many elements would you like to add? "))
         groups_dict[name] = StaticStack.ArrStack(size)
     
-    save_changes_to_fgroups(gen_dict)
+    save_changes_to_fgroups(gen_dict)"""
+
+def create_group(gen_dict:dict, name:str, data_structure:str):
+  groups_dict = gen_dict["groups"]
+
+  if(data_structure == "D"):
+      groups_dict[name] = {}
+  elif(data_structure == "A"):
+      size = int(input("How many elements would you like to add? "))
+      groups_dict[name] = [None]*(size)
+  elif(data_structure == "Q"):
+      size = int(input("How many elements would you like to add? "))
+      groups_dict[name] = ArrQueue.ArrQueue(size)
+  elif(data_structure == "Q2"):
+      groups_dict[name] = RefQueue.RefQueue()
+  elif(data_structure == "L"):
+      groups_dict[name] = LinkList.LinkList()
+  elif(data_structure == "S"):
+      size = int(input("How many elements would you like to add? "))
+      groups_dict[name] = StaticStack.ArrStack(size)
+    
+  save_changes_to_fgroups(gen_dict)
 
 def add_singular_word(struc, item: None, gen_dict):
     word_searched = get_word_data(item)

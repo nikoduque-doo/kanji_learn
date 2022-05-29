@@ -94,7 +94,7 @@ WindowManager:
                 app.root.transition.direction = "left"
                 # app.root.current = "Loading"
 
-<BottomRightOptions@BoxLayout>:
+<BottomRightOptions>:
     size_hint: .15, .1
     orientation:'vertical'
     padding: ('5dp', '5dp', '5dp', '5dp')
@@ -107,6 +107,11 @@ WindowManager:
     Button:
         text:'N+'
         size_hint: 1, .1
+        on_press: root.onClickAddGroup(app.root)
+            #app.root.transition.direction = "right"
+            #app.root.current = "NewGroup"
+
+
 
 <HomeContents@BoxLayout>:
     orientation:'vertical'
@@ -340,6 +345,69 @@ WindowManager:
             Widget:
             Widget:
             BottomRightOptions:
+
+<NewGroup>:
+    name: 'NewGroup'
+    BoxLayout:
+        # Background Color!
+        orientation:'vertical'
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+            Color: 
+                rgba: 0, 0, 0, 1
+        # TopBar
+        TopBar:
+        # Window Contents
+        # Se manejan con un grid Layout,  en este caso para Home son 3 cols. Las dos primeras para mostrar contenido
+        # Y la última para las opciones de la parte derecha abajo.
+        GridLayout:
+            cols: 3
+            rows: 1
+            canvas.before:
+                Color: 
+                    rgba: .9, .9, .9, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            AddGroupW:
+
+<AddGroupW>
+    BoxLayout:
+        orientation:'horizontal'
+        size_hint: 1, .2
+        Label:
+            text:''
+            size_hint: .1, .2
+        Label:
+            text:'Enter the name of the new group: '
+            color: 0 , 0 , 0 , 1
+            size_hint: .8, .2
+        Label:
+            text:''
+            size_hint: .1, .2
+    BoxLayout:
+        orientation:'horizontal'
+        size_hint: 1, .3
+        Label:
+            text:''
+            size_hint: .1, .2
+        TextInput:
+            id: input
+            text:''
+            multiline: False
+            on_text_validate: root.searchvalidate(self, app.root)
+            size_hint: .5, .25
+        Label:
+            text:''
+            size_hint: .1, .2
+    Label:
+        text:''
+        size_hint: 1, .1
+
 
 # Mi idea con este screen es mostrarlo justo después de dar en empezar, y mostrarlo mientras se carga el archivo pickle
 <LoadingScreen>:
