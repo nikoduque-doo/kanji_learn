@@ -292,6 +292,48 @@ WindowManager:
 
 <LabelFlashcardGroup>:
 
+
+##########| Section pertaining recent words start |##########
+#############################################################
+
+<AllRecentWords>:
+    size_hint_y: None
+    height: self.minimum_height
+
+<RecentWordsScreen@Screen>:
+    name: "RecentWords"
+
+<RecentWordsScreenContents>:
+    # Background Color!
+    orientation:'vertical'
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+        Color: 
+            rgba: 0, 0, 0, 1
+    # TopBar
+    TopBar:
+    GridLayout:
+        cols: 2
+        rows: 1
+        canvas.before:
+            Color: 
+                rgba: .9, .9, .9, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        ScrollView:
+            size_hint_y: 1
+            AllRecentWords:
+        BottomRightOptions:
+
+###########################################################
+##########| Section pertaining recent words end |##########
+
+
 <ViewAllWords>: ## Crear en Python!!
 
 <AddWord@Screen>:

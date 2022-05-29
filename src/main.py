@@ -30,6 +30,11 @@ labelText = str(chosen)
 
 sm = ScreenManager()
 
+#Japanese font:
+#https://github.com/public-domain/mona
+LabelBase.register(name="mona", fn_regular="mona.ttf")
+
+
 class FirstScreen(Screen):
     # Para hacer el cambio de screen desde el código de python hay que hacerlo así
     def onClickButton(self):
@@ -54,16 +59,13 @@ class ViewFlashcardsScreen(Screen):
     pass
 
 
-LabelBase.register(name="mona", fn_regular="mona.ttf")
-
 class FlashcardGroupScreen(Screen):
     def on_pre_enter(self):
+        print(self.children)
         self.clear_widgets()
         fgsc = FlashcardGroupScreenContents()
         fgsc.on_pre_enter()
         self.add_widget(fgsc)
-
-        my_dict["recent"].traverse(self.setWord)
 
     
     def setWord(self, jw:JWord):
@@ -84,18 +86,95 @@ class FlashcardGroupScreen(Screen):
         sm.remove_widget(sm.children[1])
 
 
-class NewGroup(Screen):
-    pass
+##########| Section pertaining recent words start |##########
+#############################################################
 
-class AddWord(Screen):
+class AllRecentWords(StackLayout):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        my_dict["recent"].traverse(self.setWords)
+    
+    def setWords(self, jwText):
+        b = Button(text = jwText, size_hint=(.5,None), size=(0,dp(40)), font_name='mona')
+        self.add_widget(b)
+
+#This one is found at home screen
+class RecentFlashcards(BoxLayout):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        struc_size = str(fsg.getSizeOfGroup(my_dict["recent"]))
+        b = Button(text="Recently added"+": "+struc_size, size_hint=(.5,None), size=(0,dp(40)))
+        b.bind(on_release = RecentFlashcards.onClickButton)
+        self.add_widget(b)
+
+    def onClickButton(obj):
+        RecentWordsScreen.setText("Recently added")
+
+class RecentWordsScreen(Screen):
     def on_pre_enter(self):
-        awc = AddWordContents()
-        awc.on_pre_enter()
+        print(self.children)
+        self.clear_widgets()
+        fgsc = RecentWordsScreenContents()
+        fgsc.on_pre_enter()
+        self.add_widget(fgsc)
 
-class WordConfirmation(Screen):
-    pass
+    
+    def setWord(self, jw:JWord):
+        b = Button(text = jw, size_hint=(.5, .5), font_name='mona')
+        self.add_widget(b)
+        print("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",jw)
 
-class WordNotAdded(Screen):
+    def addRecentWords(self):
+        my_dict["recent"].traverse(self.setWord)
+
+    @classmethod
+    def setText(self, struc_name):
+        global labelText
+        labelText = struc_name
+        sm.add_widget(RecentWordsScreen())
+        sm.transition.direction = "left"
+        sm.current = "RecentWords"
+        sm.remove_widget(sm.children[1])
+
+class RecentWordsScreenContents(BoxLayout):
+    def on_pre_enter(self):
+        fcgc = RecentWordsContents()
+        fcgc.on_pre_enter()
+
+class RecentWordsContents(BoxLayout):
+    def on_pre_enter(self):
+        lfcg = LabelRecentWords()
+        lfcg.on_pre_enter()
+
+    # if chosen != None:
+    #     labelText = StringProperty(chosen)
+    # else:
+    #     labelText = StringProperty("No flashcardSelected")
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        
+    def onPressAddButton(self, Widget):
+        # Falta arreglar este botón de navegación!!
+        Widget.current = "AddWord"
+        # groups_dict = my_dict["groups"]
+        # fsg.addAction(groups_dict[chosen], my_dict)
+
+class LabelRecentWords(BoxLayout):
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        l = Label(text=str(labelText), color=(0, 0, 0, 1))
+        self.add_widget(l)
+
+    def on_pre_enter(self):
+        self.clear_widgets()
+        self.__init__()
+
+###########################################################
+##########| Section pertaining recent words end |##########
+
+
+class NewGroup(Screen):
     pass
 
 class WindowManager(ScreenManager):
@@ -180,17 +259,6 @@ class AllFlashcards2(StackLayout):
         #     b = Button(text=str(i), size_hint=(.5,None), size=(0,dp(40)))
         #     self.add_widget(b)
 
-class RecentFlashcards(BoxLayout):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        struc_size = str(fsg.getSizeOfGroup(my_dict["recent"]))
-        b = Button(text="Recently added"+": "+struc_size, size_hint=(.5,None), size=(0,dp(40)))
-        b.bind(on_release = RecentFlashcards.onClickButton)
-        self.add_widget(b)
-
-    def onClickButton(obj):
-        FlashcardGroupScreen.setText("Recently added")
-
 class ViewAllFlashcards(StackLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -230,9 +298,10 @@ class FlashcardGroupScreenContents(BoxLayout):
         fcgc.on_pre_enter()
 
 class LabelFlashcardGroup(BoxLayout):
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        l = Label(text=str(labelText), color=(0, 0, 0, 1), size_hint=(1, .2))
+        l = Label(text=str(labelText), color=(0, 0, 0, 1))
         self.add_widget(l)
 
     def on_pre_enter(self):
@@ -253,13 +322,9 @@ class FlashCardGroupContents(BoxLayout):
         
     def onPressAddButton(self, Widget):
         # Falta arreglar este botón de navegación!!
-        sm.add_widget(AddWord())
-        sm.transition.direction = "left"
-        sm.current = "AddWord"
-        sm.remove_widget(sm.children[1])
-
-        ######## Flow Idea:
-        ######## Add Word -> GetWordData() -> WordConfirmation -> 1) Yes -> AddWord() -> WordInfo o 2) No -> WordNotAdded
+        Widget.current = "AddWord"
+        # groups_dict = my_dict["groups"]
+        # fsg.addAction(groups_dict[chosen], my_dict)
         
         
 class ViewAllWords(StackLayout):
@@ -307,30 +372,10 @@ class AddGroupW(StackLayout):
 
 
 class AddWordContents(BoxLayout):
-    # if chosen != None:
-    #     labelText = StringProperty(chosen)
-    # else:
-    #     labelText = StringProperty("No flashcardSelected")
-    def on_pre_enter(self):
-        lfcg = LabelFlashcardGroup()
-        lfcg.on_pre_enter()
-    
-    def onValidate(self, widget):
-        global word
-        word = widget.text
-        global word_data
-        word_data = fsg.get_word_data_graphic(word)
-        print(word_data)
-        if word_data != None:
-            sm.add_widget(WordConfirmation())
-            sm.transition.direction = "left"
-            sm.current = "WordConfirmation"
-            sm.remove_widget(sm.children[1])
-        else:
-            sm.add_widget(WordNotAdded())
-            sm.transition.direction = "left"
-            sm.current = "WordNotAdded"
-            sm.remove_widget(sm.children[1])
+    if chosen != None:
+        labelText = StringProperty(chosen)
+    else:
+        labelText = StringProperty("No flashcardSelected")
 
 
 class TankaikiApp(App):

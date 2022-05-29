@@ -46,9 +46,19 @@ def load_existing_fgroups():
       current_dict["practice_box"] = BinaryHeap()
     if not "tags" in current_dict:
       current_dict["tags"] = AVLTree()
-    if not "recento" in current_dict:
+    if not "recento" in current_dict:# Original key  is "recent". Altered for testing.
       current_dict["recent"] = RefQueue.RefQueue()
-    current_dict["recent"].enqueue(JWord("english", "右壁", "Noun", "thing", "asd"))
+    current_dict["recent"].enqueue(JWord("english", "右", "Noun", "thing", "asd"))
+    current_dict["recent"].enqueue(JWord("english", "壁", "Noun", "thing", "asd"))
+    current_dict["recent"].enqueue(JWord("english", "大きな", "Noun", "thing", "asd"))
+    current_dict["recent"].enqueue(JWord("english", "美しい", "Noun", "thing", "asd"))
+    current_dict["recent"].enqueue(JWord("english", "上手", "Noun", "thing", "asd"))
+    current_dict["recent"].enqueue(JWord("english", "面倒くさい", "Noun", "thing", "asd"))
+    current_dict["recent"].enqueue(JWord("english", "山", "Noun", "thing", "asd"))
+    current_dict["recent"].enqueue(JWord("english", "白", "Noun", "thing", "asd"))
+    current_dict["recent"].enqueue(JWord("english", "海", "Noun", "thing", "asd"))
+    current_dict["recent"].enqueue(JWord("english", "暗い", "Noun", "thing", "asd"))
+    current_dict["recent"].enqueue(JWord("english", "走る", "Noun", "thing", "asd"))
     update_recent_words(current_dict)
     return current_dict
 
