@@ -1,3 +1,4 @@
+from cProfile import label
 from unicodedata import numeric
 import flashcardgroups_operations as fsg
 import os
@@ -19,14 +20,18 @@ sys.setrecursionlimit(1000000000)
 
 my_dict = fsg.load_existing_fgroups()
 chosen = None
+labelText = str(chosen)
 
-
+sm = ScreenManager()
 
 class FirstScreen(Screen):
-    pass
+    # pass
     # Para hacer el cambio de screen desde el código de python hay que hacerlo así
-    #def onClickButton(self, widget):
-        #widget.current = "Home"
+    def onClickButton(self):
+        sm.add_widget(HomeScreen())
+        sm.transition.direction = "left"
+        sm.current = "Home"
+        sm.remove_widget(sm.children[1])
 
 class HomeScreen(Screen):
     pass
@@ -44,10 +49,22 @@ class ViewFlashcardsScreen(Screen):
     pass
 
 class FlashcardGroupScreen(Screen):
-    pass
+    def on_pre_enter(self):
+        print(self.children)
+        self.clear_widgets()
+        fgsc = FlashcardGroupScreenContents()
+        fgsc.on_pre_enter()
+        self.add_widget(fgsc)
 
 class WindowManager(ScreenManager):
     pass
+
+class TopBar(BoxLayout):
+    def onClickHomeButton(self):
+        sm.add_widget(HomeScreen())
+        sm.transition.direction = "right"
+        sm.current = "Home"
+        sm.remove_widget(sm.children[1])
 
 class AllFlashcards(StackLayout):
     # def takeMeHome(self, instance):
@@ -93,9 +110,15 @@ class AllFlashcards2(StackLayout):
             b = Button(text=i+": "+struc_size, size_hint=(.5,None), size=(0,dp(40)))
             #b.bind(on_release = self.update)
             self.add_widget(b)
-        for i in range(r(7,15)):
-            b = Button(text=str(i), size_hint=(.5,None), size=(0,dp(40)))
-            self.add_widget(b)
+        # for i in range(r(7,15)):
+        #     b = Button(text=str(i), size_hint=(.5,None), size=(0,dp(40)))
+        #     self.add_widget(b)
+
+    def onClickButton(self):
+        sm.add_widget(ViewFlashcardsScreen())
+        sm.transition.direction = "left"
+        sm.current = "ViewFlashcards"
+        sm.remove_widget(sm.children[1])
 
 class ViewAllFlashcards(StackLayout):
     def __init__(self, **kwargs):
@@ -116,26 +139,50 @@ class FlashcardsContent(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         
-    def onValidate(self, thisWidget, Widget):
+    def onValidate(self, thisWidget):
         chosen = thisWidget.text
         if (chosen not in my_dict["groups"].keys()):
             thisWidget.text = "Not an group. Try again"
             chosen = None
         else:
-            Widget.current = "FlashcardGroup"
+            global labelText
+            labelText = str(thisWidget.text)
+            sm.add_widget(FlashcardGroupScreen())
+            sm.current = "FlashcardGroup"
+            sm.remove_widget(sm.children[1])
         
-# El problema está en esta clase...
-# labelText no se actualiza cuando chosen se actualiza...
+# Falta poner las palabras !!
+
+class FlashcardGroupScreenContents(BoxLayout):
+    def on_pre_enter(self):
+        fcgc = FlashCardGroupContents()
+        fcgc.on_pre_enter()
+
+class LabelFlashcardGroup(BoxLayout):
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        l = Label(text=str(labelText), color=(0, 0, 0, 1))
+        self.add_widget(l)
+
+    def on_pre_enter(self):
+        self.clear_widgets()
+        self.__init__()
 
 class FlashCardGroupContents(BoxLayout):
-    if chosen != None:
-        labelText = StringProperty(chosen)
-    else:
-        labelText = StringProperty("No flashcardSelected")
+    def on_pre_enter(self):
+        lfcg = LabelFlashcardGroup()
+        lfcg.on_pre_enter()
+
+    # if chosen != None:
+    #     labelText = StringProperty(chosen)
+    # else:
+    #     labelText = StringProperty("No flashcardSelected")
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         
     def onPressAddButton(self, Widget):
+        # Falta arreglar este botón de navegación!!
         Widget.current = "AddWord"
         # groups_dict = my_dict["groups"]
         # fsg.addAction(groups_dict[chosen], my_dict)
@@ -153,12 +200,10 @@ class AddWordContents(BoxLayout):
         labelText = StringProperty("No flashcardSelected")
 
 
-
-kv = Builder.load_file('Tankaiki.kv')
-
 class TankaikiApp(App):
     def build(self):
-        return kv
+        sm.add_widget(FirstScreen())
+        return sm
 
 
 

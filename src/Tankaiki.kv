@@ -1,13 +1,13 @@
 WindowManager:
-    FirstScreen:
-    HomeScreen:
-    LoadingScreen:
-    #Faltan hacer las siguientes 3 Screens
-    WordScreen:
-    FlashcardScreen:
-    ViewFlashcardsScreen:
-    FlashcardGroupScreen:
-    AddWord:
+    # FirstScreen:
+    # HomeScreen:
+    # LoadingScreen:
+    # #Faltan hacer las siguientes 3 Screens
+    # WordScreen:
+    # FlashcardScreen:
+    # ViewFlashcardsScreen:
+    # FlashcardGroupScreen:
+    # AddWord:
 
 <FirstScreen>:
     name: "first"
@@ -28,7 +28,7 @@ WindowManager:
                 size_hint: 1, .2
                 text:'Empezar'
                 # Para cambiar el screen desde aquí usar:
-                on_press: app.root.current = "Home"
+                on_press: root.onClickButton()
                 # Para cambiar el screen desde el archivo .py usar:
                 #on_press: root.onClickButton(app.root)
 
@@ -84,9 +84,9 @@ WindowManager:
         Button:
             size_hint: .1, 1
             text:'Home'
-            on_press: 
-                app.root.transition.direction = "right"
-                app.root.current = "Home"
+            on_press: root.onClickHomeButton()
+                # app.root.transition.direction = "right"
+                # app.root.current = "Home"
         Button:
             size_hint: .1, 1
             text:'Options'
@@ -111,7 +111,7 @@ WindowManager:
 <HomeContents@BoxLayout>:
     orientation:'vertical'
     RecentAdded:
-    AllFlashcards:
+    # AllFlashcards:
     ScrollableGroups:
         AllFlashcards2:
 
@@ -142,12 +142,13 @@ WindowManager:
 
 <AllFlashcards2>:  
     size_hint_y: None
+    height: self.minimum_height
     Button:
         text:'View All'
         size_hint: .3, .2
-        on_press: 
-            app.root.transition.direction = "right"
-            app.root.current = "ViewFlashcards"
+        on_press: root.onClickButton()
+            # app.root.transition.direction = "right"
+            # app.root.current = "ViewFlashcards"
 
 <RandomWord@BoxLayout>:
     orientation: 'vertical'
@@ -215,14 +216,14 @@ WindowManager:
         orientation:'horizontal'
         size_hint: 1, .3
         Label:
-            text:'Enter the name of the desired group:'
+            text:'Enter the name of the desired group:\n Press enter after typing to continue'
             color: 0 , 0 , 0 , 1
             size_hint: .3, .2
         TextInput:
             id: input
             text:''
             multiline: False
-            on_text_validate: root.onValidate(self, app.root)
+            on_text_validate: root.onValidate(self)
             size_hint: .5, .25
     Label:
         text:''
@@ -240,41 +241,45 @@ WindowManager:
 
 <FlashcardGroupScreen@Screen>:
     name: "FlashcardGroup"
-    BoxLayout:
-        # Background Color!
-        orientation:'vertical'
+    
+
+<FlashcardGroupScreenContents>:
+    # Background Color!
+    orientation:'vertical'
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+        Color: 
+            rgba: 0, 0, 0, 1
+    # TopBar
+    TopBar:
+    GridLayout:
+        cols: 2
+        rows: 1
         canvas.before:
-            Color:
-                rgba: 1, 1, 1, 1
+            Color: 
+                rgba: .9, .9, .9, 1
             Rectangle:
                 pos: self.pos
                 size: self.size
-            Color: 
-                rgba: 0, 0, 0, 1
-        # TopBar
-        TopBar:
-        GridLayout:
-            cols: 2
-            rows: 1
-            canvas.before:
-                Color: 
-                    rgba: .9, .9, .9, 1
-                Rectangle:
-                    pos: self.pos
-                    size: self.size
-            FlashCardGroupContents:
-            BottomRightOptions:
+        FlashCardGroupContents:
+        BottomRightOptions:
+
 
 <FlashCardGroupContents>:
     orientation: 'vertical'
     BoxLayout:
         orientation:'horizontal'
-        Label:
-            text: root.labelText
+        LabelFlashcardGroup:
         Button:
             text:'+'
             on_press: root.onPressAddButton(app.root)
     ViewAllWords:
+
+<LabelFlashcardGroup>:
 
 <ViewAllWords>: ## Crear en Python!!
 
