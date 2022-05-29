@@ -28,7 +28,6 @@ labelText = str(chosen)
 sm = ScreenManager()
 
 class FirstScreen(Screen):
-    # pass
     # Para hacer el cambio de screen desde el código de python hay que hacerlo así
     def onClickButton(self):
         sm.add_widget(HomeScreen())
@@ -64,6 +63,7 @@ class FlashcardGroupScreen(Screen):
         global labelText
         labelText = struc_name
         sm.add_widget(FlashcardGroupScreen())
+        sm.transition.direction = "left"
         sm.current = "FlashcardGroup"
         sm.remove_widget(sm.children[1])
 
@@ -75,21 +75,20 @@ class WindowManager(ScreenManager):
 
 class TopBar(BoxLayout):
     def onClickHomeButton(self):
-        sm.remove_widget(sm.children[0])
-        sm.add_widget(HomeScreen())
-        sm.transition.direction = "right"
-        sm.current = "Home"
-        
+        if sm.current != "Home":
+            sm.add_widget(HomeScreen())
+            sm.transition.direction = "right"
+            sm.current = "Home"
+            sm.remove_widget(sm.children[1])
         
 
 class BottomRightOptions(BoxLayout):
-    def onClickAddGroup(self, Widget):
-        sm.remove_widget(sm.children[0])
+    def onClickAddGroup(self):
         sm.add_widget(NewGroup())
-        sm.transition.direction = "right"
+        sm.transition.direction = "left"
         sm.current = "NewGroup"
+        sm.remove_widget(sm.children[1])
         
-
 
 class AllFlashcards(StackLayout):
     # def takeMeHome(self, instance):

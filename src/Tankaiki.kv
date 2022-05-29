@@ -27,10 +27,8 @@ WindowManager:
             Button:
                 size_hint: 1, .2
                 text:'Empezar'
-                # Para cambiar el screen desde aquí usar:
+                # Para cambiar el screen hay que usar:
                 on_press: root.onClickButton()
-                # Para cambiar el screen desde el archivo .py usar:
-                #on_press: root.onClickButton(app.root)
 
 
 <HomeScreen>:
@@ -108,7 +106,7 @@ WindowManager:
     Button:
         text:'N+'
         size_hint: 1, .1
-        on_press: root.onClickAddGroup(app.root)
+        on_press: root.onClickAddGroup()
             #app.root.transition.direction = "right"
             #app.root.current = "NewGroup"
 
