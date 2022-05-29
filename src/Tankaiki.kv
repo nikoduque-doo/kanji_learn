@@ -324,6 +324,7 @@ WindowManager:
 <AddWordContents>:
     BoxLayout:
         orientation:'vertical'
+        padding: ('10dp', '10dp', '10dp', '10dp')
         LabelFlashcardGroup:
         Label:
             text:'Enter the word in english you want to add, then press enter:'
@@ -354,7 +355,7 @@ WindowManager:
         # TopBar
         TopBar:
         GridLayout:
-            cols: 3
+            cols: 2
             rows: 1
             canvas.before:
                 Color: 
@@ -362,9 +363,23 @@ WindowManager:
                 Rectangle:
                     pos: self.pos
                     size: self.size
-            Widget:
-            Widget:
+            WordConfirmationContents:
             BottomRightOptions:
+
+<WordConfirmationContents>:
+    orientation: 'vertical'
+    LabelFlashcardGroup:
+        size_hint: 1, .2
+    WordInformation:
+    WordConfirmationButtons:
+        size_hint: 1, .2
+
+
+<WordInformation>:
+    orientation: 'vertical'
+
+<WordConfirmationButtons>:
+    orientation: 'horizontal'
 
 <WordNotAdded>:
     name: "WordNotAdded"
