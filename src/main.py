@@ -1,26 +1,28 @@
+import flashcardgroups_operations as fsg
+from unicodedata import name, numeric
+from random import randint as r
+from Vocabulary import JWord
 from cProfile import label
 from cgitb import text
 from tkinter import N
-from unicodedata import name, numeric
-import flashcardgroups_operations as fsg
-import os
 import platform
 import sys
-from random import randint as r
-from Vocabulary import JWord
+import os
+
 
 from kivy.app import App
 from kivy.lang import Builder
-from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import StringProperty
 from kivy.metrics import dp
+from kivy.core.text import LabelBase
+from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.stacklayout import StackLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
-from kivy.core.text import LabelBase
+
 
 sys.setrecursionlimit(1000000000)
 
@@ -69,7 +71,7 @@ class FlashcardGroupScreen(Screen):
 
     
     def setWord(self, jw:JWord):
-        b = Button(text = jw, size_hint=(.5, .5), font_name='mona')
+        b = Button(text = jw.word, size_hint=(.5, .5), font_name='mona')
         self.add_widget(b)
 
     def addRecentWords(self):
@@ -134,7 +136,7 @@ class RecentWordsScreen(Screen):
 
     
     def setWord(self, jw:JWord):
-        b = Button(text = jw, size_hint=(.5, .5), font_name='mona')
+        b = Button(text = jw.word, size_hint=(.5, .5), font_name='mona')
         self.add_widget(b)
 
     def addRecentWords(self):

@@ -16,6 +16,12 @@ class OrderedLinkList():
         pointer = pointer.getNext()
     return s + "]"
 
+  def traverse(self, f):
+    pointer = self.head
+    while pointer != None:
+      f(pointer.getValue())
+      pointer = pointer.getNext()
+
   def isFull(self):
     return False
 

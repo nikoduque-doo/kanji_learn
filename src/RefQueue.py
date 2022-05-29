@@ -17,8 +17,7 @@ class RefQueue():
   def traverse(self, f):
     point = self.head
     while point != None:
-      print(point.getValue().word)
-      f(point.getValue().word)
+      f(point.getValue())
       point = point.getNext()
 
   def getSize(self):

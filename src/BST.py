@@ -21,6 +21,17 @@ class BST:
       s = self.inOrder(node.getRight(), s)
     return s
   
+  def traverse(self, f):
+    self.recursiveTraverse(f, node = self.root)
+
+  def recursiveTraverse(self, f, node):
+    if node.getLeft() != None:
+      self.recursiveTraverse(f, node.getLeft())
+    f(node.getKey())
+    if node.getRight() != None:
+      self.recursiveTraverse(f, node.getRight())
+
+
   def getSize(self):
     return self.itemCount
 

@@ -28,6 +28,10 @@ class BinaryHeap:
       s += "|"
     return s
   
+  def traverse(self, f):
+    for i in range(self.itemCount):
+      f(self.arr[i])
+
   def parent(self, i):
     return int((i-1)/2)
 

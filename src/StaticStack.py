@@ -15,6 +15,10 @@ class ArrStack():
     else:
       return "[>"
 
+  def traverse(self, f):
+    for i in range(self.itemCount-1, -1, -1):
+      f(self.arr[i])
+
   def isFull(self):
     return self.itemCount == self.size
 

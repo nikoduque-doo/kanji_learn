@@ -24,6 +24,13 @@ class LinkList:
         return s
 
 
+    def traverse(self, f):
+        pointer = self.head
+        while self.head != None:
+            f(pointer.getValue())
+            pointer = pointer.getNext()
+
+
     def pushFront(self, val):
         n = Node(val)
         if self.isEmpty():
