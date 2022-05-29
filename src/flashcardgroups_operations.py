@@ -45,7 +45,7 @@ def load_existing_fgroups():
     if not "tags" in current_dict:
       current_dict["tags"] = AVLTree()
     if not "recent" in current_dict:
-      current_dict["recent"] = RefQueue()
+      current_dict["recent"] = RefQueue.RefQueue()
     update_recent_words(current_dict)
     return current_dict
 

@@ -118,6 +118,16 @@ class JButton(Button):
         self.custom_label = custom_label
     
     def update(self, self2):
+        print("Structures Test\nKanji tree:")
+        print(my_dict["my_kanji"])
+        print("Words tree:")
+        print(my_dict["my_words"])
+        print("Practice heap:")
+        print(my_dict["practice_box"])
+        print("Recent words queue:")
+        print(my_dict["recent"])
+        print("Tags tree")
+        print(my_dict["tags"])
         FlashcardsContent.setText(self.custom_label)
 
 class AllFlashcards2(StackLayout):
