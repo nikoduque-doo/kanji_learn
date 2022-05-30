@@ -55,7 +55,7 @@ class PracticeScreen(Screen):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        PracticeScreen.stButton = Button(text="start", on_press=self.start, size_hint=(.5,None), size=(0,dp(40)), pos_hint={"x": 0})
+        PracticeScreen.stButton = Button(text="start", on_press=self.start, size_hint=(.5,None), size=(0,dp(40)), pos_hint={'center_x':.5, 'center_y':.5})
         self.add_widget(PracticeScreen.stButton)
 
 
