@@ -22,6 +22,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
+from kivy.uix.scrollview import ScrollView
 
 
 sys.setrecursionlimit(1000000000)
@@ -61,6 +62,73 @@ class ViewFlashcardsScreen(Screen):
     pass
 
 
+class WordConfirmation(Screen):
+    pass
+
+class WordNotAdded(Screen):
+    pass
+
+class NewGroup(Screen):
+    pass
+
+##########| Section pertaining group words start |##########
+############################################################
+
+class AllWordsInsideGroup(StackLayout):
+    struc_key = None
+    update = None
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.setUp()
+        AllWordsInsideGroup.update = self.setUp
+
+    def setUp(self):
+        self.clear_widgets()
+        if AllWordsInsideGroup.struc_key != None:
+            my_dict["groups"][AllWordsInsideGroup.struc_key].traverse(self.setWords)
+            print(my_dict["groups"][AllWordsInsideGroup.struc_key])
+        print("nanananananan")
+
+    def setWords(self, jw:JWord):
+        b = Button(text = jw.word, size_hint=(.5,None), size=(0,dp(40)), font_name='mona')
+        self.add_widget(b)
+
+
+#This one is found at home screen
+class AllFlashcards2(StackLayout):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        """b1 = Button(text="update", size_hint=(.5,None), size=(0,dp(40)))
+        b1.bind(on_release = self.update)
+        self.add_widget(b1)"""
+        for i in my_dict["groups"].keys():
+            struc_size = str(fsg.getSizeOfGroup(my_dict["groups"][i]))
+            b = JButton(text=i+": "+struc_size, size_hint=(.5,None), size=(0,dp(40)), custom_label=i)
+            b.bind(on_release = b.update)
+            self.add_widget(b)
+        # for i in range(r(7,15)):
+        #     b = Button(text=str(i), size_hint=(.5,None), size=(0,dp(40)))
+        #     self.add_widget(b)
+
+class JButton(Button):
+    def __init__(self, custom_label, **kwargs):
+        super().__init__(**kwargs)
+        self.custom_label = custom_label
+    
+    def update(self, self2):
+        print("Structures Test\nKanji tree:")
+        print(my_dict["my_kanji"])
+        print("Words tree:")
+        print(my_dict["my_words"])
+        print("Practice heap:")
+        print(my_dict["practice_box"])
+        print("Recent words queue:")
+        print(my_dict["recent"])
+        print("Tags tree")
+        print(my_dict["tags"])
+        FlashcardGroupScreen.setText(self.custom_label)
+
 class FlashcardGroupScreen(Screen):
     def on_pre_enter(self):
         print(self.children)
@@ -86,21 +154,98 @@ class FlashcardGroupScreen(Screen):
         sm.current = "FlashcardGroup"
         sm.remove_widget(sm.children[1])
 
+        AllWordsInsideGroup.struc_key = struc_name
+        AllWordsInsideGroup.update()
+
+
+class FlashcardGroupScreenContents(BoxLayout):
+    def on_pre_enter(self):
+        fcgc = FlashCardGroupContents()
+        fcgc.on_pre_enter()
+
 
 class AddWord(Screen):
     def on_pre_enter(self):
         awc = AddWordContents()
         awc.on_pre_enter()
 
+class LabelFlashcardGroup(BoxLayout):
 
-class WordConfirmation(Screen):
-    pass
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        l = Label(text=str(labelText), color=(0, 0, 0, 1))
+        self.add_widget(l)
 
-class WordNotAdded(Screen):
-    pass
+    def on_pre_enter(self):
+        self.clear_widgets()
+        self.__init__()
 
-class NewGroup(Screen):
-    pass
+class FlashCardGroupContents(BoxLayout):
+    def on_pre_enter(self):
+        lfcg = LabelFlashcardGroup()
+        lfcg.on_pre_enter()
+
+    # if chosen != None:
+    #     labelText = StringProperty(chosen)
+    # else:
+    #     labelText = StringProperty("No flashcardSelected")
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        
+    def onPressAddButton(self, Widget):
+        # Falta arreglar este botón de navegación!!
+        sm.add_widget(AddWord())
+        sm.transition.direction = "left"
+        sm.current = "AddWord"
+        sm.remove_widget(sm.children[1])
+        ######## Flow Idea:
+        ######## Add Word -> GetWordData() -> WordConfirmation -> 1) Yes -> AddWord() -> WordInfo o 2) No -> WordNotAdded
+
+
+
+
+
+
+
+class ViewAllFlashcards(StackLayout):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        if(my_dict["groups"]):
+            groups = fsg.get_groups(my_dict)
+            for group in groups:
+                b = Label(text=str(group[0] + "\n" + str(group[1])), size_hint=(.3, .2), color=(0, 0, 0, 1))
+                self.add_widget(b)
+        else:
+            b = Label(text="No flashcards groups saved", size_hint=(.3, .2), color=(0, 0, 0, 1))
+            self.add_widget(b)
+
+# class ScrollViewAllFlashcards(ScrollView):
+#     pass
+        
+class FlashcardsContent(BoxLayout):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        
+    def onValidate(self, thisWidget):
+        chosen = thisWidget.text
+        if (chosen not in my_dict["groups"].keys()):
+            thisWidget.text = "Not a group. Try again"
+            chosen = None
+        else:
+            global labelText
+            labelText = str(thisWidget.text)
+            sm.add_widget(FlashcardGroupScreen())
+            sm.current = "FlashcardGroup"
+            sm.remove_widget(sm.children[1])
+
+
+
+
+##########################################################
+##########| Section pertaining group words end |##########
+
+
+
 
 ##########| Section pertaining recent words start |##########
 #############################################################
@@ -110,8 +255,8 @@ class AllRecentWords(StackLayout):
         super().__init__(**kwargs)
         my_dict["recent"].traverse(self.setWords)
     
-    def setWords(self, jwText):
-        b = Button(text = jwText, size_hint=(.5,None), size=(0,dp(40)), font_name='mona')
+    def setWords(self, jw:JWord):
+        b = Button(text = jw.word, size_hint=(.5,None), size=(0,dp(40)), font_name='mona')
         self.add_widget(b)
 
 #This one is found at home screen
@@ -241,114 +386,7 @@ class AllFlashcards(StackLayout):
             b = Label(text="No flashcards groups saved", size_hint=(.8, .2), color=(0, 0, 0, 1), halign="right", valign="middle")
             self.add_widget(b)
 
-class JButton(Button):
-    def __init__(self, custom_label, **kwargs):
-        super().__init__(**kwargs)
-        self.custom_label = custom_label
-    
-    def update(self, self2):
-        print("Structures Test\nKanji tree:")
-        print(my_dict["my_kanji"])
-        print("Words tree:")
-        print(my_dict["my_words"])
-        print("Practice heap:")
-        print(my_dict["practice_box"])
-        print("Recent words queue:")
-        print(my_dict["recent"])
-        print("Tags tree")
-        print(my_dict["tags"])
-        FlashcardGroupScreen.setText(self.custom_label)
 
-class AllFlashcards2(StackLayout):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        """b1 = Button(text="update", size_hint=(.5,None), size=(0,dp(40)))
-        b1.bind(on_release = self.update)
-        self.add_widget(b1)"""
-        for i in my_dict["groups"].keys():
-            struc_size = str(fsg.getSizeOfGroup(my_dict["groups"][i]))
-            b = JButton(text=i+": "+struc_size, size_hint=(.5,None), size=(0,dp(40)), custom_label=i)
-            b.bind(on_release = b.update)
-            self.add_widget(b)
-        # for i in range(r(7,15)):
-        #     b = Button(text=str(i), size_hint=(.5,None), size=(0,dp(40)))
-        #     self.add_widget(b)
-
-class ViewAllFlashcards(StackLayout):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        if(my_dict["groups"]):
-            groups = fsg.get_groups(my_dict)
-            for group in groups:
-                b = Label(text=str(group[0] + "\n" + str(group[1])), size_hint=(.3, .2), color=(0, 0, 0, 1))
-                self.add_widget(b)
-        else:
-            b = Label(text="No flashcards groups saved", size_hint=(.3, .2), color=(0, 0, 0, 1))
-            self.add_widget(b)
-
-# class ScrollViewAllFlashcards(ScrollView):
-#     pass
-        
-class FlashcardsContent(BoxLayout):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        
-    def onValidate(self, thisWidget):
-        chosen = thisWidget.text
-        if (chosen not in my_dict["groups"].keys()):
-            thisWidget.text = "Not a group. Try again"
-            chosen = None
-        else:
-            global labelText
-            labelText = str(thisWidget.text)
-            sm.add_widget(FlashcardGroupScreen())
-            sm.current = "FlashcardGroup"
-            sm.remove_widget(sm.children[1])
-
-# Falta poner las palabras !!
-
-class FlashcardGroupScreenContents(BoxLayout):
-    def on_pre_enter(self):
-        fcgc = FlashCardGroupContents()
-        fcgc.on_pre_enter()
-
-class LabelFlashcardGroup(BoxLayout):
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        l = Label(text=str(labelText), color=(0, 0, 0, 1))
-        self.add_widget(l)
-
-    def on_pre_enter(self):
-        self.clear_widgets()
-        self.__init__()
-
-class FlashCardGroupContents(BoxLayout):
-    def on_pre_enter(self):
-        lfcg = LabelFlashcardGroup()
-        lfcg.on_pre_enter()
-
-    # if chosen != None:
-    #     labelText = StringProperty(chosen)
-    # else:
-    #     labelText = StringProperty("No flashcardSelected")
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        
-    def onPressAddButton(self, Widget):
-        # Falta arreglar este botón de navegación!!
-        sm.add_widget(AddWord())
-        sm.transition.direction = "left"
-        sm.current = "AddWord"
-        sm.remove_widget(sm.children[1])
-        ######## Flow Idea:
-        ######## Add Word -> GetWordData() -> WordConfirmation -> 1) Yes -> AddWord() -> WordInfo o 2) No -> WordNotAdded
-        
-        
-class ViewAllWords(StackLayout):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs) 
-        #words = fsg.access_group(chosen, my_dict["groups"])
 
 class AddGroupW(StackLayout):
     def searchvalidate(self, thisWidget, Widget):

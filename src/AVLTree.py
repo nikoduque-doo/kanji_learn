@@ -125,6 +125,7 @@ class AVLTree(BST):
       self.rebalance(toBeUpdated)
     else:
       self.root = AVLNode(k)
+      self.itemCount += 1
 
   def delete(self, k):
     node = self.find(k, self.root)

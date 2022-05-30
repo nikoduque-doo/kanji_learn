@@ -275,22 +275,44 @@ WindowManager:
             Rectangle:
                 pos: self.pos
                 size: self.size
-        FlashCardGroupContents:
+        BoxLayout:
+            spacing: "50dp"
+            orientation:'vertical'
+            FlashCardGroupContents:
+            ScrollView:
+                size_hint_y: 1
+                AllWordsInsideGroup:
+                    size_hint_y: None
+                    height: self.minimum_height
         BottomRightOptions:
 
 
 <FlashCardGroupContents>:
     orientation: 'vertical'
+    size_hint: 1,.2
     BoxLayout:
         orientation:'horizontal'
         LabelFlashcardGroup:
+            size_hint: .8,.3
         Button:
             text:'+'
             on_press: root.onPressAddButton(app.root)
-            size_hint: .15,.15
-    ViewAllWords:
+            size_hint: .2,.3
 
 <LabelFlashcardGroup>:
+
+
+
+##########| Section pertaining group words start |##########
+############################################################
+
+
+
+
+
+##########################################################
+##########| Section pertaining group words end |##########
+
 
 
 ##########| Section pertaining recent words start |##########

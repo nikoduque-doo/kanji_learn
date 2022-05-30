@@ -115,7 +115,7 @@ class LinkList:
     def isEmpty(self):
         return self.head is None
 
-    def size(self):
+    def getSize(self):
         return self.count
     
     def search(self, val):

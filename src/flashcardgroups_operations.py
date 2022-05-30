@@ -2,8 +2,10 @@ from datetime import timedelta, datetime, date
 from keyword import iskeyword
 from this import d
 from Vocabulary import Kanji, JWord
-from AVLTree import AVLTree
+from AVLTree import AVLTree, BST
 from BinaryHeap import BinaryHeap
+from OrderedLinkList import OrderedLinkList
+from random import randint as r
 import os.path
 import platform
 import pickle
@@ -27,6 +29,7 @@ def getPath():
     os.mkdir(path)
   return path + "/"
 
+
 def load_existing_fgroups():
     try:
       pickle_in = open(getPath() + "/my_dict.pickle", "rb")
@@ -46,19 +49,66 @@ def load_existing_fgroups():
       current_dict["practice_box"] = BinaryHeap()
     if not "tags" in current_dict:
       current_dict["tags"] = AVLTree()
-    if not "recento" in current_dict:# Original key  is "recent". Altered for testing.
+    if not "recent" in current_dict:
       current_dict["recent"] = RefQueue.RefQueue()
-    current_dict["recent"].enqueue(JWord("english", "右", "Noun", "thing", "asd"))
-    current_dict["recent"].enqueue(JWord("english", "壁", "Noun", "thing", "asd"))
-    current_dict["recent"].enqueue(JWord("english", "大きな", "Noun", "thing", "asd"))
-    current_dict["recent"].enqueue(JWord("english", "美しい", "Noun", "thing", "asd"))
-    current_dict["recent"].enqueue(JWord("english", "上手", "Noun", "thing", "asd"))
-    current_dict["recent"].enqueue(JWord("english", "面倒くさい", "Noun", "thing", "asd"))
-    current_dict["recent"].enqueue(JWord("english", "山", "Noun", "thing", "asd"))
-    current_dict["recent"].enqueue(JWord("english", "白", "Noun", "thing", "asd"))
-    current_dict["recent"].enqueue(JWord("english", "海", "Noun", "thing", "asd"))
-    current_dict["recent"].enqueue(JWord("english", "暗い", "Noun", "thing", "asd"))
-    current_dict["recent"].enqueue(JWord("english", "走る", "Noun", "thing", "asd"))
+    
+    #Artifitial creation of structures for test
+    if True: #False to deactivate
+      def randKanji(id):
+        kanji = ""
+        for i in range(r(1,4)):
+            kanji += chr(r(19968, 40879))
+        jw = JWord("english {}".format(id), 
+                    kanji, 
+                    "use {}".format(id), 
+                    "meaning {}".format(id), 
+                    "reading {}".format(id))
+        return jw
+
+      lis = [None]*100
+      for i in range(100):
+          lis[i] = randKanji(i)
+      for i in lis:
+          print(i, end=", ")
+      print("")
+      s = StaticStack.ArrStack(20)
+      q = ArrQueue.ArrQueue(20)
+      q2 = RefQueue.RefQueue()
+      l = LinkList.LinkList()
+      ol = OrderedLinkList()
+      bst = BST()
+      av = AVLTree()
+      for j in range(17):
+          i = lis[j]
+          s.push(i)
+          q.enqueue(i)
+          q2.enqueue(i)
+          l.pushBack(i)
+          ol.insert(i)
+          bst.insert(i)
+          av.insert(i)
+      current_dict["groups"]["s"] = s
+      current_dict["groups"]["q"] = q
+      current_dict["groups"]["q2"] = q2
+      current_dict["groups"]["l"] = l
+      current_dict["groups"]["ol"] = ol
+      current_dict["groups"]["bst"] = bst
+      current_dict["groups"]["av"] = av
+
+    elif False:
+      current_dict["recent"].enqueue(JWord("english", "右", "Noun", "thing", "asd"))
+      current_dict["recent"].enqueue(JWord("english", "壁", "Noun", "thing", "asd"))
+      current_dict["recent"].enqueue(JWord("english", "大きな", "Noun", "thing", "asd"))
+      current_dict["recent"].enqueue(JWord("english", "美しい", "Noun", "thing", "asd"))
+      current_dict["recent"].enqueue(JWord("english", "上手", "Noun", "thing", "asd"))
+      current_dict["recent"].enqueue(JWord("english", "面倒くさい", "Noun", "thing", "asd"))
+      current_dict["recent"].enqueue(JWord("english", "山", "Noun", "thing", "asd"))
+      current_dict["recent"].enqueue(JWord("english", "白", "Noun", "thing", "asd"))
+      current_dict["recent"].enqueue(JWord("english", "海", "Noun", "thing", "asd"))
+      current_dict["recent"].enqueue(JWord("english", "暗い", "Noun", "thing", "asd"))
+      current_dict["recent"].enqueue(JWord("english", "走る", "Noun", "thing", "asd"))
+
+
     update_recent_words(current_dict)
     return current_dict
 
@@ -68,16 +118,11 @@ def save_changes_to_fgroups(dict_saved:dict):
     pickle_out.close()
 
 def getSizeOfGroup(struc):
-  if(type(struc) == dict or type(struc) == list):
-    ret = len(struc)
-  elif (type(struc) == ArrQueue.ArrQueue):
-    ret = struc.get_size()
-  elif (type(struc) == RefQueue.RefQueue):
+  ret = 0
+  try:
     ret = struc.getSize()
-  elif(type(struc) == LinkList.LinkList):
-    ret = struc.size()
-  elif(type(struc) == StaticStack.ArrStack):
-    ret = struc.getSize()
+  except:
+    pass
   return ret
 
 def get_word_data(item: None):

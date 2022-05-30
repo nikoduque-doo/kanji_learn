@@ -3,6 +3,7 @@ from random import randint
 class ArrQueue():
   def __init__(self, size=100):
     self.size = size + 1
+    self.itemCount = 0
     self.write = 0
     self.erase = 0
     self.arr = [None]*(size+1)
@@ -25,11 +26,13 @@ class ArrQueue():
     if not self.isFull():
       self.arr[self.write] = item
       self.write = (self.write + 1) % self.size
+      self.itemCount += 1
 
   def dequeue(self):
     if not self.isEmpty():
       tempVar = self.arr[self.erase]
       self.erase = (self.erase + 1) % self.size
+      self.itemCount -= 1
       return tempVar
     return None
   
@@ -42,8 +45,8 @@ class ArrQueue():
   def isFull(self):
     return (self.write + 1) % self.size == self.erase
 
-  def get_size(self):
-    return self.size
+  def getSize(self):
+    return self.itemCount
 
 def queue_search(item, q):
   first_element = q.peek()

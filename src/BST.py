@@ -77,6 +77,7 @@ class BST:
         return lot.getRight()
     else:
       self.root = lot = BSTNode(k)
+      self.itemCount += 1
     return lot
   
   def delete(self, k):
