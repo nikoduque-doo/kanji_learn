@@ -419,6 +419,7 @@ class TopBar(BoxLayout):
     def onClickStartPractice(self):
         if sm.current != "PracticePage":
             sm.add_widget(PracticeScreen())
+            sm.transition.direction = "left"
             sm.current = "PracticePage"
             sm.remove_widget(sm.children[1])
     
@@ -624,7 +625,7 @@ class WordConfirmationButtons(BoxLayout):
         global word_data
         word_data = None
         FlashcardGroupScreen.setText(labelText)
-        
+
 
 class TankaikiApp(App):
     def build(self):
