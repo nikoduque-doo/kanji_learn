@@ -50,9 +50,11 @@ def load_existing_fgroups():
       current_dict["tags"] = AVLTree()
     if not "recent" in current_dict:
       current_dict["recent"] = RefQueue.RefQueue()
-    
+    if not "search_results" in current_dict:
+      current_dict["search_results"] = LinkList.LinkList()
     #Artifitial creation of structures for test
-    if True: #False to deactivate
+
+    if False: #False to deactivate
       def randKanji(id):
         kanji = ""
         for i in range(r(1,4)):
@@ -95,7 +97,7 @@ def load_existing_fgroups():
       current_dict["groups"]["av"] = av
       current_dict["groups"]["My adjectives"] = av
 
-    if True:#Set to True to add to practice box
+    if False:#Set to True to add to practice box
       current_dict["practice_box"] = BinaryHeap()
       current_dict["practice_box"].insert(JWord("english", "右", "Noun", "thing", "asd"))
       current_dict["practice_box"].insert(JWord("english", "壁", "Noun", "thing", "asd"))

@@ -71,17 +71,17 @@ class PracticeScreenInteractive(Screen):
         jw = fsg.practice_with_graphic(my_dict)
         if isinstance(jw, int):
             if jw == 0:
-                lab1 = Label(text = "You haven't saved any words yet!", size_hint=(1,.3), font_name='mona')
+                lab1 = Label(text = "You haven't saved any words yet!", size_hint=(1,.3))
             elif jw > 0:
                 txt = "There aren't any words available for practice at the moment."
                 if jw == 1:
                     txt += "\nThe next word will be available tomorrow."
                 else:
                     txt += "\nThe next word will be available in {} days.".fromat(jw)
-                lab1 = Label(text = txt, size_hint=(1,.3), font_name='mona')
+                lab1 = Label(text = txt, size_hint=(1,.3))
             else:
                 txt = "The next word will be available in {} years, try adding a new word!".format(jw * -1)
-                lab1 = Label(text = txt, size_hint=(1,.3), font_name='mona')
+                lab1 = Label(text = txt, size_hint=(1,.3))
             self.add_widget(lab1)
             contb = Button(text = "Continue", size_hint=(.5,None), size=(0,dp(40)), pos_hint={"x": .5})
             contb.bind(on_press = self.getNextButton)
@@ -607,15 +607,15 @@ class WordInformation(BoxLayout):
         self.__init__()
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        l1 = Label(text = "English: " + str(word_data.english), color = (0, 0, 0, 1))
+        l1 = Label(text = "English: " + word_data.english, color = (0, 0, 0, 1))
         self.add_widget(l1)
-        l2 = Label(text = "Kanji: " + str(word_data.word), font_name='mona', color = (0, 0, 0, 1))
+        l2 = Label(text = "Japanese writing: " + word_data.word, font_name='mona', color = (0, 0, 0, 1))
         self.add_widget(l2)
-        l3 = Label(text = "Reading: " + str(word_data.reading), font_name='mona', color = (0, 0, 0, 1))
+        l3 = Label(text = "Reading: " + word_data.reading, font_name='mona', color = (0, 0, 0, 1))
         self.add_widget(l3)
-        l4 = Label(text = "Part of speech: " + str(word_data.part_of_speech), color = (0, 0, 0, 1))
+        l4 = Label(text = "Part of speech: " + word_data.part_of_speech, color = (0, 0, 0, 1))
         self.add_widget(l4)
-        l5 = Label(text = "Meaning: " + str(word_data.meaning), color = (0, 0, 0, 1))
+        l5 = Label(text = "Meaning: " + word_data.meaning, color = (0, 0, 0, 1))
         self.add_widget(l5)
 
 
