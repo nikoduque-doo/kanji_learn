@@ -215,6 +215,8 @@ def add_singular_word(struc, item: None, gen_dict):
           struc.pushBack(word_searched)
         elif(type(struc) == StaticStack.ArrStack):
           struc.push(word_searched)
+        elif(type(struc) == AVLTree or type(struc) == BST or type(struc) == OrderedLinkList):
+          struc.insert(word_searched)
 
 def add_word_with_graphic(struc, word, gen_dict):
   word_searched = get_word_data_graphic(word)

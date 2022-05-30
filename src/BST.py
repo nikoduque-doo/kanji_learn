@@ -22,7 +22,8 @@ class BST:
     return s
   
   def traverse(self, f):
-    self.recursiveTraverse(f, node = self.root)
+    if(self.itemCount != 0):
+      self.recursiveTraverse(f, node = self.root)
 
   def recursiveTraverse(self, f, node):
     if node.getLeft() != None:
