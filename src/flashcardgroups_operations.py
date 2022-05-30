@@ -1,6 +1,5 @@
 from datetime import timedelta, datetime, date
 from keyword import iskeyword
-from this import d
 from Vocabulary import Kanji, JWord
 from AVLTree import AVLTree
 from BinaryHeap import BinaryHeap
@@ -119,23 +118,20 @@ def get_word_data_graphic(word):
     
     save_changes_to_fgroups(gen_dict)"""
 
-def create_group(gen_dict:dict, name:str, data_structure:str):
+def create_group(gen_dict:dict, name:str, data_structure:str, size = 0):
   groups_dict = gen_dict["groups"]
 
   if(data_structure == "D"):
       groups_dict[name] = {}
   elif(data_structure == "A"):
-      size = int(input("How many elements would you like to add? "))
       groups_dict[name] = [None]*(size)
   elif(data_structure == "Q"):
-      size = int(input("How many elements would you like to add? "))
       groups_dict[name] = ArrQueue.ArrQueue(size)
   elif(data_structure == "Q2"):
       groups_dict[name] = RefQueue.RefQueue()
   elif(data_structure == "L"):
       groups_dict[name] = LinkList.LinkList()
   elif(data_structure == "S"):
-      size = int(input("How many elements would you like to add? "))
       groups_dict[name] = StaticStack.ArrStack(size)
     
   save_changes_to_fgroups(gen_dict)

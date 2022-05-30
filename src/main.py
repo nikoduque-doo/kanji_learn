@@ -351,6 +351,38 @@ class ViewAllWords(StackLayout):
         #words = fsg.access_group(chosen, my_dict["groups"])
 
 class AddGroupW(StackLayout):
+
+    def ask_size(self, name, struc):
+        self.name = name
+        self.struc = struc
+        self.clear_widgets()
+        layout1 = BoxLayout(orientation='horizontal', size_hint= (1, .2))
+        lbl1 = Label(text = "How many elements should it have?", color = (0 , 0 , 0 , 1), size_hint = (1, .2))
+        layout1.add_widget(lbl1)
+        layout2 = BoxLayout(orientation='horizontal', size_hint= (1, .3))
+        space1 = Label(text = " ")
+        textI = TextInput(multiline = False, size_hint= (.5, .25))
+        textI.bind(on_text_validate = self.createFromSize)
+        space2 = Label(text = " ")
+        layout2.add_widget(space1)
+        layout2.add_widget(textI)
+        layout2.add_widget(space2)
+
+        self.add_widget(layout1)
+        self.add_widget(layout2)
+
+    def createFromSize(self, instance):
+        size = instance.text
+        print("Check it out " + size + " " + str(size.isnumeric()))
+        if(size.isnumeric()):
+            print("This happens")
+            fsg.create_group(my_dict, self.name, self.struc, int(size))
+        else:
+            if size == "":
+                instance.text = "No name was given"
+            else:
+                instance.text = "Invalid Size"
+
     def searchvalidate(self, thisWidget, Widget):
         chosen = thisWidget.text.strip()
         if (chosen not in my_dict["groups"].keys() and chosen != ""):
@@ -359,17 +391,18 @@ class AddGroupW(StackLayout):
             layout1 = BoxLayout(orientation='vertical')
             lbl1 = Label(text = "What kind of Data Structure should it be?", color = (0 , 0 , 0 , 1), size_hint = (1, .2))
             layout1.add_widget(lbl1)
-            
-            struc_choice = "L"
 
             layout2 = BoxLayout(orientation='vertical')
             Arrbtn = Button(text = "Array")
-            #Arrbtn.bind(on_press = )
+            Arrbtn.bind(on_press = lambda x: self.ask_size(chosen, "A"))
             LLbtn = Button(text = "Linked List")
-            LLbtn.bind(on_press = lambda x:fsg.create_group(my_dict, chosen, "L"))
+            LLbtn.bind(on_press = lambda x:fsg.create_group(my_dict, chosen, "L", 0))
             Qbtn = Button(text = "Queue")
+            Qbtn.bind(on_press = lambda x: self.ask_size(chosen, "Q"))
             Q2btn = Button(text = "Reference Queue")
+            Q2btn.bind(on_press = lambda x:fsg.create_group(my_dict, chosen, "Q2", 0))
             Sbtn = Button(text = "Stack")
+            Sbtn.bind(on_press = lambda x: self.ask_size(chosen, "S"))
             layout2.add_widget(Arrbtn)
             layout2.add_widget(LLbtn)
             layout2.add_widget(Qbtn)
