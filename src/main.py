@@ -49,6 +49,75 @@ class FirstScreen(Screen):
 class HomeScreen(Screen):
     pass
 
+class PracticeScreen(Screen):
+    stButton = None
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        PracticeScreen.stButton = Button(text="start", on_press=self.start, size_hint=(.5,None), size=(0,dp(40)), pos_hint={"x": 0})
+        self.add_widget(PracticeScreen.stButton)
+
+
+    def start(self, self2 = None):
+        self.remove_widget(PracticeScreen.stButton)
+        psi = PracticeScreenInteractive()
+        self.add_widget(psi)
+        psi.getNextQuestion()
+
+class PracticeScreenInteractive(Screen):
+    def getNextQuestion(self, self2=None):
+        self.clear_widgets()
+        jw = fsg.practice_with_graphic(my_dict)
+        if isinstance(jw, int):
+            if jw == 0:
+                lab1 = Label(text = "You haven't saved any words yet!", size_hint=(1,.3), font_name='mona')
+            elif jw > 0:
+                txt = "There aren't any words available for practice at the moment."
+                if jw == 1:
+                    txt += "\nThe next word will be available tomorrow."
+                else:
+                    txt += "\nThe next word will be available in {} days.".fromat(jw)
+                lab1 = Label(text = txt, size_hint=(1,.3), font_name='mona')
+            else:
+                txt = "The next word will be available in {} years, try adding a new word!".format(jw * -1)
+                lab1 = Label(text = txt, size_hint=(1,.3), font_name='mona')
+            self.add_widget(lab1)
+            contb = Button(text = "Continue", size_hint=(.5,None), size=(0,dp(40)), pos_hint={"x": .5})
+            contb.bind(on_press = self.getNextButton)
+        else:
+            lab = Label(text = jw.word+"?", size_hint=(1,.3), font_name='mona')
+            self.add_widget(lab)
+            bl = BoxLayout(orientation = "horizontal")
+            b0 = Button(text = "0", size_hint=(.5,None), size=(0,dp(40)))
+            b0.bind(on_press = lambda x:self.gradeQuestion(jw, 0))
+            bl.add_widget(b0)
+            b1 = Button(text = "1", size_hint=(.5,None), size=(0,dp(40)))
+            b1.bind(on_press = lambda x:self.gradeQuestion(jw, 1))
+            bl.add_widget(b1)
+            b2 = Button(text = "2", size_hint=(.5,None), size=(0,dp(40)))
+            b2.bind(on_press = lambda x:self.gradeQuestion(jw, 2))
+            bl.add_widget(b2)
+            b3 = Button(text = "3", size_hint=(.5,None), size=(0,dp(40)))
+            b3.bind(on_press = lambda x:self.gradeQuestion(jw, 3))
+            bl.add_widget(b3)
+            b4 = Button(text = "4", size_hint=(.5,None), size=(0,dp(40)))
+            b4.bind(on_press = lambda x:self.gradeQuestion(jw, 4))
+            bl.add_widget(b4)
+            b5 = Button(text = "5", size_hint=(.5,None), size=(0,dp(40)))
+            b5.bind(on_press = lambda x:self.gradeQuestion(jw, 5))
+            bl.add_widget(b5)
+            self.add_widget(bl)
+    
+    def getNextButton(self):
+        self.clear_widgets()
+        b = Button(text = "Next Question", size_hint=(.5,None), size=(0,dp(40)), pos_hint={"x": .5})
+        b.bind(on_press = self.getNextQuestion)
+        self.add_widget(b)
+    
+    def gradeQuestion(self, jw, grade):
+        fsg.grade_question_with_graphic(my_dict ,jw, grade)
+        self.getNextButton()
+
 class LoadingScreen(Screen):
     pass
 
@@ -87,8 +156,6 @@ class AllWordsInsideGroup(StackLayout):
         self.clear_widgets()
         if AllWordsInsideGroup.struc_key != None:
             my_dict["groups"][AllWordsInsideGroup.struc_key].traverse(self.setWords)
-            print(my_dict["groups"][AllWordsInsideGroup.struc_key])
-        print("nanananananan")
 
     def setWords(self, jw:JWord):
         b = Button(text = jw.word, size_hint=(.5,None), size=(0,dp(40)), font_name='mona')
@@ -347,6 +414,13 @@ class TopBar(BoxLayout):
             sm.transition.direction = "right"
             sm.current = "Home"
             sm.remove_widget(sm.children[1])
+
+    def onClickStartPractice(self):
+        if sm.current != "PracticePage":
+            sm.add_widget(PracticeScreen())
+            sm.current = "PracticePage"
+            sm.remove_widget(sm.children[1])
+    
         
 
 class BottomRightOptions(BoxLayout):
@@ -356,6 +430,7 @@ class BottomRightOptions(BoxLayout):
         sm.current = "NewGroup"
         sm.remove_widget(sm.children[1])
         
+
 
 class AllFlashcards(StackLayout):
     # def takeMeHome(self, instance):
@@ -414,7 +489,7 @@ class AddGroupW(StackLayout):
         print("Check it out " + size + " " + str(size.isnumeric()))
         if(size.isnumeric()):
             print("This happens")
-            fsg.create_group(my_dict, self.name, self.struc, int(size))
+            self.create_group_and_return(my_dict, self.name, self.struc, int(size))
         else:
             if size == "":
                 instance.text = "No name was given"
@@ -434,18 +509,27 @@ class AddGroupW(StackLayout):
             Arrbtn = Button(text = "Array")
             Arrbtn.bind(on_press = lambda x: self.ask_size(chosen, "A"))
             LLbtn = Button(text = "Linked List")
-            LLbtn.bind(on_press = lambda x:fsg.create_group(my_dict, chosen, "L", 0))
+            LLbtn.bind(on_press = lambda x:self.create_group_and_return(my_dict, chosen, "L", 0))
             Qbtn = Button(text = "Queue")
             Qbtn.bind(on_press = lambda x: self.ask_size(chosen, "Q"))
             Q2btn = Button(text = "Reference Queue")
-            Q2btn.bind(on_press = lambda x:fsg.create_group(my_dict, chosen, "Q2", 0))
+            Q2btn.bind(on_press = lambda x:self.create_group_and_return(my_dict, chosen, "Q2", 0))
             Sbtn = Button(text = "Stack")
             Sbtn.bind(on_press = lambda x: self.ask_size(chosen, "S"))
+            AVLbtn = Button(text = "AVL Tree")
+            AVLbtn.bind(on_press = lambda x:self.create_group_and_return(my_dict, chosen, "AVL", 0))
+            BSTbtn = Button(text = "Binary Search Tree")
+            BSTbtn.bind(on_press = lambda x:self.create_group_and_return(my_dict, chosen, "BST", 0))
+            OLLbtn = Button(text = "Ordered Linked List")
+            OLLbtn.bind(on_press = lambda x:self.create_group_and_return(my_dict, chosen, "OL", 0))
             layout2.add_widget(Arrbtn)
             layout2.add_widget(LLbtn)
             layout2.add_widget(Qbtn)
             layout2.add_widget(Q2btn)
             layout2.add_widget(Sbtn)
+            layout2.add_widget(AVLbtn)
+            layout2.add_widget(BSTbtn)
+            layout2.add_widget(OLLbtn)
             layout1.add_widget(layout2)
             
 
@@ -458,6 +542,14 @@ class AddGroupW(StackLayout):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+    
+    def create_group_and_return(self, gen_dict:dict, name:str, data_structure:str, size = 0):
+        fsg.create_group(gen_dict, name, data_structure, size)
+
+        sm.add_widget(HomeScreen())
+        sm.transition.direction = "right"
+        sm.current = "Home"
+        sm.remove_widget(sm.children[1])
 
 
 class AddWordContents(BoxLayout):

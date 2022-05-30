@@ -103,10 +103,16 @@ WindowManager:
                 # app.root.current = "Home"
         Button:
             size_hint: .1, 1
+            text:'Practice'
+            on_press: root.onClickStartPractice()
+                # app.root.current = "Loading"
+        Button:
+            size_hint: .1, 1
             text:'Options'
             on_press: 
                 app.root.transition.direction = "left"
                 # app.root.current = "Loading"
+
 
 <BottomRightOptions>:
     size_hint: .15, .1
@@ -186,6 +192,41 @@ WindowManager:
     Label:
         text:''
         size_hint: 1, .5
+
+
+<PracticeScreen>:
+    name: "PracticePage"
+    BoxLayout:
+        # Background Color!
+        orientation:'vertical'
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+            Color: 
+                rgba: 0, 0, 0, 1
+        # TopBar
+        TopBar:
+        # Window Contents
+        # Se manejan con un grid Layout,  en este caso para Home son 3 cols. Las dos primeras para mostrar contenido
+        # Y la última para las opciones de la parte derecha abajo.
+        GridLayout:
+        #BoxLayout:
+            cols: 3
+            rows: 1
+            canvas.before:
+                Color: 
+                    rgba: .1, .1, .1, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            BoxLayout:
+                orientation: "vertical"
+                spacing: "50dp"
+                #pos_hint: {"y": .3}
+
 
 # Estas screens faltan hacerlas!!
 <ViewFlashcardsScreen>:

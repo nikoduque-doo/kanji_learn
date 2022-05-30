@@ -93,19 +93,21 @@ def load_existing_fgroups():
       current_dict["groups"]["ol"] = ol
       current_dict["groups"]["bst"] = bst
       current_dict["groups"]["av"] = av
+      current_dict["groups"]["My adjectives"] = av
 
-    elif False:
-      current_dict["recent"].enqueue(JWord("english", "右", "Noun", "thing", "asd"))
-      current_dict["recent"].enqueue(JWord("english", "壁", "Noun", "thing", "asd"))
-      current_dict["recent"].enqueue(JWord("english", "大きな", "Noun", "thing", "asd"))
-      current_dict["recent"].enqueue(JWord("english", "美しい", "Noun", "thing", "asd"))
-      current_dict["recent"].enqueue(JWord("english", "上手", "Noun", "thing", "asd"))
-      current_dict["recent"].enqueue(JWord("english", "面倒くさい", "Noun", "thing", "asd"))
-      current_dict["recent"].enqueue(JWord("english", "山", "Noun", "thing", "asd"))
-      current_dict["recent"].enqueue(JWord("english", "白", "Noun", "thing", "asd"))
-      current_dict["recent"].enqueue(JWord("english", "海", "Noun", "thing", "asd"))
-      current_dict["recent"].enqueue(JWord("english", "暗い", "Noun", "thing", "asd"))
-      current_dict["recent"].enqueue(JWord("english", "走る", "Noun", "thing", "asd"))
+    if True:#Set to True to add to practice box
+      current_dict["practice_box"] = BinaryHeap()
+      current_dict["practice_box"].insert(JWord("english", "右", "Noun", "thing", "asd"))
+      current_dict["practice_box"].insert(JWord("english", "壁", "Noun", "thing", "asd"))
+      current_dict["practice_box"].insert(JWord("english", "大きな", "Noun", "thing", "asd"))
+      current_dict["practice_box"].insert(JWord("english", "美しい", "Noun", "thing", "asd"))
+      current_dict["practice_box"].insert(JWord("english", "上手", "Noun", "thing", "asd"))
+      current_dict["practice_box"].insert(JWord("english", "面倒くさい", "Noun", "thing", "asd"))
+      current_dict["practice_box"].insert(JWord("english", "山", "Noun", "thing", "asd"))
+      current_dict["practice_box"].insert(JWord("english", "白", "Noun", "thing", "asd"))
+      current_dict["practice_box"].insert(JWord("english", "海", "Noun", "thing", "asd"))
+      current_dict["practice_box"].insert(JWord("english", "暗い", "Noun", "thing", "asd"))
+      current_dict["practice_box"].insert(JWord("english", "走る", "Noun", "thing", "asd"))
 
 
     update_recent_words(current_dict)
@@ -178,6 +180,12 @@ def create_group(gen_dict:dict, name:str, data_structure:str, size = 0):
       groups_dict[name] = LinkList.LinkList()
   elif(data_structure == "S"):
       groups_dict[name] = StaticStack.ArrStack(size)
+  elif(data_structure == "AVL"):
+      groups_dict[name] = AVLTree()
+  elif(data_structure == "BST"):
+      groups_dict[name] = BST()
+  elif(data_structure == "OL"):
+      groups_dict[name] = OrderedLinkList()
     
   save_changes_to_fgroups(gen_dict)
 
@@ -211,29 +219,33 @@ def add_singular_word(struc, item: None, gen_dict):
 def add_word_with_graphic(struc, word, gen_dict):
   word_searched = get_word_data_graphic(word)
   if word_searched != None:
-        for i in range(len(word_searched.word)):
-          if 19968 <= ord(word_searched.word[i]) and ord(word_searched.word[i]) <= 40879:
-            newK = Kanji(word_searched.word[i])
-            newK.link(word_searched)
-            gen_dict["my_kanji"].insert(newK)
-        
+    for i in range(len(word_searched.word)):
+      if 19968 <= ord(word_searched.word[i]) and ord(word_searched.word[i]) <= 40879:
+        newK = Kanji(word_searched.word[i])
+        newK.link(word_searched)
+        gen_dict["my_kanji"].insert(newK)
+    
 
-        wordTreeSize = gen_dict["my_words"].getSize()
-        gen_dict["my_words"].insert(word_searched)
-        if wordTreeSize < gen_dict["my_words"].getSize():
-          gen_dict["recent"].enqueue(word_searched)
-          gen_dict["practice_box"].insert(word_searched)
+    wordTreeSize = gen_dict["my_words"].getSize()
+    gen_dict["my_words"].insert(word_searched)
+    if wordTreeSize < gen_dict["my_words"].getSize():
+      gen_dict["recent"].enqueue(word_searched)
+      gen_dict["practice_box"].insert(word_searched)
 
-        if(type(struc) == dict):
-          struc[word_searched.english] = word_searched
-        elif(type(struc) == list):
-          struc.append(word_searched)
-        elif (type(struc) == ArrQueue.ArrQueue or type(struc) == RefQueue.RefQueue):
-          struc.enqueue(word_searched)
-        elif(type(struc) == LinkList.LinkList):
-          struc.pushBack(word_searched)
-        elif(type(struc) == StaticStack.ArrStack):
-          struc.push(word_searched)
+    if(type(struc) == dict):
+      struc[word_searched.english] = word_searched
+    elif(type(struc) == list):
+      struc.append(word_searched)
+    elif (type(struc) == ArrQueue.ArrQueue or type(struc) == RefQueue.RefQueue):
+      struc.enqueue(word_searched)
+    elif(type(struc) == LinkList.LinkList):
+      struc.pushBack(word_searched)
+    elif(type(struc) == StaticStack.ArrStack):
+      struc.push(word_searched)
+    elif(type(struc) == AVLTree or type(struc) == BST or type(struc) == OrderedLinkList):
+      struc.insert(word_searched)
+
+
 
 def search_word(struc, item):
   item = item.lower()
@@ -399,6 +411,12 @@ def raiseQuestion(jw:JWord):
       valid = True
   return grade
 
+def grade_question_with_graphic(gen_dict, jw:JWord, grade:int):
+  jw.updatePriority(grade)
+  gen_dict["practice_box"].insert(jw)
+  save_changes_to_fgroups(gen_dict)
+
+
 def practice_vocab(gen_dict):
   struc = gen_dict["practice_box"]
   practicing = "Y"
@@ -425,6 +443,30 @@ def practice_vocab(gen_dict):
       practicing = input("Do you want to continue practicing? (Y/N)\n>")
       while practicing != "Y" and practicing != "N":
         practicing = input(">")
+
+def practice_with_graphic(gen_dict):
+  struc = gen_dict["practice_box"]
+  todayID = datetime.now().timetuple().tm_yday + date.today().year*1000
+  if struc.peek() == None:
+    #print("You haven't saved any words yet!")
+    return 0
+  elif struc.peek().getDueDay() > todayID:
+    newID = struc.peek().getDueDay()
+    newYear = int(newID/1000)
+    thisYear = int(todayID/1000)
+    if newYear == thisYear:
+      return newID - todayID
+    else:
+      return thisYear - newYear
+  else:
+    j_word = struc.extractMax()
+    return j_word
+    grade = raiseQuestion(j_word)
+    j_word.updatePriority(grade)
+    struc.insert(j_word)
+
+    #save_changes_to_fgroups(gen_dict)
+
 
 def update_recent_words(gen_dict):
   q = gen_dict["recent"]
