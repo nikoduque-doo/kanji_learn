@@ -383,8 +383,8 @@ def get_groups(gen_dict:dict):
     groupsList.append(thisGroup)
   return groupsList
 
-def access_group(key, groups_dict):
-  groups_dict[key]
+# def access_group(key, groups_dict):
+#   groups_dict[key]
   ## Faltaría poder mostrar todas las palabras guardadas en la estructura 
 
 
