@@ -141,6 +141,9 @@ class WordNotAdded(Screen):
 class NewGroup(Screen):
     pass
 
+class WordInformationScreen(Screen):
+    pass
+
 ##########| Section pertaining group words start |##########
 ############################################################
 
@@ -160,7 +163,18 @@ class AllWordsInsideGroup(StackLayout):
 
     def setWords(self, jw:JWord):
         b = Button(text = jw.word, size_hint=(.5,None), size=(0,dp(40)), font_name='mona')
+        b.bind(on_press = lambda x: self.word_contents(jw))
         self.add_widget(b)
+    
+    def word_contents(self, jw:JWord):
+        global word_data
+        word_data = jw
+        """self.clear_widgets()
+        self.add_widget(WordInformation())"""
+        sm.add_widget(WordInformationScreen())
+        sm.transition.direction = "left"
+        sm.current = "WordInformationScreen"
+        sm.remove_widget(sm.children[1])
 
 
 #This one is found at home screen
