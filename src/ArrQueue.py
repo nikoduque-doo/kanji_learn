@@ -14,7 +14,13 @@ class ArrQueue():
       string += str(self.arr[eye]) + " < "
       eye = (eye + 1) % self.size
     return string
-    
+
+  def traverse(self, f):
+    eye = self.erase
+    while eye != self.write:
+      f(self.arr[eye])
+      eye = (eye + 1) % self.size
+
   def enqueue(self, item):
     if not self.isFull():
       self.arr[self.write] = item

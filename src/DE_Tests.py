@@ -22,10 +22,53 @@ def randKanji(id):
                 "reading {}".format(id))
     return jw
 
-l = [None]*100
+lis = [None]*100
 
 for i in range(100):
-    l[i] = randKanji(i)
+    lis[i] = randKanji(i)
 
-for i in l:
+for i in lis:
     print(i, end=", ")
+print("")
+
+
+s = ArrStack(20)
+q = ArrQueue(20)
+q2 = RefQueue()
+l = LinkList()
+ol = OrderedLinkList()
+bst = BST()
+av = AVLTree()
+b = BinaryHeap()
+for j in range(17):
+    i = lis[j]
+    s.push(i)
+    q.enqueue(i)
+    q2.enqueue(i)
+    l.pushBack(i)
+    ol.insert(i)
+    bst.insert(i)
+    av.insert(i)
+    b.insert(i)
+
+
+
+def print2(jw:JWord):
+    print(jw, end = " | ")
+
+print("\narrStack: \n", s)
+s.traverse(print2)
+print("\narrQueue: \n", q)
+q.traverse(print2)
+print("\nrefQueue: \n", q2)
+q2.traverse(print2)
+print("\nlinked list: \n", l)
+l.traverse(print2)
+print("\nordered linked list: \n", ol)
+ol.traverse(print2)
+print("\nBST: \n", bst)
+bst.traverse(print2)
+print("\nAVL Tree: \n", av)
+av.traverse(print2)
+print("\nBinary heap: \n", b)
+b.traverse(print2)

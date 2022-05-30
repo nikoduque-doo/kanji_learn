@@ -26,7 +26,7 @@ class LinkList:
 
     def traverse(self, f):
         pointer = self.head
-        while self.head != None:
+        while pointer != None:
             f(pointer.getValue())
             pointer = pointer.getNext()
 

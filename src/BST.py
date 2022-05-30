@@ -1,8 +1,8 @@
 from Nodes import BSTNode
 
 class BST:
-  def __init__(self, k):
-    self.root = BSTNode(k)
+  def __init__(self):
+    self.root = None
     self.itemCount = 0
 
   def __str__(self):
