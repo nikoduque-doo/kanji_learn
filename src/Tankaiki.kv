@@ -10,6 +10,13 @@ WindowManager:
     # AddWord:
 
 <FirstScreen>:
+    canvas:
+        Color:
+            rgb: (0.93, 0.93, 0.93)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'images/fondo.png'
     name: "first"
     AnchorLayout:
         padding: ('5dp', '5dp', '5dp', '5dp')
@@ -22,8 +29,10 @@ WindowManager:
                 source: "images/tankaiki.png"
                 allow_stretch: True
             Label:
+                bold: True
                 text:'Tankaiki'
-                font_size: "35"
+                font_size: "55"
+                color: 1,1,1,1
             Button:
                 size_hint: 1, .2
                 text:'Empezar'
