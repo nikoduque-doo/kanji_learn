@@ -93,8 +93,23 @@ WindowManager:
             color: 0 , 0 , 0 , 1
             text:'Tankaiki'
         Label:
-            size_hint: .5, 1
+            size_hint: .3, 1
             text:''
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: .4, 1
+            Label:
+                color:0,0,0,1
+                size_hint: 1, .4
+                text:'Search'
+                #bold: True
+                #color: .5,.5,.5,1
+            TextInput:
+                size_hint: 1, .6
+                id: input
+                text: ""
+                multiline: False
+                #on_text_validate: root.searchvalidate(self, app.root)
         Button:
             size_hint: .1, 1
             text:'Home'
