@@ -654,7 +654,7 @@ if __name__ == "__main__":
 
 
 
-    exit_status = "N"
+    exit_status = "Y"
     while(exit_status=="N"):
         groupReadorAcc = input("What do you want to do?\n\t(C) create a new group of flashcards\n\t(A) access an existing group of flashcards\n\t(P) practice your vocabulary\n>")
         while(groupReadorAcc != "C" and groupReadorAcc != "A" and groupReadorAcc != "P"):
