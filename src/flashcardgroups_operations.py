@@ -516,6 +516,7 @@ def futureDateCode(originalDate, num):
 
 
 def word_range_search(gen_dict, word:str):
+  gen_dict["search_results"].clear()
   results = gen_dict["search_results"]
   kanjiTree = gen_dict["my_kanji"]
   foundWord = None

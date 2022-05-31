@@ -303,6 +303,7 @@ class FlashcardGroupScreenContents(BoxLayout):
 
 
 
+
 class AddWord(Screen):
     def on_pre_enter(self):
         awc = AddWordContents()
@@ -396,7 +397,16 @@ class AllRecentWords(StackLayout):
     
     def setWords(self, jw:JWord):
         b = Button(text = jw.word, size_hint=(.5,None), size=(0,dp(40)), font_name='mona')
+        b.bind(on_press = lambda x: self.word_contents(jw))
         self.add_widget(b)
+    
+    def word_contents(self, jw:JWord):
+        global word_data
+        word_data = jw
+        sm.add_widget(insideSomethingWordInformationScreen())
+        sm.transition.direction = "left"
+        sm.current = "insideView"
+        sm.remove_widget(sm.children[1])
 
 #This one is found at home screen
 class RecentFlashcards(BoxLayout):
@@ -420,7 +430,7 @@ class RecentWordsScreen(Screen):
 
     
     def setWord(self, jw:JWord):
-        b = Button(text = jw.word, size_hint=(.5, .5), font_name='mona')
+        b = Button(text = jw.word, size_hint=(.5, None), font_name='mona')
         self.add_widget(b)
 
     def addRecentWords(self):
@@ -477,11 +487,13 @@ class LabelRecentWords(BoxLayout):
 ###############################################################
 
 class AllSearchResults(StackLayout):
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         if SearchResultsScreen.found_word != None:
             jw = SearchResultsScreen.found_word
             b = Button(text = jw.word, background_color = (1,0,0,1), size_hint=(.5,None), size=(0,dp(40)), font_name='mona')
+            b.bind(on_press = lambda x: self.word_contents(jw))
             self.add_widget(b)
             if my_dict["search_results"].getSize() != 0:
                 my_dict["search_results"].traverse(self.setWords)
@@ -493,7 +505,24 @@ class AllSearchResults(StackLayout):
     
     def setWords(self, jw:JWord):
         b = Button(text = jw.word, size_hint=(.5,None), size=(0,dp(40)), font_name='mona')
+        b.bind(on_press = lambda x: self.word_contents(jw))
         self.add_widget(b)
+    
+    def word_contents(self, jw:JWord):
+        global word_data
+        word_data = jw
+        sm.add_widget(insideSomethingWordInformationScreen())
+        sm.transition.direction = "left"
+        sm.current = "insideView"
+        sm.remove_widget(sm.children[1])
+
+class insideSomethingWordInformationScreen(Screen):
+    pass
+
+class InsideSomethingScreenContents(BoxLayout):
+    def on_pre_enter(self):
+        fcgc = FlashCardGroupContents()
+        fcgc.on_pre_enter()
 
 #This one is found at home screen
 class SearchResults(BoxLayout):
@@ -514,7 +543,6 @@ class SearchResultsScreen(Screen):
         print(self.children)
         self.clear_widgets()
         fgsc = SearchResultsScreenContents()
-        fgsc.on_pre_enter()
         self.add_widget(fgsc)
 
     
@@ -528,7 +556,7 @@ class SearchResultsScreen(Screen):
     @classmethod
     def setText(self, search_term):
         global labelText
-        labelText = "PAP PEP POP PIP PUP"
+        labelText = "persistent"
         SearchResultsScreen.found_word = fsg.word_range_search(my_dict, search_term)
         if sm.current != "SearchResults":
             sm.add_widget(SearchResultsScreen())
@@ -542,38 +570,7 @@ class SearchResultsScreen(Screen):
             sm.current = "SearchResults"
 
 class SearchResultsScreenContents(BoxLayout):
-    def on_pre_enter(self):
-        fcgc = SearchResultsContents()
-        fcgc.on_pre_enter()
-
-class SearchResultsContents(BoxLayout):
-    def on_pre_enter(self):
-        lfcg = LabelSearchResults()
-        lfcg.on_pre_enter()
-
-    # if chosen != None:
-    #     labelText = StringProperty(chosen)
-    # else:
-    #     labelText = StringProperty("No flashcardSelected")
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        
-    def onPressAddButton(self, Widget):
-        # Falta arreglar este botón de navegación!!
-        Widget.current = "AddWord"
-        # groups_dict = my_dict["groups"]
-        # fsg.addAction(groups_dict[chosen], my_dict)
-
-class LabelSearchResults(BoxLayout):
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        l = Label(text=str(labelText), color=(0, 0, 0, 1))
-        self.add_widget(l)
-
-    def on_pre_enter(self):
-        self.clear_widgets()
-        self.__init__()
+    pass
 
 ############################################################
 ##########| Section pertaining search results end |#########

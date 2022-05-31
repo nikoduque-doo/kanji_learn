@@ -363,6 +363,73 @@ WindowManager:
 
         BottomRightOptions:
 
+
+<InsideSomethingScreenContents>:
+    # Background Color!
+    orientation:'vertical'
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+        Color: 
+            rgba: 0, 0, 0, 1
+    # TopBar
+    TopBar:
+    GridLayout:
+        cols: 2
+        rows: 1
+        canvas.before:
+            Color: 
+                rgba: .9, .9, .9, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        BoxLayout:
+            spacing: "50dp"
+            orientation:'vertical'
+            FlashCardGroupContents:
+            ScrollView:
+                size_hint_y: 1
+                AllWordsInsideGroup:
+                    size_hint_y: None
+                    height: self.minimum_height
+        BottomRightOptions:
+
+<insideSomethingWordInformationScreen>:
+    name: "insideView"
+    BoxLayout:
+        # Background Color!
+        orientation:'vertical'
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+            Color: 
+                rgba: 0, 0, 0, 1
+        # TopBar
+        TopBar:
+        # Window Contents
+        # Se manejan con un grid Layout,  en este caso para Home son 3 cols. Las dos primeras para mostrar contenido
+        # Y la última para las opciones de la parte derecha abajo.
+        GridLayout:
+            cols: 2
+            rows: 1
+            canvas.before:
+                Color: 
+                    rgba: .9, .9, .9, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            BoxLayout:
+                orientation:'vertical'
+                WordInformation:
+            BottomRightOptions:
+
+
 <WordInformationScreen>:
     name: "WordInformationScreen"
     BoxLayout:
