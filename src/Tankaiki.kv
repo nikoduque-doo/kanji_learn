@@ -68,6 +68,7 @@ WindowManager:
                 Rectangle:
                     pos: self.pos
                     size: self.size
+                    source: 'images/arbol.jpg'
             BoxLayout:
                 orientation: "vertical"
                 spacing: "50dp"
@@ -111,19 +112,23 @@ WindowManager:
                 multiline: False
                 #on_text_validate: root.searchvalidate(self, app.root)
         Button:
-            size_hint: .1, 1
-            text:'Home'
+            size_hint: .08, 1
+            background_normal: 'images/home2.png'
             on_press: root.onClickHomeButton()
                 # app.root.transition.direction = "right"
                 # app.root.current = "Home"
         Button:
             size_hint: .1, 1
-            text:'Practice'
+            background_normal: 'images/practice.png'
             on_press: root.onClickStartPractice()
                 # app.root.current = "Loading"
+        Label:
+            size_hint: .003, 1
+            text:''
+    
         Button:
             size_hint: .1, 1
-            text:'Options'
+            background_normal: 'images/Options.png'
             on_press: 
                 app.root.transition.direction = "left"
                 # app.root.current = "Loading"
