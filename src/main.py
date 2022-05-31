@@ -83,19 +83,19 @@ class PracticeScreenInteractive(Screen):
                     txt += "\nThe next word will be available tomorrow."
                 else:
                     txt += "\nThe next word will be available in {} days.".fromat(jw)
-                lab1 = Label(text = txt, size_hint=(1,.3))
+                lab1 = Label(pos_hint={'center_x':.5, 'center_y':.5}, text = txt, size_hint=(1,.3), font_size ='30sp')
             else:
                 txt = "The next word will be available in {} years, try adding a new word!".format(jw * -1)
-                lab1 = Label(text = txt, size_hint=(1,.3))
+                lab1 = Label(pos_hint={'center_x':.5, 'center_y':.5}, text = txt, size_hint=(1,.3), font_size ='30sp')
             self.add_widget(lab1)
-            contb = Button(text = "Return home", size_hint=(.5,None), size=(0,dp(40)), pos_hint={"x": .5})
+            contb = Button(text = "Return home", size_hint=(.5,None), size=(0,dp(40)), pos_hint={'center_x':.5})
             contb.bind(on_press = self.returnHome)
             self.add_widget(contb)
         else:
-            jwtxt = "What's the pronunciation for {}? What does it mean?".format(jw.word)
-            lab = Label(text = jwtxt, size_hint=(1,.3), font_name='mona')
+            jwtxt = "What's the pronunciation for \n{}? What does it mean?".format(jw.word)
+            lab = Label(pos_hint={'center_x':.5, 'center_y':.5}, text = jwtxt, size_hint=(1,.3), font_size ='50sp', font_name='mona')
             self.add_widget(lab)
-            b = Button(text = "Show Answer", size_hint=(.5,None), size=(0,dp(40)), pos_hint={"x": 0})
+            b = Button(text = "Show Answer", size_hint=(.5,None), size=(0,dp(40)), pos_hint={'center_x':.5})
             b.bind(on_press = self.showAnswer)
             self.add_widget(b)
             PracticeScreenInteractive.showButton = b
@@ -104,7 +104,7 @@ class PracticeScreenInteractive(Screen):
     
     def getNextButton(self):
         self.clear_widgets()
-        b = Button(text = "Get Question", size_hint=(.5,None), size=(0,dp(40)), pos_hint={"x": .5})
+        b = Button(text = "Get Question", size_hint=(.5,None), size=(0,dp(40)), pos_hint={'center_x':.5})
         b.bind(on_press = self.getNextQuestion)
         self.add_widget(b)
 
@@ -141,7 +141,7 @@ class PracticeScreenInteractive(Screen):
             \n        (4) Correct. Felt dobious, nonetheless.\
             \n        (5) Perfect recall.\
             \n\n\n"+jwtxt
-        lab = Label(text = txt, size_hint=(1,.5), font_name='mona')
+        lab = Label(pos_hint={'center_x':.5, 'center_y':.5}, text = txt, size_hint=(1,.5), font_size ='30sp', font_name='mona')
         self.add_widget(lab)
 
     def gradeQuestion(self, grade):
@@ -201,7 +201,12 @@ class AllWordsInsideGroup(StackLayout):
     def setUp(self):
         self.clear_widgets()
         if AllWordsInsideGroup.struc_key != None:
-            my_dict["groups"][AllWordsInsideGroup.struc_key].traverse(self.setWords)
+            if(type(my_dict["groups"][AllWordsInsideGroup.struc_key]) != list):
+                my_dict["groups"][AllWordsInsideGroup.struc_key].traverse(self.setWords)
+            else:
+                for element in my_dict["groups"][AllWordsInsideGroup.struc_key]:
+                    if element != None:
+                        self.setWords(element)
 
     def setWords(self, jw:JWord):
         b = Button(text = jw.word, size_hint=(.5,None), size=(0,dp(40)), font_name='mona')
@@ -260,6 +265,7 @@ class FlashcardGroupScreen(Screen):
         fgsc = FlashcardGroupScreenContents()
         fgsc.on_pre_enter()
         self.add_widget(fgsc)
+    
 
     
     def setWord(self, jw:JWord):
@@ -286,6 +292,16 @@ class FlashcardGroupScreenContents(BoxLayout):
     def on_pre_enter(self):
         fcgc = FlashCardGroupContents()
         fcgc.on_pre_enter()
+    
+    def onPressGroupDeleteButton(self, instance):
+        print(labelText)
+        my_dict["groups"].pop(labelText)
+        AllWordsInsideGroup.struc_key = None
+        sm.add_widget(HomeScreen())
+        sm.transition.direction = "right"
+        sm.current = "Home"
+        sm.remove_widget(sm.children[1])
+
 
 
 class AddWord(Screen):
@@ -544,9 +560,7 @@ class AddGroupW(StackLayout):
 
     def createFromSize(self, instance):
         size = instance.text
-        print("Check it out " + size + " " + str(size.isnumeric()))
         if(size.isnumeric()):
-            print("This happens")
             self.create_group_and_return(my_dict, self.name, self.struc, int(size))
         else:
             if size == "":
