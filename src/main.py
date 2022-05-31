@@ -82,19 +82,19 @@ class PracticeScreenInteractive(Screen):
                     txt += "\nThe next word will be available tomorrow."
                 else:
                     txt += "\nThe next word will be available in {} days.".fromat(jw)
-                lab1 = Label(text = txt, size_hint=(1,.3))
+                lab1 = Label(pos_hint={'center_x':.5, 'center_y':.5}, text = txt, size_hint=(1,.3), font_size ='30sp')
             else:
                 txt = "The next word will be available in {} years, try adding a new word!".format(jw * -1)
-                lab1 = Label(text = txt, size_hint=(1,.3))
+                lab1 = Label(pos_hint={'center_x':.5, 'center_y':.5}, text = txt, size_hint=(1,.3), font_size ='30sp')
             self.add_widget(lab1)
-            contb = Button(text = "Return home", size_hint=(.5,None), size=(0,dp(40)), pos_hint={"x": .5})
+            contb = Button(text = "Return home", size_hint=(.5,None), size=(0,dp(40)), pos_hint={'center_x':.5})
             contb.bind(on_press = self.returnHome)
             self.add_widget(contb)
         else:
             jwtxt = "What's the pronunciation for {}? What does it mean?".format(jw.word)
             lab = Label(pos_hint={'center_x':.5, 'center_y':.5}, text = jwtxt, size_hint=(1,.3), font_size ='50sp', font_name='mona')
             self.add_widget(lab)
-            b = Button(text = "Show Answer", size_hint=(.5,None), size=(0,dp(40)), pos_hint={"x": 0})
+            b = Button(text = "Show Answer", size_hint=(.5,None), size=(0,dp(40)), pos_hint={'center_x':.5})
             b.bind(on_press = self.showAnswer)
             self.add_widget(b)
             PracticeScreenInteractive.showButton = b
@@ -103,7 +103,7 @@ class PracticeScreenInteractive(Screen):
     
     def getNextButton(self):
         self.clear_widgets()
-        b = Button(text = "Get Question", size_hint=(.5,None), size=(0,dp(40)), pos_hint={"x": .5})
+        b = Button(text = "Get Question", size_hint=(.5,None), size=(0,dp(40)), pos_hint={'center_x':.5})
         b.bind(on_press = self.getNextQuestion)
         self.add_widget(b)
 
