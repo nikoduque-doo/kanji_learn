@@ -259,6 +259,7 @@ class FlashcardGroupScreen(Screen):
         fgsc = FlashcardGroupScreenContents()
         fgsc.on_pre_enter()
         self.add_widget(fgsc)
+    
 
     
     def setWord(self, jw:JWord):
@@ -285,6 +286,16 @@ class FlashcardGroupScreenContents(BoxLayout):
     def on_pre_enter(self):
         fcgc = FlashCardGroupContents()
         fcgc.on_pre_enter()
+    
+    def onPressGroupDeleteButton(self, instance):
+        print(labelText)
+        my_dict["groups"].pop(labelText)
+        AllWordsInsideGroup.struc_key = None
+        sm.add_widget(HomeScreen())
+        sm.transition.direction = "right"
+        sm.current = "Home"
+        sm.remove_widget(sm.children[1])
+
 
 
 class AddWord(Screen):
@@ -543,9 +554,7 @@ class AddGroupW(StackLayout):
 
     def createFromSize(self, instance):
         size = instance.text
-        print("Check it out " + size + " " + str(size.isnumeric()))
         if(size.isnumeric()):
-            print("This happens")
             self.create_group_and_return(my_dict, self.name, self.struc, int(size))
         else:
             if size == "":

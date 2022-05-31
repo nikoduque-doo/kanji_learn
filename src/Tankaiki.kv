@@ -349,6 +349,11 @@ WindowManager:
                 AllWordsInsideGroup:
                     size_hint_y: None
                     height: self.minimum_height
+            Button:
+                text: "Delete"
+                size_hint: .2,.3
+                on_press: root.onPressGroupDeleteButton(app.root)
+
         BottomRightOptions:
 
 <WordInformationScreen>:
