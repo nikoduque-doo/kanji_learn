@@ -142,7 +142,13 @@ class NewGroup(Screen):
     pass
 
 class WordInformationScreen(Screen):
-    pass
+    def onClickDeleteWord(self):
+        groups_dict = my_dict["groups"]
+        fsg.delete_word_graphic(my_dict, groups_dict[labelText], word)
+        sm.add_widget(HomeScreen())
+        sm.transition.direction = "right"
+        sm.current = "Home"
+        sm.remove_widget(sm.children[1])
 
 ##########| Section pertaining group words start |##########
 ############################################################
@@ -589,9 +595,9 @@ class AddWordContents(BoxLayout):
              sm.current = "WordConfirmation"
              sm.remove_widget(sm.children[1])
          else:
-             sm.add_widget(WordNotAdded())
+             sm.add_widget(HomeScreen())
              sm.transition.direction = "left"
-             sm.current = "WordNotAdded"
+             sm.current = "Home"
              sm.remove_widget(sm.children[1])
 
 
@@ -607,6 +613,8 @@ class WordInformation(BoxLayout):
         self.__init__()
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        global word
+        word = word_data.english
         l1 = Label(text = "English: " + word_data.english, color = (0, 0, 0, 1))
         self.add_widget(l1)
         l2 = Label(text = "Japanese writing: " + word_data.word, font_name='mona', color = (0, 0, 0, 1))

@@ -291,6 +291,21 @@ def delete_word(struc, item):
   elif(type(struc) == StaticStack.ArrStack):
     StaticStack.stack_delete(item, struc)
 
+def delete_word_graphic(my_dict, struc, item):
+  if(type(struc) == dict):
+    struc.pop(item)
+  elif(type(struc) == list):
+    for element in struc:
+      if element is not None and element.english == item:
+        struc.remove(element)
+  elif (type(struc) == ArrQueue.ArrQueue or type(struc) == RefQueue.RefQueue):
+    ArrQueue.queue_delete(item, struc)
+  elif(type(struc) == LinkList.LinkList):
+    struc.remove(item)
+  elif(type(struc) == StaticStack.ArrStack):
+    StaticStack.stack_delete(item, struc)
+  save_changes_to_fgroups(my_dict)
+
 def get_random_word(struc):
   if(type(struc) == dict):
     key, val = random.choice(list(struc.items()))

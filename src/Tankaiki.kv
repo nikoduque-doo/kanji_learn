@@ -370,7 +370,7 @@ WindowManager:
         # Se manejan con un grid Layout,  en este caso para Home son 3 cols. Las dos primeras para mostrar contenido
         # Y la última para las opciones de la parte derecha abajo.
         GridLayout:
-            cols: 3
+            cols: 2
             rows: 1
             canvas.before:
                 Color: 
@@ -378,7 +378,14 @@ WindowManager:
                 Rectangle:
                     pos: self.pos
                     size: self.size
-            WordInformation:
+            BoxLayout:
+                orientation:'vertical'
+                WordInformation:
+                Button:
+                    text:'Delete Word'
+                    size_hint: .3, .1
+                    on_press: root.onClickDeleteWord()
+            BottomRightOptions:
 
 
 <FlashCardGroupContents>:
