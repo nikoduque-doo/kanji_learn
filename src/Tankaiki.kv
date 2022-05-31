@@ -103,10 +103,12 @@ WindowManager:
                 #bold: True
                 #color: .5,.5,.5,1
             TextInput:
+                font_name: 'mona'
                 size_hint: 1, .6
                 id: input
                 text: ""
                 multiline: False
+                on_text_validate: root.onSearch(self)
                 #on_text_validate: root.searchvalidate(self, app.root)
         Label:
             size_hint: .01, 1
@@ -414,18 +416,6 @@ WindowManager:
 
 
 
-##########| Section pertaining group words start |##########
-############################################################
-
-
-
-
-
-##########################################################
-##########| Section pertaining group words end |##########
-
-
-
 ##########| Section pertaining recent words start |##########
 #############################################################
 
@@ -465,6 +455,54 @@ WindowManager:
 
 ###########################################################
 ##########| Section pertaining recent words end |##########
+
+
+##########| Section pertaining search results start |##########
+###############################################################
+
+<AllSearchResults>:
+    size_hint_y: None
+    height: self.minimum_height
+
+<SearchResultsScreen@Screen>:
+    name: "SearchResults"
+
+<SearchResultsScreenContents>:
+    # Background Color!
+    orientation:'vertical'
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+        Color: 
+            rgba: 0, 0, 0, 1
+    # TopBar
+    TopBar:
+    GridLayout:
+        cols: 2
+        rows: 1
+        canvas.before:
+            Color: 
+                rgba: .9, .9, .9, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        BoxLayout:
+            orientation: "vertical"
+            Label:
+                size_hint: 1, .2
+                text: "Search results"
+                color: 0 , 0 , 0 , 1
+            ScrollView:
+                size_hint_y: 1
+                AllSearchResults:
+        BottomRightOptions:
+
+#############################################################
+##########| Section pertaining search results end |##########
+
 
 
 <ViewAllWords>: ## Crear en Python!!

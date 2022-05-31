@@ -71,7 +71,6 @@ class PracticeScreenInteractive(Screen):
     questionText = None
 
     def getNextQuestion(self, self2=None):
-        fsg.word_range_search(my_dict, "電車")
         self.clear_widgets()
         jw = fsg.practice_with_graphic(my_dict)
         if isinstance(jw, int):
@@ -474,6 +473,112 @@ class LabelRecentWords(BoxLayout):
 ##########| Section pertaining recent words end |##########
 
 
+##########| Section pertaining search results start |##########
+###############################################################
+
+class AllSearchResults(StackLayout):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        if SearchResultsScreen.found_word != None:
+            jw = SearchResultsScreen.found_word
+            b = Button(text = jw.word, background_color = (1,0,0,1), size_hint=(.5,None), size=(0,dp(40)), font_name='mona')
+            self.add_widget(b)
+            if my_dict["search_results"].getSize() != 0:
+                my_dict["search_results"].traverse(self.setWords)
+        elif my_dict["search_results"].getSize() == 0:
+            lb = Label(text = "- Nothing -", color = (.4,.4,.4,1), size_hint=(1,None), size=(0,dp(40)), font_name='mona')
+            self.add_widget(lb)
+        else:
+            my_dict["search_results"].traverse(self.setWords)
+    
+    def setWords(self, jw:JWord):
+        b = Button(text = jw.word, size_hint=(.5,None), size=(0,dp(40)), font_name='mona')
+        self.add_widget(b)
+
+#This one is found at home screen
+class SearchResults(BoxLayout):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        struc_size = str(fsg.getSizeOfGroup(my_dict["recent"]))
+        b = Button(text="Recently added"+": "+struc_size, size_hint=(.5,None), size=(0,dp(40)))
+        b.bind(on_release = SearchResults.onClickButton)
+        self.add_widget(b)
+
+    def onClickButton(obj):
+        SearchResultsScreen.setText("Search Results")
+
+class SearchResultsScreen(Screen):
+    found_word = None
+
+    def on_pre_enter(self):
+        print(self.children)
+        self.clear_widgets()
+        fgsc = SearchResultsScreenContents()
+        fgsc.on_pre_enter()
+        self.add_widget(fgsc)
+
+    
+    def setWord(self, jw:JWord):
+        b = Button(text = jw.word, size_hint=(.5, .5), font_name='mona')
+        self.add_widget(b)
+
+    def addRecentWords(self):
+        my_dict["recent"].traverse(self.setWord)
+
+    @classmethod
+    def setText(self, search_term):
+        global labelText
+        labelText = "PAP PEP POP PIP PUP"
+        SearchResultsScreen.found_word = fsg.word_range_search(my_dict, search_term)
+        if sm.current != "SearchResults":
+            sm.add_widget(SearchResultsScreen())
+            sm.transition.direction = "left"
+            sm.current = "SearchResults"
+            sm.remove_widget(sm.children[1])
+        else:
+            sm.remove_widget(sm.children[0])
+            sm.add_widget(SearchResultsScreen())
+            sm.transition.direction = "left"
+            sm.current = "SearchResults"
+
+class SearchResultsScreenContents(BoxLayout):
+    def on_pre_enter(self):
+        fcgc = SearchResultsContents()
+        fcgc.on_pre_enter()
+
+class SearchResultsContents(BoxLayout):
+    def on_pre_enter(self):
+        lfcg = LabelSearchResults()
+        lfcg.on_pre_enter()
+
+    # if chosen != None:
+    #     labelText = StringProperty(chosen)
+    # else:
+    #     labelText = StringProperty("No flashcardSelected")
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        
+    def onPressAddButton(self, Widget):
+        # Falta arreglar este botón de navegación!!
+        Widget.current = "AddWord"
+        # groups_dict = my_dict["groups"]
+        # fsg.addAction(groups_dict[chosen], my_dict)
+
+class LabelSearchResults(BoxLayout):
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        l = Label(text=str(labelText), color=(0, 0, 0, 1))
+        self.add_widget(l)
+
+    def on_pre_enter(self):
+        self.clear_widgets()
+        self.__init__()
+
+############################################################
+##########| Section pertaining search results end |#########
+
+
 class NewGroup(Screen):
     pass
 
@@ -494,6 +599,11 @@ class TopBar(BoxLayout):
             sm.transition.direction = "left"
             sm.current = "PracticePage"
             sm.remove_widget(sm.children[1])
+    
+    def onSearch(self, this):
+        searchTerm = this.text.strip()
+        if searchTerm != "":
+            SearchResultsScreen.setText(searchTerm)
     
         
 
