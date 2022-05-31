@@ -39,7 +39,10 @@ class JWord:
 
   def __eq__(self, other):
     if other != None:
-      return self.compare(self.word, other.word) == 0
+      if type(other) == JWord:
+        return self.compare(self.word, other.word) == 0
+      else:
+        return self.compare(self.word, other) == 0
     return False
   
   def rise(self, num = 1):
@@ -111,20 +114,30 @@ class Kanji:
     return self.char
 
   def __gt__(self, other):
-    return self.char > other.char
+    if type(other) == Kanji:
+      return self.char > other.char
+    return self.char > other
 
   def __ge__(self, other):
-    return self.char >= other.char
+    if type(other) == Kanji:
+      return self.char >= other.char
+    return self.char >= other
 
   def __lt__(self, other):
-    return self.char < other.char
+    if type(other) == Kanji:
+      return self.char < other.char
+    return self.char < other
 
   def __le__(self, other):
-    return self.char <= other.char
+    if type(other) == Kanji:
+      return self.char <= other.char
+    return self.char <= other
 
   def __eq__(self, other):
     if other != None:
-      return self.char == other.char
+      if type(other) == Kanji:
+        return self.char == other.char
+      return self.char == other
     return False
 
   def link(self, word):

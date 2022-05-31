@@ -85,3 +85,8 @@ class OrderedLinkList():
         l.append(self.position.getValue())
       self.next()
     return l
+  
+  def clear(self):
+    self.head = None
+    self.itemCount = 0
+    self.position = self.head

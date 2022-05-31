@@ -51,7 +51,7 @@ def load_existing_fgroups():
     if not "recent" in current_dict:
       current_dict["recent"] = RefQueue.RefQueue()
     if not "search_results" in current_dict:
-      current_dict["search_results"] = LinkList.LinkList()
+      current_dict["search_results"] = OrderedLinkList()
 
     #Artifitial creation of structures for test
     if False: #False to deactivate
@@ -196,9 +196,13 @@ def add_singular_word(struc, item: None, gen_dict):
     if word_searched != None:
         for i in range(len(word_searched.word)):
           if 19968 <= ord(word_searched.word[i]) and ord(word_searched.word[i]) <= 40879:
-            newK = Kanji(word_searched.word[i])
-            newK.link(word_searched)
-            gen_dict["my_kanji"].insert(newK)
+            kanji = gen_dict["my_kanji"].search(word_searched.word[i])
+            if kanji != None:
+              kanji.link(word_searched)
+            else:
+              newK = Kanji(word_searched.word[i])
+              newK.link(word_searched)
+              gen_dict["my_kanji"].insert(newK)
         
 
         wordTreeSize = gen_dict["my_words"].getSize()
@@ -225,9 +229,13 @@ def add_word_with_graphic(struc, word, gen_dict):
   if word_searched != None:
     for i in range(len(word_searched.word)):
       if 19968 <= ord(word_searched.word[i]) and ord(word_searched.word[i]) <= 40879:
-        newK = Kanji(word_searched.word[i])
-        newK.link(word_searched)
-        gen_dict["my_kanji"].insert(newK)
+        kanji = gen_dict["my_kanji"].search(word_searched.word[i])
+        if kanji != None:
+          kanji.link(word_searched)
+        else:
+          newK = Kanji(word_searched.word[i])
+          newK.link(word_searched)
+          gen_dict["my_kanji"].insert(newK)
     
 
     wordTreeSize = gen_dict["my_words"].getSize()
@@ -505,3 +513,26 @@ def futureDateCode(originalDate, num):
   days = limit if days == 0 else days
 
   return ((year+yearIncrease)*1000) + days
+
+
+def word_range_search(gen_dict, word:str):
+  results = gen_dict["search_results"]
+  kanjiTree = gen_dict["my_kanji"]
+  foundWord = None
+  for i in word:
+    kanji = None
+    if 19968 <= ord(i) and ord(i) <= 40879:
+      kanji = kanjiTree.search(i)
+    if kanji != None:
+      kanjiRelatives = kanji.tree.toStack()
+      while not kanjiRelatives.isEmpty():
+        if kanjiRelatives.top() == word:
+          foundWord = kanjiRelatives.pop()
+        else:
+          results.insert(kanjiRelatives.pop())
+
+  print(results, foundWord)
+  return foundWord
+  
+     
+

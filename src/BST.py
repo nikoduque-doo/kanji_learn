@@ -1,4 +1,5 @@
 from Nodes import BSTNode
+from StaticStack import ArrStack
 
 class BST:
   def __init__(self):
@@ -32,16 +33,36 @@ class BST:
     if node.getRight() != None:
       self.recursiveTraverse(f, node.getRight())
 
+  def toStack(self):
+    stack = ArrStack(size = self.itemCount)
+    self.recursiveToStack(stack, self.root)
+    return stack
+
+  def recursiveToStack(self, stack, node):
+    if node.getLeft() != None:
+      self.recursiveToStack(stack, node.getLeft())
+    stack.push(node.getKey())
+    if node.getRight() != None:
+      self.recursiveToStack(stack, node.getRight())
+
 
   def getSize(self):
     return self.itemCount
 
   def find(self, k, root):
-    if root > k and root.getLeft() != None:
-        return self.find(k, root.getLeft())
-    elif root < k and root.getRight() != None:
-        return self.find(k, root.getRight())
+    if root != None:
+      if root > k and root.getLeft() != None:
+          return self.find(k, root.getLeft())
+      elif root < k and root.getRight() != None:
+          return self.find(k, root.getRight())
     return root
+  
+  def search(self, k):
+    result = self.find(k, self.root)
+    if result != None:
+      if result.getKey() == k:
+        return result.getKey()
+    return None
 
   def leftDescendant(self, node):
     if node.getLeft() != None:
@@ -105,7 +126,7 @@ class BST:
         else:
           self.root = node.getLeft()
 
-  def rangeSearch(self, min, max):
+  def rangeSearch1(self, min, max):
     l = []
     node = self.find(min, self.root)
     while node != None and node <= max:
@@ -113,3 +134,12 @@ class BST:
         l.append(node.getKey())
       node = self.getNext(node)
     return l
+
+  def rangeSearch(self, min, max):
+    s = ArrStack(100)
+    node = self.find(min, self.root)
+    while node != None and node <= max:
+      if node >= min:
+        s.push(node.getKey())
+      node = self.getNext(node)
+    return s

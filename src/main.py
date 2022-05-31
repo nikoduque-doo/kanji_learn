@@ -71,6 +71,7 @@ class PracticeScreenInteractive(Screen):
     questionText = None
 
     def getNextQuestion(self, self2=None):
+        fsg.word_range_search(my_dict, "電車")
         self.clear_widgets()
         jw = fsg.practice_with_graphic(my_dict)
         if isinstance(jw, int):
