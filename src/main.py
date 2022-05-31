@@ -92,7 +92,7 @@ class PracticeScreenInteractive(Screen):
             self.add_widget(contb)
         else:
             jwtxt = "What's the pronunciation for {}? What does it mean?".format(jw.word)
-            lab = Label(text = jwtxt, size_hint=(1,.3), font_name='mona')
+            lab = Label(pos_hint={'center_x':.5, 'center_y':.5}, text = jwtxt, size_hint=(1,.3), font_size ='50sp', font_name='mona')
             self.add_widget(lab)
             b = Button(text = "Show Answer", size_hint=(.5,None), size=(0,dp(40)), pos_hint={"x": 0})
             b.bind(on_press = self.showAnswer)
@@ -140,7 +140,7 @@ class PracticeScreenInteractive(Screen):
             \n        (4) Correct. Felt dobious, nonetheless.\
             \n        (5) Perfect recall.\
             \n\n\n"+jwtxt
-        lab = Label(text = txt, size_hint=(1,.5), font_name='mona')
+        lab = Label(pos_hint={'center_x':.5, 'center_y':.5}, text = txt, size_hint=(1,.5), font_size ='30sp', font_name='mona')
         self.add_widget(lab)
 
     def gradeQuestion(self, grade):
