@@ -93,9 +93,6 @@ WindowManager:
             size_hint: .15, 1
             color: 0 , 0 , 0 , 1
             text:'Tankaiki'
-        Label:
-            size_hint: .3, 1
-            text:''
         BoxLayout:
             orientation: 'vertical'
             size_hint: .4, 1
@@ -111,6 +108,9 @@ WindowManager:
                 text: ""
                 multiline: False
                 #on_text_validate: root.searchvalidate(self, app.root)
+        Label:
+            size_hint: .01, 1
+            text:''
         Button:
             size_hint: .08, 1
             background_normal: 'images/home2.png'
