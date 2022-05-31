@@ -91,7 +91,7 @@ class PracticeScreenInteractive(Screen):
             contb.bind(on_press = self.returnHome)
             self.add_widget(contb)
         else:
-            jwtxt = "What's the pronunciation for {}? What does it mean?".format(jw.word)
+            jwtxt = "What's the pronunciation for \n{}? What does it mean?".format(jw.word)
             lab = Label(pos_hint={'center_x':.5, 'center_y':.5}, text = jwtxt, size_hint=(1,.3), font_size ='50sp', font_name='mona')
             self.add_widget(lab)
             b = Button(text = "Show Answer", size_hint=(.5,None), size=(0,dp(40)), pos_hint={'center_x':.5})
