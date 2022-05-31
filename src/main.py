@@ -200,7 +200,12 @@ class AllWordsInsideGroup(StackLayout):
     def setUp(self):
         self.clear_widgets()
         if AllWordsInsideGroup.struc_key != None:
-            my_dict["groups"][AllWordsInsideGroup.struc_key].traverse(self.setWords)
+            if(type(my_dict["groups"][AllWordsInsideGroup.struc_key]) != list):
+                my_dict["groups"][AllWordsInsideGroup.struc_key].traverse(self.setWords)
+            else:
+                for element in my_dict["groups"][AllWordsInsideGroup.struc_key]:
+                    if element != None:
+                        self.setWords(element)
 
     def setWords(self, jw:JWord):
         b = Button(text = jw.word, size_hint=(.5,None), size=(0,dp(40)), font_name='mona')
