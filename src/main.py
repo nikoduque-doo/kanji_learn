@@ -81,7 +81,7 @@ class PracticeScreenInteractive(Screen):
                 if jw == 1:
                     txt += "\nThe next word will be available tomorrow."
                 else:
-                    txt += "\nThe next word will be available in {} days.".fromat(jw)
+                    txt += "\nThe next word will be available in {} days.".format(jw)
                 lab1 = Label(pos_hint={'center_x':.5, 'center_y':.5}, text = txt, size_hint=(1,.3), font_size ='30sp')
             else:
                 txt = "The next word will be available in {} years, try adding a new word!".format(jw * -1)
