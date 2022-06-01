@@ -98,7 +98,7 @@ def load_existing_fgroups():
       current_dict["groups"]["av"] = av
       current_dict["groups"]["My adjectives"] = av
 
-    if True:#Set to True to add to practice box
+    if False:#Set to True to add to practice box
       current_dict["practice_box"] = BinaryHeap()
       current_dict["practice_box"].insert(JWord("english", "右", "Noun", "thing", "asd"))
       current_dict["practice_box"].insert(JWord("english", "壁", "Noun", "thing", "asd"))
