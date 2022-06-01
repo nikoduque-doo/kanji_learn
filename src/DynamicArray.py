@@ -59,3 +59,6 @@ class DynamicArray():
     def traverse(self, f):
         for i in range(self.itemCount):
             f(self.arr[i])
+
+    def getSize(self):
+        return self.itemCount
