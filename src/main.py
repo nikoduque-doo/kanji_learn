@@ -772,28 +772,37 @@ class WordInformation(BoxLayout):
         super().__init__(**kwargs)
         global word
         word = word_data.english
-        l1 = Label(text = "English: " + word_data.english, color = (0, 0, 0, 1))
-        self.add_widget(l1)
-        l2 = Label(text = "Japanese writing: " + word_data.word, font_name='mona', color = (0, 0, 0, 1))
-        self.add_widget(l2)
-        l3 = Label(text = "Reading: " + word_data.reading, font_name='mona', color = (0, 0, 0, 1))
-        self.add_widget(l3)
-        l4 = Label(text = "Part of speech: " + word_data.part_of_speech, color = (0, 0, 0, 1))
-        self.add_widget(l4)
-        l5 = Label(text = "Meaning: " + word_data.meaning, color = (0, 0, 0, 1))
-        self.add_widget(l5)
+        global wordInformationFound
+        if word_data.english != None and word_data.word != None and word_data.reading != None and word_data.part_of_speech != None and word_data.meaning != None:
+            wordInformationFound = True
+            l1 = Label(text = "English: " + word_data.english, color = (0, 0, 0, 1))
+            self.add_widget(l1)
+            l2 = Label(text = "Japanese writing: " + word_data.word, font_name='mona', color = (0, 0, 0, 1))
+            self.add_widget(l2)
+            l3 = Label(text = "Reading: " + word_data.reading, font_name='mona', color = (0, 0, 0, 1))
+            self.add_widget(l3)
+            l4 = Label(text = "Part of speech: " + word_data.part_of_speech, color = (0, 0, 0, 1))
+            self.add_widget(l4)
+            l5 = Label(text = "Meaning: " + word_data.meaning, color = (0, 0, 0, 1))
+            self.add_widget(l5)
+        else:
+            wordInformationFound = False
+            l1 = Label(text="We had a problem looking for that word. Try again with another one", color = (0, 0, 0, 1))
+            self.add_widget(l1)
 
 
 #self.english, self.word, self.reading, self.part_of_speech, self.meaning
 class WordConfirmationButtons(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        bYes = Button(text = "Save Word")
-        bYes.bind(on_release = self.saveWord)
-        self.add_widget(bYes)
-        bNo = Button(text = "Don't save word")
-        bNo.bind(on_release = self.notSaveWord)
-        self.add_widget(bNo)
+        global wordInformationFound
+        if  wordInformationFound:
+            bYes = Button(text = "Save Word")
+            bYes.bind(on_release = self.saveWord)
+            self.add_widget(bYes)
+            bNo = Button(text = "Don't save word")
+            bNo.bind(on_release = self.notSaveWord)
+            self.add_widget(bNo)
 
     def saveWord(self, instance):
         groups_dict = my_dict["groups"]
