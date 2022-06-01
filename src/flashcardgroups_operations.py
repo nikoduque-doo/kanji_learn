@@ -4,6 +4,7 @@ from Vocabulary import Kanji, JWord
 from AVLTree import AVLTree, BST
 from BinaryHeap import BinaryHeap
 from OrderedLinkList import OrderedLinkList
+from DynamicArray import DynamicArray
 from random import randint as r
 import os.path
 import platform
@@ -173,7 +174,7 @@ def create_group(gen_dict:dict, name:str, data_structure:str, size = 0):
   if(data_structure == "D"):
       groups_dict[name] = {}
   elif(data_structure == "A"):
-      groups_dict[name] = [None]*(size)
+      groups_dict[name] = DynamicArray()
   elif(data_structure == "Q"):
       groups_dict[name] = ArrQueue.ArrQueue(size)
   elif(data_structure == "Q2"):
@@ -213,8 +214,8 @@ def add_singular_word(struc, item: None, gen_dict):
 
         if(type(struc) == dict):
           struc[word_searched.english] = word_searched
-        elif(type(struc) == list):
-          struc.append(word_searched)
+        elif(type(struc) == DynamicArray):
+          struc.insert(word_searched)
         elif (type(struc) == ArrQueue.ArrQueue or type(struc) == RefQueue.RefQueue):
           struc.enqueue(word_searched)
         elif(type(struc) == LinkList.LinkList):
@@ -246,8 +247,8 @@ def add_word_with_graphic(struc, word, gen_dict):
 
     if(type(struc) == dict):
       struc[word_searched.english] = word_searched
-    elif(type(struc) == list):
-      struc.append(word_searched)
+    elif(type(struc) == DynamicArray):
+      struc.insert(word_searched)
     elif (type(struc) == ArrQueue.ArrQueue or type(struc) == RefQueue.RefQueue):
       struc.enqueue(word_searched)
     elif(type(struc) == LinkList.LinkList):
@@ -264,11 +265,8 @@ def search_word(struc, item):
   start_time = time.perf_counter_ns()
   
   found = False
-  if(type(struc) == list):
-    for element in struc:
-      if element is not None and element.english == item:
-        found = True
-        break
+  if(type(struc) == DynamicArray):
+    found = struc.findKanji(item)
   elif(type(struc) == dict):
     found = item in struc
   elif (type(struc) == ArrQueue.ArrQueue or type(struc) == RefQueue.RefQueue):
@@ -288,10 +286,8 @@ def search_word(struc, item):
 def delete_word(struc, item):
   if(type(struc) == dict):
     struc.pop(item)
-  elif(type(struc) == list):
-    for element in struc:
-      if element is not None and element.english == item:
-        struc.remove(element)
+  elif(type(struc) == DynamicArray):
+    struc.deleteKanji(item)
   elif (type(struc) == ArrQueue.ArrQueue or type(struc) == RefQueue.RefQueue):
     ArrQueue.queue_delete(item, struc)
   elif(type(struc) == LinkList.LinkList):
@@ -302,10 +298,8 @@ def delete_word(struc, item):
 def delete_word_graphic(my_dict, struc, item):
   if(type(struc) == dict):
     struc.pop(item)
-  elif(type(struc) == list):
-    for element in struc:
-      if element is not None and element.english == item:
-        struc.remove(element)
+  elif(type(struc) == DynamicArray):
+    struc.deleteKanji(item)
   elif (type(struc) == ArrQueue.ArrQueue or type(struc) == RefQueue.RefQueue):
     ArrQueue.queue_delete(item, struc)
   elif(type(struc) == LinkList.LinkList):
@@ -351,14 +345,7 @@ def access_group(gen_dict:dict):
         save_changes_to_fgroups(gen_dict)
 
     elif(operation == "P"):
-        if type(groups_dict[key_access]) == list:
-            print(key_access, end= ": ")
-            for item in groups_dict[key_access]:
-              if item is not None:
-                print(item, end= " ")
-            print()
-        else:
-            print("{}: {}".format(key_access, groups_dict[key_access]))
+        print("{}: {}".format(key_access, groups_dict[key_access]))
     
     elif(operation == "D"):
       groups_dict.pop(key_access)

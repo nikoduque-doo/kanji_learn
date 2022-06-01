@@ -81,7 +81,7 @@ class PracticeScreenInteractive(Screen):
                 if jw == 1:
                     txt += "\nThe next word will be available tomorrow."
                 else:
-                    txt += "\nThe next word will be available in {} days.".fromat(jw)
+                    txt += "\nThe next word will be available in {} days.".format(jw)
                 lab1 = Label(pos_hint={'center_x':.5, 'center_y':.5}, text = txt, size_hint=(1,.3), font_size ='30sp')
             else:
                 txt = "The next word will be available in {} years, try adding a new word!".format(jw * -1)
@@ -686,7 +686,7 @@ class AddGroupW(StackLayout):
 
             layout2 = BoxLayout(orientation='vertical')
             Arrbtn = Button(text = "Array")
-            Arrbtn.bind(on_press = lambda x: self.ask_size(chosen, "A"))
+            Arrbtn.bind(on_press = lambda x:self.create_group_and_return(my_dict, chosen, "A", 0))
             LLbtn = Button(text = "Linked List")
             LLbtn.bind(on_press = lambda x:self.create_group_and_return(my_dict, chosen, "L", 0))
             Qbtn = Button(text = "Queue")
