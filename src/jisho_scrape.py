@@ -1,6 +1,6 @@
 from jisho_api.word import Word
 from Vocabulary import JWord
-import os.path
+#import os.path
 import json
 #utilizando el api de el diccionario Jisho, se extraen datos de la página (scraping) y se organizan en un
 #diccionario. Este diccionario luego es introducido en otro diccionario que se pasa como argumento

@@ -1,30 +1,30 @@
 import flashcardgroups_operations as fsg
-from unicodedata import name, numeric
-from random import randint as r
+#from unicodedata import name, numeric
+#from random import randint as r
 from Vocabulary import JWord
-from cProfile import label
-from cgitb import text
-from tkinter import N
+#from cProfile import label
+#from cgitb import text
+#from tkinter import N
 import platform
 import sys
 import os
 
 
 from kivy.app import App
-from kivy.lang import Builder
-from kivy.properties import StringProperty
+#from kivy.lang import Builder
+#from kivy.properties import StringProperty
 from kivy.metrics import dp
 from kivy.core.text import LabelBase
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.stacklayout import StackLayout
-from kivy.uix.gridlayout import GridLayout
+#from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
-from kivy.uix.scrollview import ScrollView
-from kivy.config import Config
-from kivy.uix.floatlayout import FloatLayout
+#from kivy.uix.scrollview import ScrollView
+#from kivy.config import Config
+#from kivy.uix.floatlayout import FloatLayout
 
 sys.setrecursionlimit(1000000000)
 

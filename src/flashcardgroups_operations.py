@@ -1,5 +1,5 @@
 from datetime import timedelta, datetime, date
-from keyword import iskeyword
+#from keyword import iskeyword
 from Vocabulary import Kanji, JWord
 from AVLTree import AVLTree, BST
 from BinaryHeap import BinaryHeap

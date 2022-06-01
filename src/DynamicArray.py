@@ -1,4 +1,4 @@
-from re import S
+#from re import S
 
 
 class DynamicArray():
