@@ -52,6 +52,8 @@ def load_existing_fgroups():
       current_dict["recent"] = RefQueue.RefQueue()
     if not "search_results" in current_dict:
       current_dict["search_results"] = OrderedLinkList()
+    if not "testingarray" in current_dict:
+      current_dict["testingarray"] = []
 
     #Artifitial creation of structures for test
     if False: #False to deactivate
@@ -144,7 +146,7 @@ def get_word_data_graphic(word):
   return word_to_be_added
 
 
-"""def create_group(gen_dict:dict):
+def create_group_console(gen_dict:dict):
     name = input("Name your flashcard group: ")
     data_structure = input("What Data Structure would you like to create it as? \n\tS = Stack\n\tQ = Queue\n\tQ2 = Reference Queue\n\tL = Linked List\n\tA = Array\n>")
     groups_dict = gen_dict["groups"]
@@ -165,7 +167,7 @@ def get_word_data_graphic(word):
         size = int(input("How many elements would you like to add? "))
         groups_dict[name] = StaticStack.ArrStack(size)
     
-    save_changes_to_fgroups(gen_dict)"""
+    save_changes_to_fgroups(gen_dict)
 
 def create_group(gen_dict:dict, name:str, data_structure:str, size = 0):
   groups_dict = gen_dict["groups"]
@@ -382,16 +384,29 @@ def access_group(gen_dict:dict):
       print(end_time - start_time, "ns")
 
     elif(operation == "dev"):
-      filename = input("filename = ")
+      """filename = input("filename = ")
       fileused = open(os.path.dirname(__file__) + "/../data/" + filename, "r")
       file_list = [line.rstrip('\n') for line in fileused]
-      fileused.close()
+      fileused.close()"""
+      file_list = gen_dict["testingarray"]
+      struc = groups_dict[key_access]
       counter = 0
       
       start_time = time.monotonic()
-      for item in file_list:
+      for word_searched in file_list:
         counter += 1
-        add_singular_word(groups_dict[key_access], item)
+        if(type(struc) == dict):
+          struc[word_searched.english] = word_searched
+        elif(type(struc) == list):
+          struc.append(word_searched)
+        elif (type(struc) == ArrQueue.ArrQueue or type(struc) == RefQueue.RefQueue):
+          struc.enqueue(word_searched)
+        elif(type(struc) == LinkList.LinkList):
+          struc.pushBack(word_searched)
+        elif(type(struc) == StaticStack.ArrStack):
+          struc.push(word_searched)
+        elif(type(struc) == AVLTree or type(struc) == BST or type(struc) == OrderedLinkList):
+          struc.insert(word_searched)
         print("{}/{}".format(counter, len(file_list)))
         save_changes_to_fgroups(gen_dict)
       end_time = time.monotonic()
@@ -534,6 +549,26 @@ def word_range_search(gen_dict, word:str):
 
   print(results, foundWord)
   return foundWord
+
+
+def fill_test_array(gen_dict:dict):
+  filename = input("filename = ")
+  fileused = open(os.path.dirname(__file__) + "/../data/" + filename, "r")
+  file_list = [line.rstrip('\n') for line in fileused]
+  fileused.close()
+  counter = 0
+  arrayT = gen_dict["testingarray"]
+      
+  start_time = time.monotonic()
+  for item in file_list:
+    counter += 1
+    add_singular_word(arrayT, item, gen_dict)
+    print("{}/{}".format(counter, len(file_list)))
+    save_changes_to_fgroups(gen_dict)
+  add_singular_word(arrayT, "idiot", gen_dict)
+  save_changes_to_fgroups(gen_dict)
+  end_time = time.monotonic()
+  print(timedelta(seconds=end_time - start_time))
   
      
 
