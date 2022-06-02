@@ -828,17 +828,16 @@ if __name__ == "__main__":
 
 
 
-    exit_status = "N"
+    exit_status = "Y"
     while(exit_status=="N"):
         groupReadorAcc = input("What do you want to do?\n\t(C) create a new group of flashcards\n\t(A) access an existing group of flashcards\n\t(P) practice your vocabulary\n>")
-        while(groupReadorAcc != "C" and groupReadorAcc != "A" and groupReadorAcc != "P" and groupReadorAcc != "F"):
+        while(groupReadorAcc != "C" and groupReadorAcc != "A" and groupReadorAcc != "P"):
             groupReadorAcc = input("What do you want to do?\n\t(C) create a new group of flashcards\n\t(A) access an existing group of flashcards\n\t(P) practice your vocabulary\n>")
 
         if operatingSystem == "Windows":
             os.system('cls')
         else:
             os.system("clear")
-
         if(groupReadorAcc == "A"):
             if(my_dict["groups"]):
                 fsg.access_group(my_dict)
@@ -849,8 +848,6 @@ if __name__ == "__main__":
             fsg.create_group(my_dict)
         elif(groupReadorAcc == "P"):
             fsg.practice_vocab(my_dict)
-        elif(groupReadorAcc == "F"):
-            fsg.fill_test_array(my_dict)
 
         exit_status = input("Do you want to exit the program?: (Y/N) ")
         if operatingSystem == "Windows":
