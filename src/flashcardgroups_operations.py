@@ -1,9 +1,10 @@
 from datetime import timedelta, datetime, date
-from keyword import iskeyword
+#from keyword import iskeyword
 from Vocabulary import Kanji, JWord
 from AVLTree import AVLTree, BST
 from BinaryHeap import BinaryHeap
 from OrderedLinkList import OrderedLinkList
+from DynamicArray import DynamicArray
 from random import randint as r
 import os.path
 import platform
@@ -52,8 +53,6 @@ def load_existing_fgroups():
       current_dict["recent"] = RefQueue.RefQueue()
     if not "search_results" in current_dict:
       current_dict["search_results"] = OrderedLinkList()
-    if not "testingarray" in current_dict:
-      current_dict["testingarray"] = []
 
     #Artifitial creation of structures for test
     if False: #False to deactivate
@@ -99,7 +98,7 @@ def load_existing_fgroups():
       current_dict["groups"]["av"] = av
       current_dict["groups"]["My adjectives"] = av
 
-    if True:#Set to True to add to practice box
+    if False:#Set to True to add to practice box
       current_dict["practice_box"] = BinaryHeap()
       current_dict["practice_box"].insert(JWord("english", "右", "Noun", "thing", "asd"))
       current_dict["practice_box"].insert(JWord("english", "壁", "Noun", "thing", "asd"))
@@ -146,7 +145,7 @@ def get_word_data_graphic(word):
   return word_to_be_added
 
 
-def create_group_console(gen_dict:dict):
+"""def create_group(gen_dict:dict):
     name = input("Name your flashcard group: ")
     data_structure = input("What Data Structure would you like to create it as? \n\tS = Stack\n\tQ = Queue\n\tQ2 = Reference Queue\n\tL = Linked List\n\tA = Array\n>")
     groups_dict = gen_dict["groups"]
@@ -167,7 +166,7 @@ def create_group_console(gen_dict:dict):
         size = int(input("How many elements would you like to add? "))
         groups_dict[name] = StaticStack.ArrStack(size)
     
-    save_changes_to_fgroups(gen_dict)
+    save_changes_to_fgroups(gen_dict)"""
 
 def create_group(gen_dict:dict, name:str, data_structure:str, size = 0):
   groups_dict = gen_dict["groups"]
@@ -175,7 +174,7 @@ def create_group(gen_dict:dict, name:str, data_structure:str, size = 0):
   if(data_structure == "D"):
       groups_dict[name] = {}
   elif(data_structure == "A"):
-      groups_dict[name] = [None]*(size)
+      groups_dict[name] = DynamicArray()
   elif(data_structure == "Q"):
       groups_dict[name] = ArrQueue.ArrQueue(size)
   elif(data_structure == "Q2"):
@@ -215,8 +214,8 @@ def add_singular_word(struc, item: None, gen_dict):
 
         if(type(struc) == dict):
           struc[word_searched.english] = word_searched
-        elif(type(struc) == list):
-          struc.append(word_searched)
+        elif(type(struc) == DynamicArray):
+          struc.insert(word_searched)
         elif (type(struc) == ArrQueue.ArrQueue or type(struc) == RefQueue.RefQueue):
           struc.enqueue(word_searched)
         elif(type(struc) == LinkList.LinkList):
@@ -248,8 +247,8 @@ def add_word_with_graphic(struc, word, gen_dict):
 
     if(type(struc) == dict):
       struc[word_searched.english] = word_searched
-    elif(type(struc) == list):
-      struc.append(word_searched)
+    elif(type(struc) == DynamicArray):
+      struc.insert(word_searched)
     elif (type(struc) == ArrQueue.ArrQueue or type(struc) == RefQueue.RefQueue):
       struc.enqueue(word_searched)
     elif(type(struc) == LinkList.LinkList):
@@ -266,11 +265,8 @@ def search_word(struc, item):
   start_time = time.perf_counter_ns()
   
   found = False
-  if(type(struc) == list):
-    for element in struc:
-      if element is not None and element.english == item:
-        found = True
-        break
+  if(type(struc) == DynamicArray):
+    found = struc.findKanji(item)
   elif(type(struc) == dict):
     found = item in struc
   elif (type(struc) == ArrQueue.ArrQueue or type(struc) == RefQueue.RefQueue):
@@ -290,10 +286,8 @@ def search_word(struc, item):
 def delete_word(struc, item):
   if(type(struc) == dict):
     struc.pop(item)
-  elif(type(struc) == list):
-    for element in struc:
-      if element is not None and element.english == item:
-        struc.remove(element)
+  elif(type(struc) == DynamicArray):
+    struc.deleteKanji(item)
   elif (type(struc) == ArrQueue.ArrQueue or type(struc) == RefQueue.RefQueue):
     ArrQueue.queue_delete(item, struc)
   elif(type(struc) == LinkList.LinkList):
@@ -304,10 +298,8 @@ def delete_word(struc, item):
 def delete_word_graphic(my_dict, struc, item):
   if(type(struc) == dict):
     struc.pop(item)
-  elif(type(struc) == list):
-    for element in struc:
-      if element is not None and element.english == item:
-        struc.remove(element)
+  elif(type(struc) == DynamicArray):
+    struc.deleteKanji(item)
   elif (type(struc) == ArrQueue.ArrQueue or type(struc) == RefQueue.RefQueue):
     ArrQueue.queue_delete(item, struc)
   elif(type(struc) == LinkList.LinkList):
@@ -353,14 +345,7 @@ def access_group(gen_dict:dict):
         save_changes_to_fgroups(gen_dict)
 
     elif(operation == "P"):
-        if type(groups_dict[key_access]) == list:
-            print(key_access, end= ": ")
-            for item in groups_dict[key_access]:
-              if item is not None:
-                print(item, end= " ")
-            print()
-        else:
-            print("{}: {}".format(key_access, groups_dict[key_access]))
+        print("{}: {}".format(key_access, groups_dict[key_access]))
     
     elif(operation == "D"):
       groups_dict.pop(key_access)
@@ -384,29 +369,16 @@ def access_group(gen_dict:dict):
       print(end_time - start_time, "ns")
 
     elif(operation == "dev"):
-      """filename = input("filename = ")
+      filename = input("filename = ")
       fileused = open(os.path.dirname(__file__) + "/../data/" + filename, "r")
       file_list = [line.rstrip('\n') for line in fileused]
-      fileused.close()"""
-      file_list = gen_dict["testingarray"]
-      struc = groups_dict[key_access]
+      fileused.close()
       counter = 0
       
       start_time = time.monotonic()
-      for word_searched in file_list:
+      for item in file_list:
         counter += 1
-        if(type(struc) == dict):
-          struc[word_searched.english] = word_searched
-        elif(type(struc) == list):
-          struc.append(word_searched)
-        elif (type(struc) == ArrQueue.ArrQueue or type(struc) == RefQueue.RefQueue):
-          struc.enqueue(word_searched)
-        elif(type(struc) == LinkList.LinkList):
-          struc.pushBack(word_searched)
-        elif(type(struc) == StaticStack.ArrStack):
-          struc.push(word_searched)
-        elif(type(struc) == AVLTree or type(struc) == BST or type(struc) == OrderedLinkList):
-          struc.insert(word_searched)
+        add_singular_word(groups_dict[key_access], item)
         print("{}/{}".format(counter, len(file_list)))
         save_changes_to_fgroups(gen_dict)
       end_time = time.monotonic()
@@ -549,26 +521,6 @@ def word_range_search(gen_dict, word:str):
 
   print(results, foundWord)
   return foundWord
-
-
-def fill_test_array(gen_dict:dict):
-  filename = input("filename = ")
-  fileused = open(os.path.dirname(__file__) + "/../data/" + filename, "r")
-  file_list = [line.rstrip('\n') for line in fileused]
-  fileused.close()
-  counter = 0
-  arrayT = gen_dict["testingarray"]
-      
-  start_time = time.monotonic()
-  for item in file_list:
-    counter += 1
-    add_singular_word(arrayT, item, gen_dict)
-    print("{}/{}".format(counter, len(file_list)))
-    save_changes_to_fgroups(gen_dict)
-  add_singular_word(arrayT, "idiot", gen_dict)
-  save_changes_to_fgroups(gen_dict)
-  end_time = time.monotonic()
-  print(timedelta(seconds=end_time - start_time))
   
      
 
