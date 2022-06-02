@@ -341,12 +341,6 @@ class FlashCardGroupContents(BoxLayout):
         ######## Flow Idea:
         ######## Add Word -> GetWordData() -> WordConfirmation -> 1) Yes -> AddWord() -> WordInfo o 2) No -> WordNotAdded
 
-
-
-
-
-
-
 class ViewAllFlashcards(StackLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -831,7 +825,7 @@ if __name__ == "__main__":
     exit_status = "Y"
     while(exit_status=="N"):
         groupReadorAcc = input("What do you want to do?\n\t(C) create a new group of flashcards\n\t(A) access an existing group of flashcards\n\t(P) practice your vocabulary\n>")
-        while(groupReadorAcc != "C" and groupReadorAcc != "A" and groupReadorAcc != "P"):
+        while(groupReadorAcc != "C" and groupReadorAcc != "A" and groupReadorAcc != "P" and groupReadorAcc != "F"):
             groupReadorAcc = input("What do you want to do?\n\t(C) create a new group of flashcards\n\t(A) access an existing group of flashcards\n\t(P) practice your vocabulary\n>")
 
         if operatingSystem == "Windows":
@@ -848,6 +842,8 @@ if __name__ == "__main__":
             fsg.create_group(my_dict)
         elif(groupReadorAcc == "P"):
             fsg.practice_vocab(my_dict)
+        elif(groupReadorAcc == "F"):
+            fsg.fill_test_array(my_dict)
 
         exit_status = input("Do you want to exit the program?: (Y/N) ")
         if operatingSystem == "Windows":
