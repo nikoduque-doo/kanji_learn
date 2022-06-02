@@ -1,30 +1,30 @@
 import flashcardgroups_operations as fsg
-from unicodedata import name, numeric
-from random import randint as r
+#from unicodedata import name, numeric
+#from random import randint as r
 from Vocabulary import JWord
-from cProfile import label
-from cgitb import text
-from tkinter import N
+#from cProfile import label
+#from cgitb import text
+#from tkinter import N
 import platform
 import sys
 import os
 
 
 from kivy.app import App
-from kivy.lang import Builder
-from kivy.properties import StringProperty
+#from kivy.lang import Builder
+#from kivy.properties import StringProperty
 from kivy.metrics import dp
 from kivy.core.text import LabelBase
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.stacklayout import StackLayout
-from kivy.uix.gridlayout import GridLayout
+#from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
-from kivy.uix.scrollview import ScrollView
-from kivy.config import Config
-from kivy.uix.floatlayout import FloatLayout
+#from kivy.uix.scrollview import ScrollView
+#from kivy.config import Config
+#from kivy.uix.floatlayout import FloatLayout
 
 sys.setrecursionlimit(1000000000)
 
@@ -81,7 +81,7 @@ class PracticeScreenInteractive(Screen):
                 if jw == 1:
                     txt += "\nThe next word will be available tomorrow."
                 else:
-                    txt += "\nThe next word will be available in {} days.".fromat(jw)
+                    txt += "\nThe next word will be available in {} days.".format(jw)
                 lab1 = Label(pos_hint={'center_x':.5, 'center_y':.5}, text = txt, size_hint=(1,.3), font_size ='30sp')
             else:
                 txt = "The next word will be available in {} years, try adding a new word!".format(jw * -1)
@@ -686,7 +686,7 @@ class AddGroupW(StackLayout):
 
             layout2 = BoxLayout(orientation='vertical')
             Arrbtn = Button(text = "Array")
-            Arrbtn.bind(on_press = lambda x: self.ask_size(chosen, "A"))
+            Arrbtn.bind(on_press = lambda x:self.create_group_and_return(my_dict, chosen, "A", 0))
             LLbtn = Button(text = "Linked List")
             LLbtn.bind(on_press = lambda x:self.create_group_and_return(my_dict, chosen, "L", 0))
             Qbtn = Button(text = "Queue")
@@ -772,28 +772,37 @@ class WordInformation(BoxLayout):
         super().__init__(**kwargs)
         global word
         word = word_data.english
-        l1 = Label(text = "English: " + word_data.english, color = (0, 0, 0, 1))
-        self.add_widget(l1)
-        l2 = Label(text = "Japanese writing: " + word_data.word, font_name='mona', color = (0, 0, 0, 1))
-        self.add_widget(l2)
-        l3 = Label(text = "Reading: " + word_data.reading, font_name='mona', color = (0, 0, 0, 1))
-        self.add_widget(l3)
-        l4 = Label(text = "Part of speech: " + word_data.part_of_speech, color = (0, 0, 0, 1))
-        self.add_widget(l4)
-        l5 = Label(text = "Meaning: " + word_data.meaning, color = (0, 0, 0, 1))
-        self.add_widget(l5)
+        global wordInformationFound
+        if word_data.english != None and word_data.word != None and word_data.reading != None and word_data.part_of_speech != None and word_data.meaning != None:
+            wordInformationFound = True
+            l1 = Label(text = "English: " + word_data.english, color = (0, 0, 0, 1))
+            self.add_widget(l1)
+            l2 = Label(text = "Japanese writing: " + word_data.word, font_name='mona', color = (0, 0, 0, 1))
+            self.add_widget(l2)
+            l3 = Label(text = "Reading: " + word_data.reading, font_name='mona', color = (0, 0, 0, 1))
+            self.add_widget(l3)
+            l4 = Label(text = "Part of speech: " + word_data.part_of_speech, color = (0, 0, 0, 1))
+            self.add_widget(l4)
+            l5 = Label(text = "Meaning: " + word_data.meaning, color = (0, 0, 0, 1))
+            self.add_widget(l5)
+        else:
+            wordInformationFound = False
+            l1 = Label(text="We had a problem looking for that word. Try again with another one", color = (0, 0, 0, 1))
+            self.add_widget(l1)
 
 
 #self.english, self.word, self.reading, self.part_of_speech, self.meaning
 class WordConfirmationButtons(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        bYes = Button(text = "Save Word")
-        bYes.bind(on_release = self.saveWord)
-        self.add_widget(bYes)
-        bNo = Button(text = "Don't save word")
-        bNo.bind(on_release = self.notSaveWord)
-        self.add_widget(bNo)
+        global wordInformationFound
+        if  wordInformationFound:
+            bYes = Button(text = "Save Word")
+            bYes.bind(on_release = self.saveWord)
+            self.add_widget(bYes)
+            bNo = Button(text = "Don't save word")
+            bNo.bind(on_release = self.notSaveWord)
+            self.add_widget(bNo)
 
     def saveWord(self, instance):
         groups_dict = my_dict["groups"]
