@@ -28,7 +28,7 @@ class WindowManager(ScreenManager):
 
 #Japanese font:
 #https://github.com/public-domain/mona
-LabelBase.register(name="mona", fn_regular="mona.ttf")
+LabelBase.register(name="mona", fn_regular="fonts/mona.ttf")
 
 class FirstScreen(Screen):
     def onClickButton(self):
