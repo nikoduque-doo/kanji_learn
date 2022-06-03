@@ -1,3 +1,5 @@
+import time
+import urllib
 import flashcardgroups_operations as fsg
 from Vocabulary import JWord
 
@@ -21,6 +23,20 @@ my_dict = fsg.load_existing_fgroups()
 chosen = None
 labelText = str(chosen)
 
+def loadResources():
+    path = fsg.getPath()
+    if not os.path.exists(path + "images"):
+        os.mkdir(path + "images")
+    urllib.request.urlretrieve('https://github.com/nikoduque-doo/kanji_learn/raw/main/src/fonts/mona.ttf', path + "mona.ttf")
+    urllib.request.urlretrieve('https://github.com/nikoduque-doo/kanji_learn/raw/main/src/Images/arbol.jpg', path + "images/arbol.jpg")
+    urllib.request.urlretrieve('https://github.com/nikoduque-doo/kanji_learn/raw/main/src/Images/fondo.png', path + "images/fondo.png")
+    urllib.request.urlretrieve('https://github.com/nikoduque-doo/kanji_learn/raw/main/src/Images/hoja.jpg', path + "images/hoja.jpg")
+    urllib.request.urlretrieve('https://github.com/nikoduque-doo/kanji_learn/raw/main/src/Images/home2.png', path + "images/home2.png")
+    urllib.request.urlretrieve('https://github.com/nikoduque-doo/kanji_learn/raw/main/src/Images/Options.png', path + "images/Options.png")
+    urllib.request.urlretrieve('https://github.com/nikoduque-doo/kanji_learn/raw/main/src/Images/practice.png', path + "images/practice.png")
+    urllib.request.urlretrieve('https://github.com/nikoduque-doo/kanji_learn/raw/main/src/Images/start.png', path + "images/start.png")
+    urllib.request.urlretrieve('https://github.com/nikoduque-doo/kanji_learn/raw/main/src/Images/tankaiki.png', path + "images/tankaiki.png")
+
 sm = ScreenManager()
 
 class WindowManager(ScreenManager):
@@ -28,7 +44,9 @@ class WindowManager(ScreenManager):
 
 #Japanese font:
 #https://github.com/public-domain/mona
-LabelBase.register(name="mona", fn_regular="mona.ttf")
+path = fsg.getPath()
+loadResources()
+LabelBase.register(name="mona", fn_regular=path + "mona.ttf")
 
 class FirstScreen(Screen):
     def onClickButton(self):
@@ -680,7 +698,10 @@ class SearchResultsScreenContents(BoxLayout):
 ##########| Section pertaining search results end |#########
 
 class TankaikiApp(App):
+    path = fsg.getPath()
+
     def build(self):
+        loadResources()
         sm.add_widget(FirstScreen())
         return sm
 

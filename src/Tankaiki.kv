@@ -10,7 +10,7 @@ WindowManager:
         Rectangle:
             pos: self.pos
             size: self.size
-            source: 'images/fondo.png'
+            source: app.path + 'images/fondo.png'
     name: "first"
     AnchorLayout:
         padding: ('5dp', '5dp', '5dp', '5dp')
@@ -20,7 +20,7 @@ WindowManager:
             size_hint: .3, 1
             orientation:'vertical'
             Image:
-                source: "images/tankaiki.png"
+                source: app.path + "images/tankaiki.png"
                 allow_stretch: True
             Label:
                 bold: True
@@ -54,7 +54,7 @@ WindowManager:
                 Rectangle:
                     pos: self.pos
                     size: self.size
-                    source: 'images/arbol.jpg'
+                    source: app.path + 'images/arbol.jpg'
             BoxLayout:
                 orientation: "vertical"
                 spacing: "50dp"
@@ -69,7 +69,7 @@ WindowManager:
     BoxLayout:
         orientation:'horizontal'
         Image:
-            source: "images/tankaiki.png"
+            source: app.path + "images/tankaiki.png"
             size_hint: .15, 1
             allow_stretch: True
         Label:
@@ -95,18 +95,18 @@ WindowManager:
             text:''
         Button:
             size_hint: .08, 1
-            background_normal: 'images/home2.png'
+            background_normal: app.path + 'images/home2.png'
             on_press: root.onClickHomeButton()
         Button:
             size_hint: .1, 1
-            background_normal: 'images/practice.png'
+            background_normal: app.path + 'images/practice.png'
             on_press: root.onClickStartPractice()
         Label:
             size_hint: .003, 1
             text:''
         Button:
             size_hint: .1, 1
-            background_normal: 'images/Options.png'
+            background_normal: app.path + 'images/Options.png'
             on_press: 
                 app.root.transition.direction = "left"
 
@@ -188,7 +188,7 @@ WindowManager:
                 Rectangle:
                     pos: self.pos
                     size: self.size
-                    source: 'images/start.png'
+                    source: app.path + 'images/start.png'
             BoxLayout:
                 orientation: "vertical"
                 spacing: "50dp"
@@ -318,7 +318,7 @@ WindowManager:
                 Rectangle:
                     pos: self.pos
                     size: self.size
-                    source: 'images/hoja.jpg'
+                    source: app.path + 'images/hoja.jpg'
             BoxLayout:
                 orientation:'vertical'
                 WordInformation:
