@@ -1,6 +1,3 @@
-#from re import S
-
-
 class DynamicArray():
     def __init__(self):
         self.itemCount = 0

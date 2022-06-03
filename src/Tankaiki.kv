@@ -1,13 +1,7 @@
 WindowManager:
-    # FirstScreen:
-    # HomeScreen:
-    # LoadingScreen:
-    # #Faltan hacer las siguientes 3 Screens
-    # WordScreen:
-    # FlashcardScreen:
-    # ViewFlashcardsScreen:
-    # FlashcardGroupScreen:
-    # AddWord:
+
+##########| Section pertaining Home start |##########
+#####################################################
 
 <FirstScreen>:
     canvas:
@@ -36,14 +30,11 @@ WindowManager:
             Button:
                 size_hint: 1, .2
                 text:'Empezar'
-                # Para cambiar el screen hay que usar:
                 on_press: root.onClickButton()
-
 
 <HomeScreen>:
     name: "Home"
     BoxLayout:
-        # Background Color!
         orientation:'vertical'
         canvas.before:
             Color:
@@ -53,13 +44,8 @@ WindowManager:
                 size: self.size
             Color: 
                 rgba: 0, 0, 0, 1
-        # TopBar
         TopBar:
-        # Window Contents
-        # Se manejan con un grid Layout,  en este caso para Home son 3 cols. Las dos primeras para mostrar contenido
-        # Y la última para las opciones de la parte derecha abajo.
-        GridLayout
-        #BoxLayout:
+        GridLayout:
             cols: 3
             rows: 1
             canvas.before:
@@ -72,7 +58,6 @@ WindowManager:
             BoxLayout:
                 orientation: "vertical"
                 spacing: "50dp"
-                #pos_hint: {"y": .3}
                 RecentFlashcards:
                 HomeContents:
             RandomWord:
@@ -81,8 +66,6 @@ WindowManager:
 <TopBar@BoxLayout>:
     orientation: 'horizontal'
     size_hint: 1, .1
-    #Image:
-    #    source:
     BoxLayout:
         orientation:'horizontal'
         Image:
@@ -100,8 +83,6 @@ WindowManager:
                 color:0,0,0,1
                 size_hint: 1, .4
                 text:'Search'
-                #bold: True
-                #color: .5,.5,.5,1
             TextInput:
                 font_name: 'mona'
                 size_hint: 1, .6
@@ -109,7 +90,6 @@ WindowManager:
                 text: ""
                 multiline: False
                 on_text_validate: root.onSearch(self)
-                #on_text_validate: root.searchvalidate(self, app.root)
         Label:
             size_hint: .01, 1
             text:''
@@ -117,24 +97,18 @@ WindowManager:
             size_hint: .08, 1
             background_normal: 'images/home2.png'
             on_press: root.onClickHomeButton()
-                # app.root.transition.direction = "right"
-                # app.root.current = "Home"
         Button:
             size_hint: .1, 1
             background_normal: 'images/practice.png'
             on_press: root.onClickStartPractice()
-                # app.root.current = "Loading"
         Label:
             size_hint: .003, 1
             text:''
-    
         Button:
             size_hint: .1, 1
             background_normal: 'images/Options.png'
             on_press: 
                 app.root.transition.direction = "left"
-                # app.root.current = "Loading"
-
 
 <BottomRightOptions>:
     size_hint: .15, .1
@@ -150,52 +124,22 @@ WindowManager:
         text:'N+'
         size_hint: 1, .1
         on_press: root.onClickAddGroup()
-            #app.root.transition.direction = "right"
-            #app.root.current = "NewGroup"
-
-
 
 <HomeContents@BoxLayout>:
-    #size_hint_y: .75
     orientation:'vertical'
-    #RecentFlashcards:
-    # AllFlashcards:
     ScrollableGroups:
         size_hint_y: .9
         AllFlashcards2:
 
-
 <RecentFlashcards@BoxLayout>:
     orientation:'vertical'
     size_hint_y: .2
-
-<RecentAdded@BoxLayout>:
-    orientation:'vertical'
-    Label:
-        text:'Recently added:'
-        color: 0 , 0 , 0 , 1
-
-<AllFlashcards>:
-    Button:
-        text:'View All'
-        size_hint: .3, .2
-        on_press: 
-            app.root.transition.direction = "left"
-            app.root.current = "ViewFlashcards"
-
-
 
 <ScrollableGroups@ScrollView>
 
 <AllFlashcards2>:  
     size_hint_y: None
     height: self.minimum_height
-    # Button:
-    #     text:'View All'
-    #     size_hint: .3, .2
-    #     on_press: root.onClickButton()
-    #         # app.root.transition.direction = "right"
-    #         # app.root.current = "ViewFlashcards"
 
 <RandomWord@BoxLayout>:
     orientation: 'vertical'
@@ -215,11 +159,16 @@ WindowManager:
         text:''
         size_hint: 1, .5
 
+###################################################
+##########| Section pertaining Home end |##########
+
+
+##########| Section pertaining practice word start |########
+###########################################################
 
 <PracticeScreen>:
     name: "PracticePage"
     BoxLayout:
-        # Background Color!
         orientation:'vertical'
         canvas.before:
             Color:
@@ -229,13 +178,8 @@ WindowManager:
                 size: self.size
             Color: 
                 rgba: 0, 0, 0, 1
-        # TopBar
         TopBar:
-        # Window Contents
-        # Se manejan con un grid Layout,  en este caso para Home son 3 cols. Las dos primeras para mostrar contenido
-        # Y la última para las opciones de la parte derecha abajo.
         GridLayout:
-        #BoxLayout:
             cols: 3
             rows: 1
             canvas.before:
@@ -248,86 +192,18 @@ WindowManager:
             BoxLayout:
                 orientation: "vertical"
                 spacing: "50dp"
-                #pos_hint: {"y": .3}
+
+###########################################################
+##########| Section pertaining practice words end |########
 
 
-# Estas screens faltan hacerlas!!
-<ViewFlashcardsScreen>:
-    name: "ViewFlashcards"
-    BoxLayout:
-        # Background Color!
-        orientation:'vertical'
-        canvas.before:
-            Color:
-                rgba: 1, 1, 1, 1
-            Rectangle:
-                pos: self.pos
-                size: self.size
-            Color: 
-                rgba: 0, 0, 0, 1
-        # TopBar
-        TopBar:
-        GridLayout:
-            cols: 2
-            rows: 1
-            canvas.before:
-                Color: 
-                    rgba: .9, .9, .9, 1
-                Rectangle:
-                    pos: self.pos
-                    size: self.size
-            FlashcardsContent:
-            BottomRightOptions:
-
-<FlashcardsContent>:
-    orientation:'vertical'
-    BoxLayout:
-        orientation:'horizontal'
-        size_hint: 1, .2
-        Label:
-            text:''
-            size_hint: .1, .2
-        Label:
-            text:'All saved Flashcards groups'
-            color: 0 , 0 , 0 , 1
-            size_hint: .8, .2
-        Label:
-            text:''
-            size_hint: .1, .2
-    ViewAllFlashcards:
-    BoxLayout:
-        orientation:'horizontal'
-        size_hint: 1, .3
-        Label:
-            text:'Enter the name of the desired group:\n Press enter after typing to continue'
-            color: 0 , 0 , 0 , 1
-            size_hint: .3, .2
-        TextInput:
-            id: input
-            text:''
-            multiline: False
-            on_text_validate: root.onValidate(self)
-            size_hint: .5, .25
-    Label:
-        text:''
-        size_hint: 1, .1
-
-# Por algún motivo que no entiendo el ScrollView no quiere funcionar.... :(
-# <ScrollViewAllFlashcards>:
-#     do_scroll_x: False
-#     do_scroll_y: True
-#     ViewAllFlashcards:
-#         size_hint: 1, None
-#         height: self.minimum_height
-
-<ViewAllFlashcards>:
+##########| Section pertaining group word start |##########
+###########################################################
 
 <FlashcardGroupScreen@Screen>:
     name: "FlashcardGroup"
     
-
 <FlashcardGroupScreenContents>:
-    # Background Color!
     orientation:'vertical'
     canvas.before:
         Color:
@@ -337,7 +213,6 @@ WindowManager:
             size: self.size
         Color: 
             rgba: 0, 0, 0, 1
-    # TopBar
     TopBar:
     GridLayout:
         cols: 2
@@ -361,12 +236,9 @@ WindowManager:
                 text: "Delete"
                 size_hint: .2,.3
                 on_press: root.onPressGroupDeleteButton(app.root)
-
         BottomRightOptions:
 
-
 <InsideSomethingScreenContents>:
-    # Background Color!
     orientation:'vertical'
     canvas.before:
         Color:
@@ -376,7 +248,6 @@ WindowManager:
             size: self.size
         Color: 
             rgba: 0, 0, 0, 1
-    # TopBar
     TopBar:
     GridLayout:
         cols: 2
@@ -398,10 +269,9 @@ WindowManager:
                     height: self.minimum_height
         BottomRightOptions:
 
-<insideSomethingWordInformationScreen>:
+<InsideSomethingWordInformationScreen>:
     name: "insideView"
     BoxLayout:
-        # Background Color!
         orientation:'vertical'
         canvas.before:
             Color:
@@ -411,11 +281,7 @@ WindowManager:
                 size: self.size
             Color: 
                 rgba: 0, 0, 0, 1
-        # TopBar
         TopBar:
-        # Window Contents
-        # Se manejan con un grid Layout,  en este caso para Home son 3 cols. Las dos primeras para mostrar contenido
-        # Y la última para las opciones de la parte derecha abajo.
         GridLayout:
             cols: 2
             rows: 1
@@ -430,11 +296,9 @@ WindowManager:
                 WordInformation:
             BottomRightOptions:
 
-
 <WordInformationScreen>:
     name: "WordInformationScreen"
     BoxLayout:
-        # Background Color!
         orientation:'vertical'
         canvas.before:
             Color:
@@ -444,11 +308,7 @@ WindowManager:
                 size: self.size
             Color: 
                 rgba: 0, 0, 0, 1
-        # TopBar
         TopBar:
-        # Window Contents
-        # Se manejan con un grid Layout,  en este caso para Home son 3 cols. Las dos primeras para mostrar contenido
-        # Y la última para las opciones de la parte derecha abajo.
         GridLayout:
             cols: 2
             rows: 1
@@ -468,7 +328,6 @@ WindowManager:
                     on_press: root.onClickDeleteWord()
             BottomRightOptions:
 
-
 <FlashCardGroupContents>:
     orientation: 'vertical'
     size_hint: 1,.2
@@ -478,108 +337,14 @@ WindowManager:
             size_hint: .8,.3
         Button:
             text:'+'
-            on_press: root.onPressAddButton(app.root)
+            on_press: root.onPressAddButton()
             size_hint: .2,.3
 
 <LabelFlashcardGroup>:
 
-
-
-##########| Section pertaining recent words start |##########
-#############################################################
-
-<AllRecentWords>:
-    size_hint_y: None
-    height: self.minimum_height
-
-<RecentWordsScreen@Screen>:
-    name: "RecentWords"
-
-<RecentWordsScreenContents>:
-    # Background Color!
-    orientation:'vertical'
-    canvas.before:
-        Color:
-            rgba: 1, 1, 1, 1
-        Rectangle:
-            pos: self.pos
-            size: self.size
-        Color: 
-            rgba: 0, 0, 0, 1
-    # TopBar
-    TopBar:
-    GridLayout:
-        cols: 2
-        rows: 1
-        canvas.before:
-            Color: 
-                rgba: .9, .9, .9, 1
-            Rectangle:
-                pos: self.pos
-                size: self.size
-        ScrollView:
-            size_hint_y: 1
-            AllRecentWords:
-        BottomRightOptions:
-
-###########################################################
-##########| Section pertaining recent words end |##########
-
-
-##########| Section pertaining search results start |##########
-###############################################################
-
-<AllSearchResults>:
-    size_hint_y: None
-    height: self.minimum_height
-
-<SearchResultsScreen@Screen>:
-    name: "SearchResults"
-
-<SearchResultsScreenContents>:
-    # Background Color!
-    orientation:'vertical'
-    canvas.before:
-        Color:
-            rgba: 1, 1, 1, 1
-        Rectangle:
-            pos: self.pos
-            size: self.size
-        Color: 
-            rgba: 0, 0, 0, 1
-    # TopBar
-    TopBar:
-    GridLayout:
-        cols: 2
-        rows: 1
-        canvas.before:
-            Color: 
-                rgba: .9, .9, .9, 1
-            Rectangle:
-                pos: self.pos
-                size: self.size
-        BoxLayout:
-            orientation: "vertical"
-            Label:
-                size_hint: 1, .2
-                text: "Search results"
-                color: 0 , 0 , 0 , 1
-            ScrollView:
-                size_hint_y: 1
-                AllSearchResults:
-        BottomRightOptions:
-
-#############################################################
-##########| Section pertaining search results end |##########
-
-
-
-<ViewAllWords>: ## Crear en Python!!
-
 <AddWord@Screen>:
     name: "AddWord"
     BoxLayout:
-        # Background Color!
         orientation:'vertical'
         canvas.before:
             Color:
@@ -589,7 +354,6 @@ WindowManager:
                 size: self.size
             Color: 
                 rgba: 0, 0, 0, 1
-        # TopBar
         TopBar:
         GridLayout:
             cols: 2
@@ -624,7 +388,6 @@ WindowManager:
 <WordConfirmation>:
     name: "WordConfirmation"
     BoxLayout:
-        # Background Color!
         orientation:'vertical'
         canvas.before:
             Color:
@@ -634,7 +397,6 @@ WindowManager:
                 size: self.size
             Color: 
                 rgba: 0, 0, 0, 1
-        # TopBar
         TopBar:
         GridLayout:
             cols: 2
@@ -665,7 +427,6 @@ WindowManager:
 <WordNotAdded>:
     name: "WordNotAdded"
     BoxLayout:
-        # Background Color!
         orientation:'vertical'
         canvas.before:
             Color:
@@ -675,7 +436,6 @@ WindowManager:
                 size: self.size
             Color: 
                 rgba: 0, 0, 0, 1
-        # TopBar
         TopBar:
         GridLayout:
             cols: 3
@@ -690,11 +450,9 @@ WindowManager:
             Widget:
             BottomRightOptions:
 
-
 <WordScreen>:
     name: "Word"
     BoxLayout:
-        # Background Color!
         orientation:'vertical'
         canvas.before:
             Color:
@@ -704,7 +462,6 @@ WindowManager:
                 size: self.size
             Color: 
                 rgba: 0, 0, 0, 1
-        # TopBar
         TopBar:
         GridLayout:
             cols: 3
@@ -722,7 +479,6 @@ WindowManager:
 <NewGroup>:
     name: 'NewGroup'
     BoxLayout:
-        # Background Color!
         orientation:'vertical'
         canvas.before:
             Color:
@@ -732,11 +488,7 @@ WindowManager:
                 size: self.size
             Color: 
                 rgba: 0, 0, 0, 1
-        # TopBar
         TopBar:
-        # Window Contents
-        # Se manejan con un grid Layout,  en este caso para Home son 3 cols. Las dos primeras para mostrar contenido
-        # Y la última para las opciones de la parte derecha abajo.
         GridLayout:
             cols: 3
             rows: 1
@@ -781,12 +533,89 @@ WindowManager:
         text:''
         size_hint: 1, .1
 
-
-# Mi idea con este screen es mostrarlo justo después de dar en empezar, y mostrarlo mientras se carga el archivo pickle
-<LoadingScreen>:
-    name: "Loading"
-    Label:
-        text:'Loading.... Please Wait'
+###########################################################
+##########| Section pertaining group words end |##########
 
 
-    
+##########| Section pertaining recent words start |##########
+#############################################################
+
+<AllRecentWords>:
+    size_hint_y: None
+    height: self.minimum_height
+
+<RecentWordsScreen@Screen>:
+    name: "RecentWords"
+
+<RecentWordsScreenContents>:
+    orientation:'vertical'
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+        Color: 
+            rgba: 0, 0, 0, 1
+    TopBar:
+    GridLayout:
+        cols: 2
+        rows: 1
+        canvas.before:
+            Color: 
+                rgba: .9, .9, .9, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        ScrollView:
+            size_hint_y: 1
+            AllRecentWords:
+        BottomRightOptions:
+
+###########################################################
+##########| Section pertaining recent words end |##########
+
+
+##########| Section pertaining search results start |##########
+###############################################################
+
+<AllSearchResults>:
+    size_hint_y: None
+    height: self.minimum_height
+
+<SearchResultsScreen@Screen>:
+    name: "SearchResults"
+
+<SearchResultsScreenContents>:
+    orientation:'vertical'
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+        Color: 
+            rgba: 0, 0, 0, 1
+    TopBar:
+    GridLayout:
+        cols: 2
+        rows: 1
+        canvas.before:
+            Color: 
+                rgba: .9, .9, .9, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        BoxLayout:
+            orientation: "vertical"
+            Label:
+                size_hint: 1, .2
+                text: "Search results"
+                color: 0 , 0 , 0 , 1
+            ScrollView:
+                size_hint_y: 1
+                AllSearchResults:
+        BottomRightOptions:
+
+#############################################################
+##########| Section pertaining search results end |##########

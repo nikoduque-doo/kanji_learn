@@ -1,5 +1,4 @@
 from datetime import timedelta, datetime, date
-#from keyword import iskeyword
 from Vocabulary import Kanji, JWord
 from AVLTree import AVLTree, BST
 from BinaryHeap import BinaryHeap
@@ -18,7 +17,7 @@ import LinkList
 import StaticStack
 
 def getPath():
-  operatingSystem = platform.system();
+  operatingSystem = platform.system()
   if operatingSystem == "Windows":
     path = os.path.expandvars(R"%HOMEPATH%/Documents/") + "tankaiki"
   elif operatingSystem == "Darwin":
@@ -28,7 +27,6 @@ def getPath():
   if not os.path.exists(path):
     os.mkdir(path)
   return path + "/"
-
 
 def load_existing_fgroups():
     try:
@@ -98,7 +96,7 @@ def load_existing_fgroups():
       current_dict["groups"]["av"] = av
       current_dict["groups"]["My adjectives"] = av
 
-    if False:#Set to True to add to practice box
+    if False: #Set to True to add to practice box, False to deactivate
       current_dict["practice_box"] = BinaryHeap()
       current_dict["practice_box"].insert(JWord("english", "右", "Noun", "thing", "asd"))
       current_dict["practice_box"].insert(JWord("english", "壁", "Noun", "thing", "asd"))
@@ -258,8 +256,6 @@ def add_word_with_graphic(struc, word, gen_dict):
     elif(type(struc) == AVLTree or type(struc) == BST or type(struc) == OrderedLinkList):
       struc.insert(word_searched)
 
-
-
 def search_word(struc, item):
   item = item.lower()
   start_time = time.perf_counter_ns()
@@ -384,8 +380,6 @@ def access_group(gen_dict:dict):
       end_time = time.monotonic()
       print(timedelta(seconds=end_time - start_time))
 
-
-
 def get_groups(gen_dict:dict):
   groups_dict = gen_dict["groups"]
   groupsList = []
@@ -396,11 +390,6 @@ def get_groups(gen_dict:dict):
     thisGroup.append(sizeOfThisGroup)
     groupsList.append(thisGroup)
   return groupsList
-
-# def access_group(key, groups_dict):
-#   groups_dict[key]
-  ## Faltaría poder mostrar todas las palabras guardadas en la estructura 
-
 
 def raiseQuestion(jw:JWord):
   ans = input("Type the kana reading for {}, what does it mean?\n>".format(jw.word))
@@ -429,7 +418,6 @@ def grade_question_with_graphic(gen_dict, jw:JWord, grade:int):
   jw.updatePriority(grade)
   gen_dict["practice_box"].insert(jw)
   save_changes_to_fgroups(gen_dict)
-
 
 def practice_vocab(gen_dict):
   struc = gen_dict["practice_box"]
@@ -481,7 +469,6 @@ def practice_with_graphic(gen_dict):
 
     #save_changes_to_fgroups(gen_dict)
 
-
 def update_recent_words(gen_dict):
   q = gen_dict["recent"]
   timeRange = 5
@@ -500,7 +487,6 @@ def futureDateCode(originalDate, num):
   days = limit if days == 0 else days
 
   return ((year+yearIncrease)*1000) + days
-
 
 def word_range_search(gen_dict, word:str):
   gen_dict["search_results"].clear()
@@ -522,5 +508,3 @@ def word_range_search(gen_dict, word:str):
   print(results, foundWord)
   return foundWord
   
-     
-

@@ -1,12 +1,11 @@
 from jisho_api.word import Word
 from Vocabulary import JWord
-#import os.path
 import json
+
 #utilizando el api de el diccionario Jisho, se extraen datos de la página (scraping) y se organizan en un
 #diccionario. Este diccionario luego es introducido en otro diccionario que se pasa como argumento
 
 class dict_word:
-
     def __init__(self, name):
         self.name_dict = name
         self.data_dict = {}
@@ -26,19 +25,16 @@ def request_word(word_requested):
     include_keys = { 
         'data' : {0 : {"japanese" : {0 : {"word":True, "reading":True}}, "senses" : {0 : {"english_definitions":True, "parts_of_speech":True}}}},
     }
-
     try:
         reqDict = req.dict(include= include_keys)
     except:
         print("Word not recognized or not found")
     else:
-        
         newJWord = JWord(word_requested,\
                          reqDict["data"][0]["japanese"][0]["word"],\
                          reqDict["data"][0]["senses"][0]["parts_of_speech"][0],\
                          reqDict["data"][0]["senses"][0]["english_definitions"][0],\
                          reqDict["data"][0]["japanese"][0]["reading"])
-        
         return newJWord
 
 def add_word(word_requested, group: False):
@@ -53,7 +49,6 @@ def add_word(word_requested, group: False):
             else:
                 print("Word not added")
                 return None
-
             addTo = input("Do you want to add this word to your custom list? (Y/N)")
             while(addTo != "Y" and addTo != "N"):
                 addTo = input("Do you want to add this word to your custom list? (Y/N)")
@@ -80,9 +75,7 @@ def add_word_graphic(word_requested):
             ret = None
     return ret
     
-
 def add_words_from_file(filename):
-
     fileused = open(filename, "r")
     file_list = fileused.readlines()
     fileused.close()
@@ -91,5 +84,4 @@ def add_words_from_file(filename):
     for item in file_list:
         print(item)
         wordslist.append(request_word(item))
-
     return wordslist
