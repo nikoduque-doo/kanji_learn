@@ -72,6 +72,7 @@ class JWord:
     return self.dueDay
 
   def addToDueDay(self, num):
+    self.setDateID()
     year = int(self.dueDay/1000)
     limit = 365
     if year%4 == 0:

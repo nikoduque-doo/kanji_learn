@@ -47,6 +47,7 @@ class HomeScreen(Screen):
 
 class TopBar(BoxLayout):
     def onClickHomeButton(self):
+        print(my_dict["practice_box"])
         if sm.current != "Home":
             sm.add_widget(HomeScreen())
             sm.transition.direction = "right"
@@ -425,7 +426,7 @@ class AddGroupW(StackLayout):
         layout1.add_widget(lbl1)
         layout2 = BoxLayout(orientation='horizontal', size_hint= (1, .3))
         space1 = Label(text = " ")
-        textI = TextInput(multiline = False, size_hint= (.5, .25))
+        textI = TextInput(multiline = False, size_hint= (.5, .25), font_name='mona')
         textI.bind(on_text_validate = self.createFromSize)
         space2 = Label(text = " ")
         layout2.add_widget(space1)
@@ -436,7 +437,7 @@ class AddGroupW(StackLayout):
 
     def createFromSize(self, instance):
         size = instance.text
-        if(size.isnumeric()):
+        if(size.isnumeric() and int(size) >= 1 ):
             self.create_group_and_return(my_dict, self.name, self.struc, int(size))
         else:
             if size == "":

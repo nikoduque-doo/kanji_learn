@@ -121,7 +121,7 @@ WindowManager:
         text:'+'
         size_hint: 1, .1
     Button:
-        text:'N+'
+        text:'+GROUP'
         size_hint: 1, .1
         on_press: root.onClickAddGroup()
 
@@ -378,6 +378,7 @@ WindowManager:
             size_hint: 1, .1
         TextInput:
             text: ''
+            font_name: 'mona'
             multiline: False
             on_text_validate: root.onValidate(self)
             size_hint: 1,.1
@@ -522,6 +523,7 @@ WindowManager:
             size_hint: .1, .2
         TextInput:
             id: input
+            font_name: 'mona'
             text:''
             multiline: False
             on_text_validate: root.searchvalidate(self, app.root)

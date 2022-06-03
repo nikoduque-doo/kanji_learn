@@ -226,16 +226,6 @@ def add_singular_word(struc, item: None, gen_dict):
 def add_word_with_graphic(struc, word, gen_dict):
   word_searched = get_word_data_graphic(word)
   if word_searched != None:
-    for i in range(len(word_searched.word)):
-      if 19968 <= ord(word_searched.word[i]) and ord(word_searched.word[i]) <= 40879:
-        kanji = gen_dict["my_kanji"].search(word_searched.word[i])
-        if kanji != None:
-          kanji.link(word_searched)
-        else:
-          newK = Kanji(word_searched.word[i])
-          newK.link(word_searched)
-          gen_dict["my_kanji"].insert(newK)
-    
 
     wordTreeSize = gen_dict["my_words"].getSize()
     gen_dict["my_words"].insert(word_searched)
@@ -243,18 +233,37 @@ def add_word_with_graphic(struc, word, gen_dict):
       gen_dict["recent"].enqueue(word_searched)
       gen_dict["practice_box"].insert(word_searched)
 
-    if(type(struc) == dict):
-      struc[word_searched.english] = word_searched
-    elif(type(struc) == DynamicArray):
-      struc.insert(word_searched)
-    elif (type(struc) == ArrQueue.ArrQueue or type(struc) == RefQueue.RefQueue):
-      struc.enqueue(word_searched)
-    elif(type(struc) == LinkList.LinkList):
-      struc.pushBack(word_searched)
-    elif(type(struc) == StaticStack.ArrStack):
-      struc.push(word_searched)
-    elif(type(struc) == AVLTree or type(struc) == BST or type(struc) == OrderedLinkList):
-      struc.insert(word_searched)
+      #Update kanji tree
+      for i in range(len(word_searched.word)):
+        if 19968 <= ord(word_searched.word[i]) and ord(word_searched.word[i]) <= 40879:
+          kanji = gen_dict["my_kanji"].search(word_searched.word[i])
+          if kanji != None:
+            kanji.link(word_searched)
+          else:
+            newK = Kanji(word_searched.word[i])
+            newK.link(word_searched)
+            gen_dict["my_kanji"].insert(newK)
+
+      #Insert in group
+      if(type(struc) == dict):
+        struc[word_searched.english] = word_searched
+      elif(type(struc) == DynamicArray):
+        struc.insert(word_searched)
+      elif (type(struc) == ArrQueue.ArrQueue or type(struc) == RefQueue.RefQueue):
+        struc.enqueue(word_searched)
+      elif(type(struc) == LinkList.LinkList):
+        struc.pushBack(word_searched)
+      elif(type(struc) == StaticStack.ArrStack):
+        struc.push(word_searched)
+      elif(type(struc) == AVLTree or type(struc) == BST or type(struc) == OrderedLinkList):
+        struc.insert(word_searched)
+    
+    else:
+      print("Word was already saved.")
+
+
+
+
 
 def search_word(struc, item):
   item = item.lower()
