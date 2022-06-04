@@ -63,7 +63,7 @@ WindowManager:
             RandomWord:
             BottomRightOptions:
             
-<TopBar@BoxLayout>:
+<TopBar>:
     orientation: 'horizontal'
     size_hint: 1, .1
     BoxLayout:
@@ -131,7 +131,7 @@ WindowManager:
         size_hint_y: .9
         AllFlashcards2:
 
-<RecentFlashcards@BoxLayout>:
+<RecentFlashcards>:
     orientation:'vertical'
     size_hint_y: .2
 
@@ -200,7 +200,7 @@ WindowManager:
 ##########| Section pertaining group word start |##########
 ###########################################################
 
-<FlashcardGroupScreen@Screen>:
+<FlashcardGroupScreen>:
     name: "FlashcardGroup"
     
 <FlashcardGroupScreenContents>:
@@ -342,7 +342,7 @@ WindowManager:
 
 <LabelFlashcardGroup>:
 
-<AddWord@Screen>:
+<AddWord>:
     name: "AddWord"
     BoxLayout:
         orientation:'vertical'
@@ -546,7 +546,7 @@ WindowManager:
     size_hint_y: None
     height: self.minimum_height
 
-<RecentWordsScreen@Screen>:
+<RecentWordsScreen>:
     name: "RecentWords"
 
 <RecentWordsScreenContents>:
@@ -585,7 +585,7 @@ WindowManager:
     size_hint_y: None
     height: self.minimum_height
 
-<SearchResultsScreen@Screen>:
+<SearchResultsScreen>:
     name: "SearchResults"
 
 <SearchResultsScreenContents>:
