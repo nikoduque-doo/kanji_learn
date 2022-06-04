@@ -1,5 +1,4 @@
 import time
-import urllib
 import flashcardgroups_operations as fsg
 from Vocabulary import JWord
 
@@ -16,6 +15,13 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
+from kivy import resources
+
+if getattr(sys, 'frozen', False):
+    # this is a Pyinstaller bundle
+    resources.resource_add_path(sys._MEIPASS)
+    resources.resource_add_path(os.path.join(sys._MEIPASS, 'resources'))
+resources.resource_add_path(os.getcwd()+'\\src\\resources')
 
 sys.setrecursionlimit(1000000000)
 
@@ -23,30 +29,17 @@ my_dict = fsg.load_existing_fgroups()
 chosen = None
 labelText = str(chosen)
 
-def loadResources():
-    path = fsg.getPath()
-    if not os.path.exists(path + "images"):
-        os.mkdir(path + "images")
-    urllib.request.urlretrieve('https://github.com/nikoduque-doo/kanji_learn/raw/main/src/fonts/mona.ttf', path + "mona.ttf")
-    urllib.request.urlretrieve('https://github.com/nikoduque-doo/kanji_learn/raw/main/src/Images/arbol.jpg', path + "images/arbol.jpg")
-    urllib.request.urlretrieve('https://github.com/nikoduque-doo/kanji_learn/raw/main/src/Images/fondo.png', path + "images/fondo.png")
-    urllib.request.urlretrieve('https://github.com/nikoduque-doo/kanji_learn/raw/main/src/Images/hoja.jpg', path + "images/hoja.jpg")
-    urllib.request.urlretrieve('https://github.com/nikoduque-doo/kanji_learn/raw/main/src/Images/home2.png', path + "images/home2.png")
-    urllib.request.urlretrieve('https://github.com/nikoduque-doo/kanji_learn/raw/main/src/Images/Options.png', path + "images/Options.png")
-    urllib.request.urlretrieve('https://github.com/nikoduque-doo/kanji_learn/raw/main/src/Images/practice.png', path + "images/practice.png")
-    urllib.request.urlretrieve('https://github.com/nikoduque-doo/kanji_learn/raw/main/src/Images/start.png', path + "images/start.png")
-    urllib.request.urlretrieve('https://github.com/nikoduque-doo/kanji_learn/raw/main/src/Images/tankaiki.png', path + "images/tankaiki.png")
-
 sm = ScreenManager()
+
+#Japanese font:
+#https://github.com/public-domain/mona
+font = resources.resource_find("mona.ttf")
+LabelBase.register(name="mona", fn_regular=font)
 
 class WindowManager(ScreenManager):
     pass
 
-#Japanese font:
-#https://github.com/public-domain/mona
-path = fsg.getPath()
-loadResources()
-LabelBase.register(name="mona", fn_regular=path + "mona.ttf")
+
 
 class FirstScreen(Screen):
     def onClickButton(self):
@@ -131,10 +124,10 @@ class PracticeScreenInteractive(Screen):
                     txt += "\nThe next word will be available tomorrow."
                 else:
                     txt += "\nThe next word will be available in {} days.".format(jw)
-                lab1 = Label(pos_hint={'center_x':.5, 'center_y':.5}, text = txt, size_hint=(1,.3), font_size ='30sp')
+                lab1 = Label(pos_hint={'center_x':.5, 'center_y':.5}, text = txt, size_hint=(1,.3), font_size ='25sp')
             else:
                 txt = "The next word will be available in {} years, try adding a new word!".format(jw * -1)
-                lab1 = Label(pos_hint={'center_x':.5, 'center_y':.5}, text = txt, size_hint=(1,.3), font_size ='30sp')
+                lab1 = Label(pos_hint={'center_x':.5, 'center_y':.5}, text = txt, size_hint=(1,.3), font_size ='25sp')
             self.add_widget(lab1)
             contb = Button(text = "Return home", size_hint=(.5,None), size=(0,dp(40)), pos_hint={'center_x':.5})
             contb.bind(on_press = self.returnHome)
@@ -189,7 +182,7 @@ class PracticeScreenInteractive(Screen):
             \n        (4) Correct. Felt dobious, nonetheless.\
             \n        (5) Perfect recall.\
             \n\n\n"+jwtxt
-        lab = Label(pos_hint={'center_x':.5, 'center_y':.5}, text = txt, size_hint=(1,.5), font_size ='30sp', font_name='mona')
+        lab = Label(pos_hint={'center_x':.5, 'center_y':.5}, text = txt, size_hint=(1,.5), font_size ='25sp', font_name='mona')
         self.add_widget(lab)
 
     def gradeQuestion(self, grade):
@@ -701,7 +694,7 @@ class TankaikiApp(App):
     path = fsg.getPath()
 
     def build(self):
-        loadResources()
+        #loadResources()
         sm.add_widget(FirstScreen())
         return sm
 

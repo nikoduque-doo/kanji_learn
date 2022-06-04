@@ -10,7 +10,7 @@ WindowManager:
         Rectangle:
             pos: self.pos
             size: self.size
-            source: app.path + 'images/fondo.png'
+            source: kivy.resources.resource_find("fondo.png")
     name: "first"
     AnchorLayout:
         padding: ('5dp', '5dp', '5dp', '5dp')
@@ -20,11 +20,12 @@ WindowManager:
             size_hint: .3, 1
             orientation:'vertical'
             Image:
-                source: app.path + "images/tankaiki.png"
+                source: kivy.resources.resource_find("tankaiki.png")
                 allow_stretch: True
             Label:
                 bold: True
                 text:'Tankaiki'
+                font_name: 'mona'
                 font_size: "55"
                 color: 1,1,1,1
             Button:
@@ -54,7 +55,7 @@ WindowManager:
                 Rectangle:
                     pos: self.pos
                     size: self.size
-                    source: app.path + 'images/arbol.jpg'
+                    source: kivy.resources.resource_find("arbol.jpg")
             BoxLayout:
                 orientation: "vertical"
                 spacing: "50dp"
@@ -69,7 +70,7 @@ WindowManager:
     BoxLayout:
         orientation:'horizontal'
         Image:
-            source: app.path + "images/tankaiki.png"
+            source: kivy.resources.resource_find("tankaiki.png")
             size_hint: .15, 1
             allow_stretch: True
         Label:
@@ -95,18 +96,18 @@ WindowManager:
             text:''
         Button:
             size_hint: .08, 1
-            background_normal: app.path + 'images/home2.png'
+            background_normal: kivy.resources.resource_find("home2.png")
             on_press: root.onClickHomeButton()
         Button:
             size_hint: .1, 1
-            background_normal: app.path + 'images/practice.png'
+            background_normal: kivy.resources.resource_find("practice.png")
             on_press: root.onClickStartPractice()
         Label:
             size_hint: .003, 1
             text:''
         Button:
             size_hint: .1, 1
-            background_normal: app.path + 'images/Options.png'
+            background_normal: kivy.resources.resource_find("Options.png")
             on_press: 
                 app.root.transition.direction = "left"
 
@@ -188,7 +189,7 @@ WindowManager:
                 Rectangle:
                     pos: self.pos
                     size: self.size
-                    source: app.path + 'images/start.png'
+                    source: kivy.resources.resource_find("start.png")
             BoxLayout:
                 orientation: "vertical"
                 spacing: "50dp"
@@ -318,7 +319,7 @@ WindowManager:
                 Rectangle:
                     pos: self.pos
                     size: self.size
-                    source: app.path + 'images/hoja.jpg'
+                    source: kivy.resources.resource_find("hoja.jpg")
             BoxLayout:
                 orientation:'vertical'
                 WordInformation:
