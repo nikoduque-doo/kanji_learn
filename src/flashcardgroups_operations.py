@@ -483,7 +483,7 @@ def update_recent_words(gen_dict):
   timeRange = 5
   today = datetime.now().timetuple().tm_yday + date.today().year*1000
   while q.peek() != None and futureDateCode(q.peek().dateCreated, timeRange) < today:
-    q.unqueue()
+    q.dequeue()
   save_changes_to_fgroups(gen_dict)
 
 def futureDateCode(originalDate, num):
