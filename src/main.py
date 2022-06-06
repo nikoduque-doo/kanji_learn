@@ -31,6 +31,10 @@ labelText = str(chosen)
 
 sm = ScreenManager()
 
+
+#Algorithm SM-2, (C) Copyright SuperMemo World, 1991. 
+#https://www.supermemo.com
+
 #Japanese font:
 #https://github.com/public-domain/mona
 font = resources.resource_find("mona.ttf")
