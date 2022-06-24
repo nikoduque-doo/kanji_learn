@@ -10,7 +10,10 @@ WindowManager:
         Rectangle:
             pos: self.pos
             size: self.size
-            source: kivy.resources.resource_find("fondo.png")
+            # To use with pyinstaller
+            # source: kivy.resources.resource_find("fondo.png")
+            # To use with the console
+            source: "resources/fondo.png"
     name: "first"
     AnchorLayout:
         padding: ('5dp', '5dp', '5dp', '5dp')
@@ -20,7 +23,10 @@ WindowManager:
             size_hint: .3, 1
             orientation:'vertical'
             Image:
-                source: kivy.resources.resource_find("tankaiki.png")
+                # To use with pyinstaller
+                # source: kivy.resources.resource_find("tankaiki.png")
+                # To use with the console
+                source: "resources/tankaiki.png"
                 allow_stretch: True
             Label:
                 bold: True
@@ -55,7 +61,10 @@ WindowManager:
                 Rectangle:
                     pos: self.pos
                     size: self.size
-                    source: kivy.resources.resource_find("arbol.jpg")
+                    # To use with pyinstaller
+                    # source: kivy.resources.resource_find("arbol.jpg")
+                    # To use with the console
+                    source: "resources/arbol.png"
             BoxLayout:
                 orientation: "vertical"
                 spacing: "50dp"
@@ -70,7 +79,10 @@ WindowManager:
     BoxLayout:
         orientation:'horizontal'
         Image:
-            source: kivy.resources.resource_find("tankaiki.png")
+            # To use with pyinstaller
+            # source: kivy.resources.resource_find("tankaiki.png")
+            # To use with the console
+            source: "resources/tankaiki.png"
             size_hint: .15, 1
             allow_stretch: True
         Label:
@@ -96,18 +108,27 @@ WindowManager:
             text:''
         Button:
             size_hint: .08, 1
-            background_normal: kivy.resources.resource_find("home2.png")
+            # To use with pyinstaller
+            # background_normal: kivy.resources.resource_find("home2.png")
+            # To use with the console
+            background_normal: "resources/home2.png"
             on_press: root.onClickHomeButton()
         Button:
             size_hint: .1, 1
-            background_normal: kivy.resources.resource_find("practice.png")
+            # To use with pyinstaller
+            # background_normal: kivy.resources.resource_find("practice.png")
+            # To use with the console
+            background_normal: "resources/practice.png"
             on_press: root.onClickStartPractice()
         Label:
             size_hint: .003, 1
             text:''
         Button:
             size_hint: .1, 1
-            background_normal: kivy.resources.resource_find("Options.png")
+            # To use with pyinstaller
+            # background_normal: kivy.resources.resource_find("Options.png")
+            # To use with the console
+            background_normal: "resources/Options.png"
             on_press: 
                 app.root.transition.direction = "left"
 
@@ -189,7 +210,10 @@ WindowManager:
                 Rectangle:
                     pos: self.pos
                     size: self.size
-                    source: kivy.resources.resource_find("start.png")
+                    # To use with pyinstaller
+                    # source: kivy.resources.resource_find("start.png")
+                    # To use with the console
+                    source: "resources/start.png"
             BoxLayout:
                 orientation: "vertical"
                 spacing: "50dp"
@@ -319,7 +343,10 @@ WindowManager:
                 Rectangle:
                     pos: self.pos
                     size: self.size
-                    source: kivy.resources.resource_find("hoja.jpg")
+                    # To use with Pyinstaller
+                    # source: kivy.resources.resource_find("hoja.jpg")
+                    # To use with console
+                    source: "resources/hoja.jpg"
             BoxLayout:
                 orientation:'vertical'
                 WordInformation:

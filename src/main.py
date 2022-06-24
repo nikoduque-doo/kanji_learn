@@ -17,11 +17,12 @@ from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
 from kivy import resources
 
-if getattr(sys, 'frozen', False):
-    # this is a Pyinstaller bundle
-    resources.resource_add_path(sys._MEIPASS)
-    resources.resource_add_path(os.path.join(sys._MEIPASS, 'resources'))
-resources.resource_add_path(os.getcwd()+'\\src\\resources')
+# To use with pyinstaller
+# if getattr(sys, 'frozen', False):
+#     # this is a Pyinstaller bundle
+#     resources.resource_add_path(sys._MEIPASS)
+#     resources.resource_add_path(os.path.join(sys._MEIPASS, 'resources'))
+# resources.resource_add_path(os.getcwd()+'\\src\\resources')
 
 sys.setrecursionlimit(1000000000)
 
@@ -38,12 +39,14 @@ sm = ScreenManager()
 #Japanese font:
 #https://github.com/public-domain/mona
 font = resources.resource_find("mona.ttf")
-LabelBase.register(name="mona", fn_regular=font)
+# To use with pyinstaller
+# LabelBase.register(name="mona", fn_regular=font)
+
+# To use with the console
+LabelBase.register(name="mona", fn_regular="resources/mona.ttf")
 
 class WindowManager(ScreenManager):
     pass
-
-
 
 class FirstScreen(Screen):
     def onClickButton(self):
