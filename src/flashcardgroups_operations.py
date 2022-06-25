@@ -132,6 +132,12 @@ def save_changes_to_fgroups(dict_saved:dict):
     pickle.dump(dict_saved,pickle_out)
     pickle_out.close()
 
+def reset():
+  os.remove(getPath() + "/my_dict.pickle")
+  dict = load_existing_fgroups()
+  return dict
+
+
 def getSizeOfGroup(struc):
   ret = 0
   try:
@@ -554,3 +560,59 @@ def word_range_search(gen_dict, word:str):
   print(results, foundWord)
   return foundWord
   
+def update_statistics_deleting_group(struc, my_dict):
+  print("I am here")
+  print(type(struc))
+  if(type(struc) == dict):
+    for key in struc:
+      struc.pop(key)
+      word_searched = get_word_data_graphic(key)
+      my_dict["WordsInGroups"] -= 1
+      if "noun" in word_searched.part_of_speech or "Noun" in word_searched.part_of_speech:
+        my_dict["TotalNouns"] -= 1
+      elif "adjective" in word_searched.part_of_speech or "Adjective" in word_searched.part_of_speech:
+        my_dict["TotalAdjectives"] -= 1
+      elif "verb" in word_searched.part_of_speech or "Verb" in word_searched.part_of_speech:
+        my_dict["TotalVerbs"] -= 1
+      else:
+        my_dict["TotalOthers"] -= 1
+  elif(type(struc) == DynamicArray):
+    struc.deleteUpdating(my_dict)
+  elif (type(struc) == ArrQueue.ArrQueue or type(struc) == RefQueue.RefQueue):
+    while struc.isEmpty():
+      word_searched = struc.dequeue()
+      my_dict["WordsInGroups"] -= 1
+      if "noun" in word_searched.part_of_speech or "Noun" in word_searched.part_of_speech:
+        my_dict["TotalNouns"] -= 1
+      elif "adjective" in word_searched.part_of_speech or "Adjective" in word_searched.part_of_speech:
+        my_dict["TotalAdjectives"] -= 1
+      elif "verb" in word_searched.part_of_speech or "Verb" in word_searched.part_of_speech:
+        my_dict["TotalVerbs"] -= 1
+      else:
+        my_dict["TotalOthers"] -= 1
+  elif(type(struc) == LinkList.LinkList):
+    while not struc.isEmpty():
+      print("I am here now")
+      word_searched = struc.popFront()
+      my_dict["WordsInGroups"] -= 1
+      if "noun" in word_searched.part_of_speech or "Noun" in word_searched.part_of_speech:
+        my_dict["TotalNouns"] -= 1
+      elif "adjective" in word_searched.part_of_speech or "Adjective" in word_searched.part_of_speech:
+        my_dict["TotalAdjectives"] -= 1
+      elif "verb" in word_searched.part_of_speech or "Verb" in word_searched.part_of_speech:
+        my_dict["TotalVerbs"] -= 1
+      else:
+        my_dict["TotalOthers"] -= 1
+  elif(type(struc) == StaticStack.ArrStack):
+    while struc.isEmpty():
+      word_searched = struc.pop()
+      my_dict["WordsInGroups"] -= 1
+      if "noun" in word_searched.part_of_speech or "Noun" in word_searched.part_of_speech:
+        my_dict["TotalNouns"] -= 1
+      elif "adjective" in word_searched.part_of_speech or "Adjective" in word_searched.part_of_speech:
+        my_dict["TotalAdjectives"] -= 1
+      elif "verb" in word_searched.part_of_speech or "Verb" in word_searched.part_of_speech:
+        my_dict["TotalVerbs"] -= 1
+      else:
+        my_dict["TotalOthers"] -= 1
+  save_changes_to_fgroups(my_dict)

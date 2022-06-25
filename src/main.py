@@ -166,6 +166,16 @@ class OptionsScreen(Screen):
     def on_pre_enter(self):
         opsC = OptionsScreenContents()
         opsC.on_pre_enter()
+    
+    def reset(self):
+        global my_dict 
+        my_dict = fsg.reset()
+        sm.add_widget(HomeScreen())
+        sm.transition.direction = "right"
+        sm.current = "Home"
+        backQueue.push(sm.children[1])
+        sm.remove_widget(sm.children[1])
+
 
 
 class OptionsScreenContents(BoxLayout):
@@ -391,10 +401,12 @@ class FlashcardGroupScreenContents(BoxLayout):
         fcgc = FlashCardGroupContents()
         fcgc.on_pre_enter()
     
-    # TODO: Falta actualizar las estadísticas del total de palabras guardadas, en caso de que el grupo esté aún con palabras.
     def onPressGroupDeleteButton(self, instance):
+        struc = my_dict["groups"][labelText]
+        fsg.update_statistics_deleting_group(struc, my_dict)
         print(labelText)
         my_dict["groups"].pop(labelText)
+        fsg.save_changes_to_fgroups(my_dict)
         AllWordsInsideGroup.struc_key = None
         sm.add_widget(HomeScreen())
         sm.transition.direction = "right"

@@ -1,3 +1,4 @@
+import flashcardgroups_operations as fsg
 class DynamicArray():
     def __init__(self):
         self.itemCount = 0
@@ -59,3 +60,18 @@ class DynamicArray():
 
     def getSize(self):
         return self.itemCount
+
+    def deleteUpdating(self, my_dict):
+        for i in range(self.itemCount):
+            item = self.arr[i]
+            self.deleteKanji(item)
+            word_searched = fsg.get_word_data_graphic(item)
+            my_dict["WordsInGroups"] -= 1
+            if "noun" in word_searched.part_of_speech or "Noun" in word_searched.part_of_speech:
+              my_dict["TotalNouns"] -= 1
+            elif "adjective" in word_searched.part_of_speech or "Adjective" in word_searched.part_of_speech:
+              my_dict["TotalAdjectives"] -= 1
+            elif "verb" in word_searched.part_of_speech or "Verb" in word_searched.part_of_speech:
+              my_dict["TotalVerbs"] -= 1
+            else:
+              my_dict["TotalOthers"] -= 1

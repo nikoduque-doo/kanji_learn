@@ -317,7 +317,17 @@ WindowManager:
                 spacing: "50 dp"
                 Label:
                     text:'Options'
+                    size_hint_y: .2
                     color: 0, 0, 0, 1
+                BoxLayout:
+                    orientation:'vertical'
+                    Button:
+                        text:'Reset Storage Data'
+                        size_hint_y: .2
+                        on_press: root.reset()
+                    Label:
+                        text:'Warning! \nClicking this button will delete all the data stored in the app forever!'
+                        color: 0, 0, 0, 1
             BottomRightOptions:
 
 <OptionsScreenContents>:
