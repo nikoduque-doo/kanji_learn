@@ -51,7 +51,7 @@ WindowManager:
                 size: self.size
             Color: 
                 rgba: 0, 0, 0, 1
-        TopBar:
+        TopBarHome:
         GridLayout:
             cols: 3
             rows: 1
@@ -73,7 +73,7 @@ WindowManager:
             RandomWord:
             BottomRightOptions:
             
-<TopBar>:
+<TopBarHome>:
     orientation: 'horizontal'
     size_hint: 1, .1
     BoxLayout:
@@ -129,8 +129,69 @@ WindowManager:
             # background_normal: kivy.resources.resource_find("Options.png")
             # To use with the console
             background_normal: "resources/Options.png"
-            on_press: 
-                app.root.transition.direction = "left"
+            on_press: root.onClickOptions()
+
+<TopBar>:
+    orientation: 'horizontal'
+    size_hint: 1, .1
+    BoxLayout:
+        orientation:'horizontal'
+        Image:
+            # To use with pyinstaller
+            # source: kivy.resources.resource_find("tankaiki.png")
+            # To use with the console
+            source: "resources/tankaiki.png"
+            size_hint: .15, 1
+            allow_stretch: True
+        Button:
+            text:'Back'
+            on_press: root.onPressBackButton()
+            size_hint_x: .1
+        Label:
+            size_hint: .15, 1
+            color: 0 , 0 , 0 , 1
+            text:'Tankaiki'
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: .4, 1
+            Label:
+                color:0,0,0,1
+                size_hint: 1, .4
+                text:'Search'
+            TextInput:
+                font_name: 'mona'
+                size_hint: 1, .6
+                id: input
+                text: ""
+                multiline: False
+                on_text_validate: root.onSearch(self)
+        Label:
+            size_hint: .01, 1
+            text:''
+        Button:
+            size_hint: .08, 1
+            # To use with pyinstaller
+            # background_normal: kivy.resources.resource_find("home2.png")
+            # To use with the console
+            background_normal: "resources/home2.png"
+            on_press: root.onClickHomeButton()
+        Button:
+            size_hint: .1, 1
+            # To use with pyinstaller
+            # background_normal: kivy.resources.resource_find("practice.png")
+            # To use with the console
+            background_normal: "resources/practice.png"
+            on_press: root.onClickStartPractice()
+        Label:
+            size_hint: .003, 1
+            text:''
+        Button:
+            size_hint: .1, 1
+            # To use with pyinstaller
+            # background_normal: kivy.resources.resource_find("Options.png")
+            # To use with the console
+            background_normal: "resources/Options.png"
+            on_press: root.onClickOptions()
 
 <BottomRightOptions>:
     size_hint: .15, .1
@@ -220,6 +281,79 @@ WindowManager:
 
 ###########################################################
 ##########| Section pertaining practice words end |########
+
+
+##########| Section pertaining options screen start |##########
+###############################################################
+
+<OptionsScreen>:
+    name: "Options"
+    BoxLayout:
+        orientation:'vertical'
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+            Color: 
+                rgba: 0, 0, 0, 1
+        TopBar:
+        GridLayout:
+            cols: 3
+            rows: 1
+            canvas.before:
+                Color: 
+                    rgba: .9, .9, .9, 1
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+            BoxLayout:
+                orientation: "vertical"
+                spacing: "50dp"
+                OptionsScreenContents:
+            BoxLayout:
+                orientation:'vertical'
+                spacing: "50 dp"
+                Label:
+                    text:'Options'
+                    color: 0, 0, 0, 1
+            BottomRightOptions:
+
+<OptionsScreenContents>:
+    OptionsContents:
+
+<OptionsContents>:
+    orientation: 'vertical'
+    Label:
+        text:'Statistics'
+        color: 0, 0, 0, 1
+    Label:
+        text: root.label1
+        color: 0, 0, 0, 1
+    Label:
+        text: root.label2
+        color: 0, 0, 0, 1
+    Label:
+        text: root.label3
+        color: 0, 0, 0, 1
+    Label:
+        text: root.label4
+        color: 0, 0, 0, 1
+    Label:
+        text: root.label5
+        color: 0, 0, 0, 1
+    Label:
+        text: root.label6
+        color: 0, 0, 0, 1
+    Label:
+        text: root.label7
+        color: 0, 0, 0, 1
+        
+
+
+###########################################################
+##########| Section pertaining options screen end |########
 
 
 ##########| Section pertaining group word start |##########
@@ -597,9 +731,15 @@ WindowManager:
             Rectangle:
                 pos: self.pos
                 size: self.size
-        ScrollView:
-            size_hint_y: 1
-            AllRecentWords:
+        BoxLayout:
+            orientation:'vertical'
+            Label:
+                text:'Recently Added Words'
+                color: 0, 0, 0, 1
+                size_hint_y: 0.1
+            ScrollView:
+                size_hint_y: 1
+                AllRecentWords:
         BottomRightOptions:
 
 ###########################################################

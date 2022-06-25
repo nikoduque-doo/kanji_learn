@@ -1,6 +1,7 @@
 import time
 import flashcardgroups_operations as fsg
 from Vocabulary import JWord
+from StaticStack import ArrStack
 
 import platform
 import sys
@@ -15,6 +16,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
+from kivy.properties import StringProperty
 from kivy import resources
 
 # To use with pyinstaller
@@ -31,6 +33,7 @@ chosen = None
 labelText = str(chosen)
 
 sm = ScreenManager()
+backQueue = ArrStack()
 
 
 #Algorithm SM-2, (C) Copyright SuperMemo World, 1991. 
@@ -70,6 +73,7 @@ class TopBar(BoxLayout):
             sm.add_widget(HomeScreen())
             sm.transition.direction = "right"
             sm.current = "Home"
+            backQueue.push(sm.children[1])
             sm.remove_widget(sm.children[1])
 
     def onClickStartPractice(self):
@@ -77,6 +81,47 @@ class TopBar(BoxLayout):
             sm.add_widget(PracticeScreen())
             sm.transition.direction = "left"
             sm.current = "PracticePage"
+            backQueue.push(sm.children[1])
+            sm.remove_widget(sm.children[1])
+    
+    def onSearch(self, this):
+        searchTerm = this.text.strip()
+        if searchTerm != "":
+            SearchResultsScreen.setText(searchTerm)
+        
+    def onPressBackButton(self):
+        prev = backQueue.pop()
+        sm.add_widget(prev)
+        sm.transition.direction = "right"
+        sm.current = prev.name
+        backQueue.push(sm.children[1])
+        sm.remove_widget(sm.children[1])
+
+    def onClickOptions(self):
+        if sm.current != "Options":
+            sm.add_widget(OptionsScreen())
+            sm.transition.direction = "left"
+            sm.current = "Options"
+            backQueue.push(sm.children[1])
+            sm.remove_widget(sm.children[1])
+
+
+class TopBarHome(BoxLayout):
+    def onClickHomeButton(self):
+        print(my_dict["practice_box"])
+        if sm.current != "Home":
+            sm.add_widget(HomeScreen())
+            sm.transition.direction = "right"
+            sm.current = "Home"
+            backQueue.push(sm.children[1])
+            sm.remove_widget(sm.children[1])
+
+    def onClickStartPractice(self):
+        if sm.current != "PracticePage":
+            sm.add_widget(PracticeScreen())
+            sm.transition.direction = "left"
+            sm.current = "PracticePage"
+            backQueue.push(sm.children[1])
             sm.remove_widget(sm.children[1])
     
     def onSearch(self, this):
@@ -84,16 +129,79 @@ class TopBar(BoxLayout):
         if searchTerm != "":
             SearchResultsScreen.setText(searchTerm)
     
+    def onPressBackButton(self):
+        prev = backQueue.pop()
+        sm.add_widget(prev)
+        sm.transition.direction = "right"
+        sm.current = prev.name
+        backQueue.push(sm.children[1])
+        sm.remove_widget(sm.children[1])
+
+
+    def onClickOptions(self):
+        if sm.current != "Options":
+            sm.add_widget(OptionsScreen())
+            sm.transition.direction = "left"
+            sm.current = "Options"
+            backQueue.push(sm.children[1])
+            sm.remove_widget(sm.children[1])
+    
 
 class BottomRightOptions(BoxLayout):
     def onClickAddGroup(self):
         sm.add_widget(NewGroup())
         sm.transition.direction = "left"
         sm.current = "NewGroup"
+        backQueue.push(sm.children[1])
         sm.remove_widget(sm.children[1])
 
 ##########################################################
 #############| Section pertaining Home end |##############
+
+
+##########| Section pertaining options screen start |##########
+###############################################################
+
+class OptionsScreen(Screen):
+    def on_pre_enter(self):
+        opsC = OptionsScreenContents()
+        opsC.on_pre_enter()
+
+
+class OptionsScreenContents(BoxLayout):
+    def on_pre_enter(self):
+        self.clear_widgets()
+        opC = OptionsContents()
+        opC.on_pre_enter()
+        self.add_widget(opC)
+
+
+class OptionsContents(BoxLayout):
+    label1 = StringProperty("")
+    label2 = StringProperty("")
+    label3 = StringProperty("")
+    label4 = StringProperty("")
+    label5 = StringProperty("")
+    label6 = StringProperty("")
+    label7 = StringProperty("")
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.label1 = "Total Words saved in the app: " + str(my_dict["TotalWords"])
+        self.label2 = "Total words saved right now in groups: " + str(my_dict["WordsInGroups"])
+        self.label3 = "Total flashcard groups saved: " + str(len(my_dict["groups"]))
+        self.label4 = "Total Nouns saved: " + str(my_dict["TotalNouns"])
+        self.label5 = "Total Verbs saved: " + str(my_dict["TotalVerbs"])
+        self.label6 = "Total Adjectives saved: " + str(my_dict["TotalAdjectives"])
+        self.label7 = "Total words of other type saved: " + str(my_dict["TotalOthers"])
+
+    def on_pre_enter(self):
+        self.clear_widgets()
+        self.__init__()
+
+
+###########################################################
+##########| Section pertaining options screen end |########
 
 
 ############| Section pertaining practice start |###########
@@ -200,6 +308,7 @@ class PracticeScreenInteractive(Screen):
         sm.add_widget(HomeScreen())
         sm.transition.direction = "left"
         sm.current = "Home"
+        backQueue.push(sm.children[1])
         sm.remove_widget(sm.children[1])
 
 ##########################################################
@@ -271,6 +380,7 @@ class FlashcardGroupScreen(Screen):
         sm.add_widget(FlashcardGroupScreen())
         sm.transition.direction = "left"
         sm.current = "FlashcardGroup"
+        backQueue.push(sm.children[1])
         sm.remove_widget(sm.children[1])
         AllWordsInsideGroup.struc_key = struc_name
         AllWordsInsideGroup.update()
@@ -281,6 +391,7 @@ class FlashcardGroupScreenContents(BoxLayout):
         fcgc = FlashCardGroupContents()
         fcgc.on_pre_enter()
     
+    # TODO: Falta actualizar las estadísticas del total de palabras guardadas, en caso de que el grupo esté aún con palabras.
     def onPressGroupDeleteButton(self, instance):
         print(labelText)
         my_dict["groups"].pop(labelText)
@@ -288,6 +399,7 @@ class FlashcardGroupScreenContents(BoxLayout):
         sm.add_widget(HomeScreen())
         sm.transition.direction = "right"
         sm.current = "Home"
+        backQueue.push(sm.children[1])
         sm.remove_widget(sm.children[1])
 
 
@@ -303,6 +415,7 @@ class FlashCardGroupContents(BoxLayout):
         sm.add_widget(AddWord())
         sm.transition.direction = "left"
         sm.current = "AddWord"
+        backQueue.push(sm.children[1])
         sm.remove_widget(sm.children[1])
 
 
@@ -336,6 +449,7 @@ class AllWordsInsideGroup(StackLayout):
         sm.add_widget(WordInformationScreen())
         sm.transition.direction = "left"
         sm.current = "WordInformationScreen"
+        backQueue.push(sm.children[1])
         sm.remove_widget(sm.children[1])
 
 
@@ -346,6 +460,7 @@ class WordInformationScreen(Screen):
         sm.add_widget(HomeScreen())
         sm.transition.direction = "right"
         sm.current = "Home"
+        backQueue.push(sm.children[1])
         sm.remove_widget(sm.children[1])
 
 
@@ -370,11 +485,13 @@ class AddWordContents(BoxLayout):
             sm.add_widget(WordConfirmation())
             sm.transition.direction = "left"
             sm.current = "WordConfirmation"
+            backQueue.push(sm.children[1])
             sm.remove_widget(sm.children[1])
         else:
             sm.add_widget(HomeScreen())
             sm.transition.direction = "left"
             sm.current = "Home"
+            backQueue.push(sm.children[1])
             sm.remove_widget(sm.children[1])
 
 
@@ -511,6 +628,7 @@ class AddGroupW(StackLayout):
         sm.add_widget(HomeScreen())
         sm.transition.direction = "right"
         sm.current = "Home"
+        backQueue.push(sm.children[1])
         sm.remove_widget(sm.children[1])
 
 
@@ -553,6 +671,7 @@ class AllRecentWords(StackLayout):
         sm.add_widget(insideSomethingWordInformationScreen())
         sm.transition.direction = "left"
         sm.current = "insideView"
+        backQueue.push(sm.children[1])
         sm.remove_widget(sm.children[1])
 
 
@@ -591,6 +710,7 @@ class RecentWordsScreen(Screen):
         sm.add_widget(RecentWordsScreen())
         sm.transition.direction = "left"
         sm.current = "RecentWords"
+        backQueue.push(sm.children[1])
         sm.remove_widget(sm.children[1])
 
 
@@ -632,6 +752,7 @@ class AllSearchResults(StackLayout):
         sm.add_widget(insideSomethingWordInformationScreen())
         sm.transition.direction = "left"
         sm.current = "insideView"
+        backQueue.push(sm.children[1])
         sm.remove_widget(sm.children[1])
 
 
@@ -683,12 +804,14 @@ class SearchResultsScreen(Screen):
             sm.add_widget(SearchResultsScreen())
             sm.transition.direction = "left"
             sm.current = "SearchResults"
+            backQueue.push(sm.children[1])
             sm.remove_widget(sm.children[1])
         else:
-            sm.remove_widget(sm.children[0])
             sm.add_widget(SearchResultsScreen())
             sm.transition.direction = "left"
             sm.current = "SearchResults"
+            backQueue.push(sm.children[1])
+            sm.remove_widget(sm.children[1])
 
 
 class SearchResultsScreenContents(BoxLayout):

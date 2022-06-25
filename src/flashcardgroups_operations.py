@@ -1,4 +1,5 @@
 from datetime import timedelta, datetime, date
+from re import M
 from Vocabulary import Kanji, JWord
 from AVLTree import AVLTree, BST
 from BinaryHeap import BinaryHeap
@@ -51,6 +52,18 @@ def load_existing_fgroups():
       current_dict["recent"] = RefQueue.RefQueue()
     if not "search_results" in current_dict:
       current_dict["search_results"] = OrderedLinkList()
+    if not "TotalWords" in current_dict:
+      current_dict["TotalWords"] = 0
+    if not "WordsInGroups" in current_dict:
+      current_dict["WordsInGroups"] = 0
+    if not "TotalNouns" in current_dict:
+      current_dict["TotalNouns"] = 0
+    if not "TotalVerbs" in current_dict:
+      current_dict["TotalVerbs"] = 0
+    if not "TotalAdjectives" in current_dict:
+      current_dict["TotalAdjectives"] = 0
+    if not "TotalOthers" in current_dict:
+      current_dict["TotalOthers"] = 0
 
     #Artifitial creation of structures for test
     if False: #False to deactivate
@@ -257,6 +270,18 @@ def add_word_with_graphic(struc, word, gen_dict):
         struc.push(word_searched)
       elif(type(struc) == AVLTree or type(struc) == BST or type(struc) == OrderedLinkList):
         struc.insert(word_searched)
+      
+      # Update Statistics
+      gen_dict["TotalWords"] += 1
+      gen_dict["WordsInGroups"] += 1
+      if "noun" in word_searched.part_of_speech or "Noun" in word_searched.part_of_speech:
+        gen_dict["TotalNouns"] += 1
+      elif "adjective" in word_searched.part_of_speech or "Adjective" in word_searched.part_of_speech:
+        gen_dict["TotalAdjectives"] += 1
+      elif "verb" in word_searched.part_of_speech or "Verb" in word_searched.part_of_speech:
+        gen_dict["TotalVerbs"] += 1
+      else:
+        gen_dict["TotalOthers"] += 1
     
     else:
       print("Word was already saved.")
@@ -312,6 +337,18 @@ def delete_word_graphic(my_dict, struc, item):
   elif(type(struc) == StaticStack.ArrStack):
     StaticStack.stack_delete(item, struc)
   save_changes_to_fgroups(my_dict)
+  # Update Statistics
+  word_searched = get_word_data_graphic(item)
+  my_dict["WordsInGroups"] -= 1
+  if "noun" in word_searched.part_of_speech or "Noun" in word_searched.part_of_speech:
+    my_dict["TotalNouns"] -= 1
+  elif "adjective" in word_searched.part_of_speech or "Adjective" in word_searched.part_of_speech:
+    my_dict["TotalAdjectives"] -= 1
+  elif "verb" in word_searched.part_of_speech or "Verb" in word_searched.part_of_speech:
+    my_dict["TotalVerbs"] -= 1
+  else:
+    my_dict["TotalOthers"] -= 1
+  
 
 def get_random_word(struc):
   if(type(struc) == dict):
