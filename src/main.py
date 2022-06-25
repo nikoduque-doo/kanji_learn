@@ -436,9 +436,12 @@ class AllWordsInsideGroup(StackLayout):
     update = None
 
     def __init__(self, **kwargs):
+        start_time = time.perf_counter_ns()
         super().__init__(**kwargs)
         self.setUp()
         AllWordsInsideGroup.update = self.setUp
+        end_time = time.perf_counter_ns()
+        print(end_time - start_time, "ns")
 
     def setUp(self):
         self.clear_widgets()
@@ -595,7 +598,7 @@ class AddGroupW(StackLayout):
     def searchvalidate(self, thisWidget, Widget):
         chosen = thisWidget.text.strip()
         if (chosen not in my_dict["groups"].keys() and chosen != ""):
-            self.clear_widgets()
+            """self.clear_widgets()
             layout1 = BoxLayout(orientation='vertical')
             lbl1 = Label(text = "What kind of Data Structure should it be?", color = (0 , 0 , 0 , 1), size_hint = (1, .2))
             layout1.add_widget(lbl1)
@@ -625,7 +628,8 @@ class AddGroupW(StackLayout):
             layout2.add_widget(BSTbtn)
             layout2.add_widget(OLLbtn)
             layout1.add_widget(layout2)
-            self.add_widget(layout1)
+            self.add_widget(layout1)"""
+            self.create_group_and_return(my_dict, chosen, "A", 0)
         else:
             if chosen == "":
                 thisWidget.text = "No name was given"

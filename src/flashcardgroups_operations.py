@@ -84,15 +84,17 @@ def load_existing_fgroups():
       for i in lis:
           print(i, end=", ")
       print("")
-      s = StaticStack.ArrStack(20)
-      q = ArrQueue.ArrQueue(20)
+      a = DynamicArray()
+      s = StaticStack.ArrStack(100)
+      q = ArrQueue.ArrQueue(100)
       q2 = RefQueue.RefQueue()
       l = LinkList.LinkList()
       ol = OrderedLinkList()
       bst = BST()
       av = AVLTree()
-      for j in range(17):
+      for j in range(100):
           i = lis[j]
+          a.insert(i)
           s.push(i)
           q.enqueue(i)
           q2.enqueue(i)
@@ -100,6 +102,7 @@ def load_existing_fgroups():
           ol.insert(i)
           bst.insert(i)
           av.insert(i)
+      current_dict["groups"]["a"] = a
       current_dict["groups"]["s"] = s
       current_dict["groups"]["q"] = q
       current_dict["groups"]["q2"] = q2
