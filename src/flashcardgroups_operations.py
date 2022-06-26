@@ -65,8 +65,9 @@ def load_existing_fgroups():
     if not "TotalOthers" in current_dict:
       current_dict["TotalOthers"] = 0
 
+    
     #Artifitial creation of structures for test
-    if False: #False to deactivate
+    if True: #False to deactivate
       def randKanji(id):
         kanji = ""
         for i in range(r(1,4)):
@@ -84,16 +85,22 @@ def load_existing_fgroups():
       for i in lis:
           print(i, end=", ")
       print("")
-      a = DynamicArray()
+      """a = DynamicArray()
       s = StaticStack.ArrStack(100)
       q = ArrQueue.ArrQueue(100)
       q2 = RefQueue.RefQueue()
       l = LinkList.LinkList()
       ol = OrderedLinkList()
       bst = BST()
-      av = AVLTree()
+      av = AVLTree()"""
+      test1 = DynamicArray()
+      test2 = DynamicArray()
+      test3 = DynamicArray()
       for j in range(100):
-          i = lis[j]
+          test1.insert(lis[j])
+          test2.insert(lis[j])
+          test3.insert(lis[j])
+          """i = lis[j]
           a.insert(i)
           s.push(i)
           q.enqueue(i)
@@ -101,8 +108,8 @@ def load_existing_fgroups():
           l.pushBack(i)
           ol.insert(i)
           bst.insert(i)
-          av.insert(i)
-      current_dict["groups"]["a"] = a
+          av.insert(i)"""
+      """current_dict["groups"]["a"] = a
       current_dict["groups"]["s"] = s
       current_dict["groups"]["q"] = q
       current_dict["groups"]["q2"] = q2
@@ -110,7 +117,10 @@ def load_existing_fgroups():
       current_dict["groups"]["ol"] = ol
       current_dict["groups"]["bst"] = bst
       current_dict["groups"]["av"] = av
-      current_dict["groups"]["My adjectives"] = av
+      current_dict["groups"]["My adjectives"] = av"""
+      current_dict["groups"]["1"] = test1
+      current_dict["groups"]["2"] = test2
+      current_dict["groups"]["3"] = test3
 
     if False: #Set to True to add to practice box, False to deactivate
       current_dict["practice_box"] = BinaryHeap()
@@ -363,6 +373,7 @@ def get_random_word(struc):
   if(type(struc) == dict):
     key, val = random.choice(list(struc.items()))
     print("The random word is {}: {}".format(key,val))
+    return key
   elif(type(struc) == list):
     ind = random.randrange(len(struc))
     while(struc[ind] is None):
@@ -374,6 +385,7 @@ def get_random_word(struc):
     print(struc.randomElement())
   elif(type(struc) == StaticStack.ArrStack):
     print(StaticStack.stack_get_rand(struc))
+
 
 def addAction(struc, word, gen_dict):
   add_word_with_graphic(struc, word, gen_dict)

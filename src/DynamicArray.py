@@ -1,4 +1,5 @@
 import flashcardgroups_operations as fsg
+import random
 class DynamicArray():
     def __init__(self):
         self.itemCount = 0
@@ -14,7 +15,9 @@ class DynamicArray():
             return s
         return "[]"
 
-  
+    def __len__(self):
+        return self.itemCount
+
     def isEmpty(self):
         return self.itemCount == 0 
   
@@ -75,3 +78,10 @@ class DynamicArray():
               my_dict["TotalVerbs"] -= 1
             else:
               my_dict["TotalOthers"] -= 1
+
+    def getRandom(self):
+        if not self.isEmpty():
+            ind = random.randrange(len(self.arr))
+            while self.arr[ind] is None:
+                ind = random.randrange(len(self.arr))
+            return self.arr[ind]

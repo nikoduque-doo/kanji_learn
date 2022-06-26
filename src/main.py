@@ -6,6 +6,7 @@ from StaticStack import ArrStack
 import platform
 import sys
 import os
+import random
 
 from kivy.app import App
 from kivy.metrics import dp
@@ -35,6 +36,7 @@ labelText = str(chosen)
 sm = ScreenManager()
 backQueue = ArrStack()
 
+randomw = None
 
 #Algorithm SM-2, (C) Copyright SuperMemo World, 1991. 
 #https://www.supermemo.com
@@ -154,6 +156,58 @@ class BottomRightOptions(BoxLayout):
         sm.current = "NewGroup"
         backQueue.push(sm.children[1])
         sm.remove_widget(sm.children[1])
+
+
+spoilerButtonState = [False, False]
+
+class RandomWord(BoxLayout):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        global randomw
+        if randomw is None:
+            randomw = self.random_word()
+        label1 = Label(text = "Random Word", color = ( 0 , 0 , 0 , 1), font_name='mona')
+        label2 = Label(text = randomw.word, color = ( 0 , 0 , 0 , 1), font_name='mona')
+        self.add_widget(label1)
+        self.add_widget(label2)
+        if spoilerButtonState[0] is False:
+            button1 = Button(text ='Reading Spoiler')
+            button1.bind(on_press = lambda x: self.spoilerPress("r"))
+            self.add_widget(button1)
+        else:
+            label3 = Label(text = randomw.reading, color = ( 0 , 0 , 0 , 1), font_name='mona')
+            self.add_widget(label3)
+        
+        if spoilerButtonState[1] is False:
+            button2 = Button(text ='Meaning Spoiler')
+            button2.bind(on_press = lambda x: self.spoilerPress("m"))
+            self.add_widget(button2)
+        else:
+            label4 = Label(text = randomw.meaning, color = ( 0 , 0 , 0 , 1), font_name='mona')
+            self.add_widget(label4)
+        
+        label5 = Label(text = "", size_hint=(1, .5))
+        self.add_widget(label5)
+
+    def spoilerPress(self, spoil):
+        if spoil is "r":
+            spoilerButtonState[0] = True
+        elif spoil is "m":
+            spoilerButtonState[1] = True
+        self.clear_widgets()
+        self.__init__()
+
+    def on_pre_enter(self):
+        self.clear_widgets()
+        self.__init__()
+
+    def random_word(self):
+        if len(my_dict["groups"]) > 0:
+            randomkey = random.choice(list(my_dict["groups"].keys()))
+            randomitem = my_dict["groups"][randomkey].getRandom()
+            return randomitem
+    
+
 
 ##########################################################
 #############| Section pertaining Home end |##############
