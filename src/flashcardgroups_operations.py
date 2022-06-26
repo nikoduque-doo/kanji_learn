@@ -67,7 +67,7 @@ def load_existing_fgroups():
 
     
     #Artifitial creation of structures for test
-    if True: #False to deactivate
+    if False: #False to deactivate
       def randKanji(id):
         kanji = ""
         for i in range(r(1,4)):

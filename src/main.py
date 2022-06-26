@@ -166,25 +166,30 @@ class RandomWord(BoxLayout):
         global randomw
         if randomw is None:
             randomw = self.random_word()
-        label1 = Label(text = "Random Word", color = ( 0 , 0 , 0 , 1), font_name='mona')
-        label2 = Label(text = randomw.word, color = ( 0 , 0 , 0 , 1), font_name='mona')
-        self.add_widget(label1)
-        self.add_widget(label2)
-        if spoilerButtonState[0] is False:
-            button1 = Button(text ='Reading Spoiler')
-            button1.bind(on_press = lambda x: self.spoilerPress("r"))
-            self.add_widget(button1)
-        else:
-            label3 = Label(text = randomw.reading, color = ( 0 , 0 , 0 , 1), font_name='mona')
-            self.add_widget(label3)
         
-        if spoilerButtonState[1] is False:
-            button2 = Button(text ='Meaning Spoiler')
-            button2.bind(on_press = lambda x: self.spoilerPress("m"))
-            self.add_widget(button2)
+        label1 = Label(text = "Random Word", color = ( 0 , 0 , 0 , 1), font_name='mona')
+        self.add_widget(label1)
+        if randomw is not None:
+            label2 = Label(text = randomw.word, color = ( 0 , 0 , 0 , 1), font_name='mona')
+            self.add_widget(label2)
+            if spoilerButtonState[0] is False:
+                button1 = Button(text ='Reading Spoiler')
+                button1.bind(on_press = lambda x: self.spoilerPress("r"))
+                self.add_widget(button1)
+            else:
+                label3 = Label(text = randomw.reading, color = ( 0 , 0 , 0 , 1), font_name='mona')
+                self.add_widget(label3)
+            
+            if spoilerButtonState[1] is False:
+                button2 = Button(text ='Meaning Spoiler')
+                button2.bind(on_press = lambda x: self.spoilerPress("m"))
+                self.add_widget(button2)
+            else:
+                label4 = Label(text = randomw.meaning, color = ( 0 , 0 , 0 , 1), font_name='mona')
+                self.add_widget(label4)
         else:
-            label4 = Label(text = randomw.meaning, color = ( 0 , 0 , 0 , 1), font_name='mona')
-            self.add_widget(label4)
+            label2 = Label(text = "No words available", color = ( 0 , 0 , 0 , 1), font_name='mona')
+            self.add_widget(label2)
         
         label5 = Label(text = "", size_hint=(1, .5))
         self.add_widget(label5)
@@ -206,6 +211,8 @@ class RandomWord(BoxLayout):
             randomkey = random.choice(list(my_dict["groups"].keys()))
             randomitem = my_dict["groups"][randomkey].getRandom()
             return randomitem
+        else:
+            return None
     
 
 
