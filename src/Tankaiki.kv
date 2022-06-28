@@ -62,7 +62,7 @@ WindowManager:
                     pos: self.pos
                     size: self.size
                     # To use with pyinstaller
-                    # source: kivy.resources.resource_find("arbol.jpg")
+                    # source: kivy.resources.resource_find("arbol2.jpg")
                     # To use with the console
                     source: "resources/arbol2.jpg"
             BoxLayout:
@@ -116,7 +116,7 @@ WindowManager:
         Button:
             size_hint: .1, 1
             # To use with pyinstaller
-            # background_normal: kivy.resources.resource_find("practice.png")
+            # background_normal: kivy.resources.resource_find("Bpractice.png")
             # To use with the console
             background_normal: "resources/Bpractice.png"
             on_press: root.onClickStartPractice()
@@ -126,7 +126,7 @@ WindowManager:
         Button:
             size_hint: .1, 1
             # To use with pyinstaller
-            # background_normal: kivy.resources.resource_find("Options.png")
+            # background_normal: kivy.resources.resource_find("BOptions.png")
             # To use with the console
             background_normal: "resources/BOptions.png"
             on_press: root.onClickOptions()
@@ -144,6 +144,9 @@ WindowManager:
             size_hint: .15, 1
             allow_stretch: True
         Button:
+            # To use with pyinstaller
+            # background_normal: kivy.resources.resource_find("BBack.png")
+            # To use with the console
             background_normal: "resources/BBack.png"
             on_press: root.onPressBackButton()
             size_hint_x: .1
@@ -178,7 +181,7 @@ WindowManager:
         Button:
             size_hint: .1, 1
             # To use with pyinstaller
-            # background_normal: kivy.resources.resource_find("practice.png")
+            # background_normal: kivy.resources.resource_find("Bpractice.png")
             # To use with the console
             background_normal: "resources/Bpractice.png"
             on_press: root.onClickStartPractice()
@@ -188,7 +191,7 @@ WindowManager:
         Button:
             size_hint: .1, 1
             # To use with pyinstaller
-            # background_normal: kivy.resources.resource_find("Options.png")
+            # background_normal: kivy.resources.resource_find("BOptions.png")
             # To use with the console
             background_normal: "resources/BOptions.png"
             on_press: root.onClickOptions()
@@ -201,12 +204,18 @@ WindowManager:
         text:''
         size_hint: 1, .8
     Button:
+        # To use with pyinstaller
+        # background_normal: kivy.resources.resource_find("Badd.png")
+        # To use with the console
         background_normal: "resources/Badd.png"
         size_hint: 1, .1
     Label:
         text:''
         size_hint: .001, .008
     Button:
+        # To use with pyinstaller
+        # background_normal: kivy.resources.resource_find("Bgroup.png")
+        # To use with the console
         background_normal: "resources/Bgroup.png"
         size_hint: 1, .1
         on_press: root.onClickAddGroup()
@@ -231,6 +240,7 @@ WindowManager:
     orientation: 'vertical'
     size_hint: .3, 1
     padding: ('5dp', '5dp', '5dp', '5dp')
+
 ###################################################
 ##########| Section pertaining Home end |##########
 
@@ -391,6 +401,9 @@ WindowManager:
                     size_hint_y: None
                     height: self.minimum_height
             Button:
+                # To use with pyinstaller
+                # background_normal: kivy.resources.resource_find("Bdelete.png")
+                # To use with the console
                 background_normal: "resources/Bdelete.png"
                 size_hint: .25,.20
                 on_press: root.onPressGroupDeleteButton(app.root)
@@ -449,6 +462,9 @@ WindowManager:
                 Rectangle:
                     pos: self.pos
                     size: self.size
+                    # To use with pyinstaller
+                    # source: kivy.resources.resource_find("hoja.png")
+                    # To use with the console
                     source: "resources/hoja.jpg"
             BoxLayout:
                 orientation:'vertical'
@@ -485,6 +501,9 @@ WindowManager:
                 orientation:'vertical'
                 WordInformation:
                 Button:
+                    # To use with pyinstaller
+                    # background_normal: kivy.resources.resource_find("BDWord.png")
+                    # To use with the console
                     background_normal: "resources/BDword.png"
                     size_hint: .3, .1
                     on_press: root.onClickDeleteWord()
@@ -731,6 +750,9 @@ WindowManager:
             Rectangle:
                 pos: self.pos
                 size: self.size
+                # To use with pyinstaller
+                # source: kivy.resources.resource_find("hoja.png")
+                # To use with the console
                 source: "resources/hoja.jpg"
         BoxLayout:
             orientation:'vertical'
