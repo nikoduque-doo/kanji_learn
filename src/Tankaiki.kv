@@ -391,8 +391,8 @@ WindowManager:
                     size_hint_y: None
                     height: self.minimum_height
             Button:
-                text: "Delete"
-                size_hint: .2,.3
+                background_normal: "resources/Bdelete.png"
+                size_hint: .25,.20
                 on_press: root.onPressGroupDeleteButton(app.root)
         BottomRightOptions:
 
@@ -485,7 +485,7 @@ WindowManager:
                 orientation:'vertical'
                 WordInformation:
                 Button:
-                    text:'Delete Word'
+                    background_normal: "resources/BDword.png"
                     size_hint: .3, .1
                     on_press: root.onClickDeleteWord()
             BottomRightOptions:
