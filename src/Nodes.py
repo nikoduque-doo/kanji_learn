@@ -95,3 +95,23 @@ class AVLNode(BSTNode):
   def __isub__(self, num):
     self._height -= num
     return self
+
+class Tag():
+  def __init__(self, key : str, tree : AVLTree):
+    self.key = key
+    self.tree = tree
+
+  def __str__(self):
+    return "Key: " + self.key.__str__() + " Tree:" + self.tree.__str__()
+
+  def setKey(self, key):
+    self.key = key
+
+  def setTree(self, tree):
+    self.tree = tree
+
+  def getKey(self):
+    return self.key
+
+  def getTree(self):
+    return self.tree
