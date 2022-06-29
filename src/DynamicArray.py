@@ -18,6 +18,12 @@ class DynamicArray():
     def __len__(self):
         return self.itemCount
 
+    def clear(self):
+        self.itemCount = 0
+        self.arr = [None]*32
+        self.maxSize = 32
+        self.position = 0
+
     def isEmpty(self):
         return self.itemCount == 0 
   

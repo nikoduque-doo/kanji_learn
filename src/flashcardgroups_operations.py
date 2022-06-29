@@ -5,6 +5,7 @@ from AVLTree import AVLTree, BST
 from BinaryHeap import BinaryHeap
 from OrderedLinkList import OrderedLinkList
 from DynamicArray import DynamicArray
+from HashMap import HashMap
 from random import randint as r
 import os.path
 import platform
@@ -47,11 +48,11 @@ def load_existing_fgroups():
     if not "practice_box" in current_dict:
       current_dict["practice_box"] = BinaryHeap()
     if not "tags" in current_dict:
-      current_dict["tags"] = AVLTree()
+      current_dict["tags"] = HashMap()
     if not "recent" in current_dict:
       current_dict["recent"] = RefQueue.RefQueue()
     if not "search_results" in current_dict:
-      current_dict["search_results"] = OrderedLinkList()
+      current_dict["search_results"] = DynamicArray()
     if not "TotalWords" in current_dict:
       current_dict["TotalWords"] = 0
     if not "WordsInGroups" in current_dict:
@@ -64,8 +65,6 @@ def load_existing_fgroups():
       current_dict["TotalAdjectives"] = 0
     if not "TotalOthers" in current_dict:
       current_dict["TotalOthers"] = 0
-
-    
     #Artifitial creation of structures for test
     if False: #False to deactivate
       def randKanji(id):
@@ -574,7 +573,13 @@ def word_range_search(gen_dict, word:str):
 
   print(results, foundWord)
   return foundWord
-  
+
+def tagSearch(gen_dict, tag:str):
+  gen_dict["search_results"].clear()
+  results = gen_dict["tags"].get(tag)
+  if results != None:
+    gen_dict["search_results"] = results
+
 def update_statistics_deleting_group(struc, my_dict):
   print("I am here")
   print(type(struc))

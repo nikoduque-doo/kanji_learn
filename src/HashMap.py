@@ -40,7 +40,7 @@ class HashMap():
     point = linkedL.head
     while point != None:
       if point.getValue().getKey() == key:
-        return point.getValue().getTree()
+        return point.getValue().getWords()
       point = point.getNext()
     return None
 
@@ -63,7 +63,7 @@ class HashMap():
     point = linkedL.head
     while point != None:
       if point.getValue().getKey() == key:
-        point.getValue().setTree(item)
+        point.getValue().setWords(item)
         self.itemCount += 1
         self.rehash()
         return True
@@ -84,5 +84,5 @@ class HashMap():
       for i in self.arr:
         point = i.head
         while point != None:
-          self.setIn(point.getValue().getKey(), point.getValue().getTree(), newArr)
+          self.setIn(point.getValue().getKey(), point.getValue().getWords(), newArr)
       self.arr = newArr

@@ -97,21 +97,21 @@ class AVLNode(BSTNode):
     return self
 
 class Tag():
-  def __init__(self, key : str, tree : AVLTree):
+  def __init__(self, key, dynArray):
     self.key = key
-    self.tree = tree
+    self.words = dynArray
 
   def __str__(self):
-    return "Key: " + self.key.__str__() + " Tree:" + self.tree.__str__()
+    return "Key: " + self.key.__str__() + " Words:" + self.tree.__str__()
 
   def setKey(self, key):
     self.key = key
 
-  def setTree(self, tree):
-    self.tree = tree
+  def setWords(self, dynArr):
+    self.words = dynArr
 
   def getKey(self):
     return self.key
 
-  def getTree(self):
-    return self.tree
+  def getWords(self):
+    return self.words

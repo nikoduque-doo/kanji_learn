@@ -876,7 +876,10 @@ class SearchResultsScreen(Screen):
     def setText(self, search_term):
         global labelText
         labelText = "persistent"
-        SearchResultsScreen.found_word = fsg.word_range_search(my_dict, search_term)
+        if len(search_term) > 1 and search_term[0] == "#":
+            SearchResultsScreen.found_word = fsg.tagSearch(my_dict, search_term[1:])
+        else:
+            SearchResultsScreen.found_word = fsg.word_range_search(my_dict, search_term)
         if sm.current != "SearchResults":
             sm.add_widget(SearchResultsScreen())
             sm.transition.direction = "left"
