@@ -2,10 +2,6 @@ from Nodes import Node
 from random import randint
 
 class LinkList:
-
-    head = None
-    tail = None
-
     def __init__(self):
         self.head = None
         self.tail = None
