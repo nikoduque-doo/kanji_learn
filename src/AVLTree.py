@@ -53,7 +53,7 @@ class AVLTree(BST):
     pivot.setLeft(leftover)
     if leftover != None:
       leftover.setParent(pivot)
-    self.updateDeleteHeight(pivot)
+    self.sh(pivot)
 
   def rotateLeft(self, pivot):
     tempRoot = pivot.getParent()
@@ -72,7 +72,7 @@ class AVLTree(BST):
     pivot.setRight(leftover)
     if leftover != None:
       leftover.setParent(pivot)
-    self.updateDeleteHeight(pivot)
+    self.sh(pivot)
 
   def setNodeHeight(self, node):
     if node.getLeft() != None:
@@ -110,19 +110,17 @@ class AVLTree(BST):
   def insert(self, k):
     if self.root != None:
       lot = self.find(k, self.root)
-      toBeUpdated = lot 
       if lot > k:
         lot.setLeft(AVLNode(k))
         lot.getLeft().setParent(lot)
-        toBeUpdated = lot.getLeft()
         self.itemCount += 1
+        self.sh(lot)
       elif lot < k:
         lot.setRight(AVLNode(k))
         lot.getRight().setParent(lot)
-        toBeUpdated = lot.getRight()
         self.itemCount += 1
-      self.updateInsertHeight(toBeUpdated)
-      self.rebalance(toBeUpdated)
+        self.sh(lot)
+      self.rebalance(lot)
     else:
       self.root = AVLNode(k)
       self.itemCount += 1
@@ -155,3 +153,15 @@ class AVLTree(BST):
         else:
           self.root = node.getLeft()
 
+  def sh(self, pivot):
+    if pivot.getLeft() != None:
+      if pivot.getRight() != None:
+        pivot.setHeight(max(pivot.getRight().getHeight(), pivot.getLeft().getHeight())+1)
+      else:
+        pivot.setHeight(pivot.getLeft().getHeight() + 1)
+    elif pivot.getRight() != None:
+      pivot.setHeight(pivot.getRight().getHeight() + 1)
+    else:
+      pivot.setHeight(1)
+    if pivot.getParent() != None:
+      self.sh(pivot.getParent())

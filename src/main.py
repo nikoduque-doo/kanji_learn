@@ -896,7 +896,7 @@ class SearchResultsScreen(Screen):
     def setText(self, search_term):
         global labelText
         labelText = "persistent"
-        if len(search_term) > 1 and ord(search_term[0]) < 123:
+        if len(search_term) > 0 and ord(search_term[0]) < 123:
             SearchResultsScreen.found_word = fsg.tagSearch(my_dict, search_term)
         else:
             SearchResultsScreen.found_word = fsg.word_range_search(my_dict, search_term)

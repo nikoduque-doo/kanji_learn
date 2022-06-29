@@ -52,6 +52,8 @@ class HashMap():
 
   def set(self, key, item):
     self.setIn(key, item, self.arr)
+    self.itemCount += 1
+    self.rehash()
   
   def setIn(self, key, item, arr):
     index = self.hString(key)
@@ -64,19 +66,16 @@ class HashMap():
     while point != None:
       if point.getValue().getKey() == key:
         point.getValue().setWords(item)
-        self.itemCount += 1
-        self.rehash()
         return True
       point = point.getNext()
     linkedL.pushFront(Tag(key, item))
-    self.itemCount += 1
-    self.rehash()
     return True
 
   def rehash(self):
     loadFactor = self.itemCount / self.maxSize
     if loadFactor > 0.9:
-      newArr = [None]*self.maxSize*2
+      self.maxSize *= 2
+      newArr = [None]*self.maxSize
       for i in range(len(newArr)):
         newArr[i] = LinkList()
       self.varA = r(1, HashMap.PRIME)
@@ -85,4 +84,5 @@ class HashMap():
         point = i.head
         while point != None:
           self.setIn(point.getValue().getKey(), point.getValue().getWords(), newArr)
+          point = point.getNext()
       self.arr = newArr
