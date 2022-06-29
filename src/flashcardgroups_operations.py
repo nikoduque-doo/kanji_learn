@@ -77,13 +77,22 @@ def load_existing_fgroups():
                     "meaning {}".format(id), 
                     "reading {}".format(id))
         return jw
-
-      lis = [None]*100
-      for i in range(100):
+      start_time = time.perf_counter_ns()
+      tsize = 5000
+      lis = [None]*tsize
+      lis1 = [None]*tsize
+      options = ['a', 'b', 'c', 'd', 'e']
+      for i in range(tsize):
           lis[i] = randKanji(i)
-      for i in lis:
+          tagname = ""
+          for j in range(9):
+            letter = random.choice(options)
+            tagname += letter
+          lis1[i] = tagname
+          print(i)
+      """for i in lis:
           print(i, end=", ")
-      print("")
+      print("")"""
       """a = DynamicArray()
       s = StaticStack.ArrStack(100)
       q = ArrQueue.ArrQueue(100)
@@ -93,12 +102,10 @@ def load_existing_fgroups():
       bst = BST()
       av = AVLTree()"""
       test1 = DynamicArray()
-      test2 = DynamicArray()
-      test3 = DynamicArray()
-      for j in range(100):
+      for j in range(tsize):
           test1.insert(lis[j])
-          test2.insert(lis[j])
-          test3.insert(lis[j])
+          print("iteration {}".format(j))
+          tagWord(lis[j], lis1[j], current_dict)
           """i = lis[j]
           a.insert(i)
           s.push(i)
@@ -118,9 +125,9 @@ def load_existing_fgroups():
       current_dict["groups"]["av"] = av
       current_dict["groups"]["My adjectives"] = av"""
       current_dict["groups"]["1"] = test1
-      current_dict["groups"]["2"] = test2
-      current_dict["groups"]["3"] = test3
 
+    end_time = time.perf_counter_ns()
+    print("Time to enter: {}".format(end_time - start_time))
     if False: #Set to True to add to practice box, False to deactivate
       current_dict["practice_box"] = BinaryHeap()
       current_dict["practice_box"].insert(JWord("english", "右", "Noun", "thing", "asd"))
@@ -135,7 +142,16 @@ def load_existing_fgroups():
       current_dict["practice_box"].insert(JWord("english", "暗い", "Noun", "thing", "asd"))
       current_dict["practice_box"].insert(JWord("english", "走る", "Noun", "thing", "asd"))
 
-
+    avg = 0
+    items = 100
+    for i in range(items):
+      start_time = time.perf_counter_ns()
+      selec = random.choice(lis1)
+      tagSearch(current_dict, selec)
+      end_time = time.perf_counter_ns()
+      avg += end_time - start_time
+    
+    print(avg/items)
     update_recent_words(current_dict)
     return current_dict
 
