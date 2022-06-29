@@ -1,5 +1,6 @@
 from Nodes import BSTNode
 from StaticStack import ArrStack
+from DynamicArray import DynamicArray
 
 class BST:
   def __init__(self):
@@ -45,6 +46,17 @@ class BST:
     if node.getRight() != None:
       self.recursiveToStack(stack, node.getRight())
 
+  def toDynamicArray(self):
+    arr = DynamicArray(self.itemCount)
+    self.recursiveToDynamicArray(arr, self.root)
+    return arr
+
+  def recursiveToDynamicArray(self, arr, node):
+    if node.getLeft() != None:
+      self.recursiveToDynamicArray(arr, node.getLeft())
+    arr.insert(node.getKey())
+    if node.getRight() != None:
+      self.recursiveToDynamicArray(arr, node.getRight())
 
   def getSize(self):
     return self.itemCount

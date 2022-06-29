@@ -588,23 +588,25 @@ class WordInformation(BoxLayout):
         global wordInformationFound
         if word_data.english != None and word_data.word != None and word_data.reading != None and word_data.part_of_speech != None and word_data.meaning != None:
             wordInformationFound = True
-            l1 = Label(text = "English: " + word_data.english, color = (0, 0, 0, 1))
-            self.add_widget(l1)
-            l2 = Label(text = "Japanese writing: " + word_data.word, font_name='mona', color = (0, 0, 0, 1))
-            self.add_widget(l2)
-            l3 = Label(text = "Reading: " + word_data.reading, font_name='mona', color = (0, 0, 0, 1))
-            self.add_widget(l3)
-            l4 = Label(text = "Part of speech: " + word_data.part_of_speech, color = (0, 0, 0, 1))
-            self.add_widget(l4)
-            l5 = Label(text = "Meaning: " + word_data.meaning, color = (0, 0, 0, 1))
-            self.add_widget(l5)
-            layout1 = BoxLayout(orientation='horizontal', size_hint= (.5, .25), pos_hint={'center_x':0.5, 'center_y':0.5})
-            tagIn = TextInput(multiline = False, font_name='mona')
+            layout0 = BoxLayout(orientation='vertical', size_hint= (.8, .8), pos_hint={'center_x':0.5, 'center_y':0.5})
+            l1 = Label(text = "English: " + word_data.english, color = (0, 0, 0, 1), size_hint= (1, .10))
+            layout0.add_widget(l1)
+            l2 = Label(text = "Japanese writing: " + word_data.word, font_name='mona', color = (0, 0, 0, 1), size_hint= (1, .10))
+            layout0.add_widget(l2)
+            l3 = Label(text = "Reading: " + word_data.reading, font_name='mona', color = (0, 0, 0, 1), size_hint= (1, .10))
+            layout0.add_widget(l3)
+            l4 = Label(text = "Part of speech: " + word_data.part_of_speech, color = (0, 0, 0, 1), size_hint= (1, .10))
+            layout0.add_widget(l4)
+            l5 = Label(text = "Meaning: " + word_data.meaning, color = (0, 0, 0, 1), size_hint= (1, .10))
+            layout0.add_widget(l5)
+            layout1 = BoxLayout(orientation='horizontal', size_hint= (.5, .15), pos_hint={'center_x':0.5, 'center_y':0.5})
+            tagIn = TextInput(multiline = False, font_name='mona', size_hint= (1, .3), pos_hint={'center_x':0, 'center_y':0.5})
             tagIn.bind(on_text_validate=lambda x:self.addTag(word_data, tagIn.text, tagIn))
-            ll = Label(text = "Add Tag: ", color = (.2, .2, .2, 1))
+            ll = Label(text = "Add Tag: ", color = (.2, .2, .2, 1), size_hint= (.5, .3), pos_hint={'center_x':0.5, 'center_y':0.5})
             layout1.add_widget(ll)
             layout1.add_widget(tagIn)
-            self.add_widget(layout1)
+            layout0.add_widget(layout1)
+            self.add_widget(layout0)
         else:
             wordInformationFound = False
             l1 = Label(text="We had a problem looking for that word. Try again with another one", color = (0, 0, 0, 1))
@@ -612,8 +614,6 @@ class WordInformation(BoxLayout):
 
     def addTag(self, jword, tag, box):
         fsg.tagWord(jword, tag, my_dict)
-        for i in range(len(my_dict["tags"].arr)):
-            print(my_dict["tags"].arr[i], tag, jword)
         box.text = ""
 
 
@@ -896,7 +896,18 @@ class SearchResultsScreen(Screen):
             SearchResultsScreen.found_word = fsg.word_range_search(my_dict, search_term)
         if sm.current != "SearchResults":
             sm.add_widget(SearchResultsScreen())
-            sm.transition.direction = "left"
+            sm.transition.direction = "down"
+            sm.transition.duration = .15
+            sm.current = "SearchResults"
+            backQueue.push(sm.children[1])
+            sm.remove_widget(sm.children[1])
+        else:
+            sm.add_widget(HomeScreen())
+            sm.transition.duration = 0
+            sm.current = "Home"
+            sm.remove_widget(sm.children[1])
+            sm.add_widget(SearchResultsScreen())
+            sm.transition.duration = .15
             sm.current = "SearchResults"
             backQueue.push(sm.children[1])
             sm.remove_widget(sm.children[1])

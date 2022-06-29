@@ -2,9 +2,9 @@ import flashcardgroups_operations as fsg
 import Vocabulary
 import random
 class DynamicArray():
-    def __init__(self):
+    def __init__(self, size=32):
         self.itemCount = 0
-        self.arr = [None]*32
+        self.arr = [None]*size
         self.maxSize = 32
         self.position = 0
 

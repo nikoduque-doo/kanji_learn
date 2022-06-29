@@ -577,9 +577,8 @@ def word_range_search(gen_dict, word:str):
 def tagSearch(gen_dict, tag:str):
   gen_dict["search_results"].clear()
   results = gen_dict["tags"].get(tag)
-  print("DAAAAAAAAAAAAAAAA", results, tag)
   if results != None:
-    gen_dict["search_results"] = results
+    gen_dict["search_results"] = results.toDynamicArray()
 
 def tagWord(jword, tag, gen_dict):
   tags = gen_dict["tags"]
@@ -587,7 +586,7 @@ def tagWord(jword, tag, gen_dict):
   if words != None:
       words.insert(jword)
   else:
-      words = DynamicArray()
+      words = AVLTree()
       words.insert(jword)
       tags.set(tag, words)
   save_changes_to_fgroups(gen_dict)
