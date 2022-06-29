@@ -1,4 +1,5 @@
 import flashcardgroups_operations as fsg
+import Vocabulary
 import random
 class DynamicArray():
     def __init__(self):
@@ -74,7 +75,10 @@ class DynamicArray():
         for i in range(self.itemCount):
             item = self.arr[i]
             self.deleteKanji(item)
-            word_searched = fsg.get_word_data_graphic(item)
+            if type(item) is not Vocabulary.JWord:
+                word_searched = fsg.get_word_data_graphic(item)
+            else:
+                word_searched = item
             my_dict["WordsInGroups"] -= 1
             if "noun" in word_searched.part_of_speech or "Noun" in word_searched.part_of_speech:
               my_dict["TotalNouns"] -= 1
