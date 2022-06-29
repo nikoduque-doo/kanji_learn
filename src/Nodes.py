@@ -102,7 +102,7 @@ class Tag():
     self.words = dynArray
 
   def __str__(self):
-    return "Key: " + self.key.__str__() + " Words:" + self.tree.__str__()
+    return "Key: " + self.key.__str__() + " Words:" + self.words.__str__()
 
   def setKey(self, key):
     self.key = key

@@ -598,10 +598,24 @@ class WordInformation(BoxLayout):
             self.add_widget(l4)
             l5 = Label(text = "Meaning: " + word_data.meaning, color = (0, 0, 0, 1))
             self.add_widget(l5)
+            layout1 = BoxLayout(orientation='horizontal', size_hint= (.5, .25), pos_hint={'center_x':0.5, 'center_y':0.5})
+            tagIn = TextInput(multiline = False, font_name='mona')
+            tagIn.bind(on_text_validate=lambda x:self.addTag(word_data, tagIn.text, tagIn))
+            ll = Label(text = "Add Tag: ", color = (.2, .2, .2, 1))
+            layout1.add_widget(ll)
+            layout1.add_widget(tagIn)
+            self.add_widget(layout1)
         else:
             wordInformationFound = False
             l1 = Label(text="We had a problem looking for that word. Try again with another one", color = (0, 0, 0, 1))
             self.add_widget(l1)
+
+    def addTag(self, jword, tag, box):
+        fsg.tagWord(jword, tag, my_dict)
+        for i in range(len(my_dict["tags"].arr)):
+            print(my_dict["tags"].arr[i], tag, jword)
+        box.text = ""
+
 
 
 class WordConfirmationButtons(BoxLayout):
@@ -876,17 +890,11 @@ class SearchResultsScreen(Screen):
     def setText(self, search_term):
         global labelText
         labelText = "persistent"
-        if len(search_term) > 1 and search_term[0] == "#":
-            SearchResultsScreen.found_word = fsg.tagSearch(my_dict, search_term[1:])
+        if len(search_term) > 1 and ord(search_term[0]) < 123:
+            SearchResultsScreen.found_word = fsg.tagSearch(my_dict, search_term)
         else:
             SearchResultsScreen.found_word = fsg.word_range_search(my_dict, search_term)
         if sm.current != "SearchResults":
-            sm.add_widget(SearchResultsScreen())
-            sm.transition.direction = "left"
-            sm.current = "SearchResults"
-            backQueue.push(sm.children[1])
-            sm.remove_widget(sm.children[1])
-        else:
             sm.add_widget(SearchResultsScreen())
             sm.transition.direction = "left"
             sm.current = "SearchResults"

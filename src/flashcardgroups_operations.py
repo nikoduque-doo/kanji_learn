@@ -577,8 +577,20 @@ def word_range_search(gen_dict, word:str):
 def tagSearch(gen_dict, tag:str):
   gen_dict["search_results"].clear()
   results = gen_dict["tags"].get(tag)
+  print("DAAAAAAAAAAAAAAAA", results, tag)
   if results != None:
     gen_dict["search_results"] = results
+
+def tagWord(jword, tag, gen_dict):
+  tags = gen_dict["tags"]
+  words = tags.get(tag)
+  if words != None:
+      words.insert(jword)
+  else:
+      words = DynamicArray()
+      words.insert(jword)
+      tags.set(tag, words)
+  save_changes_to_fgroups(gen_dict)
 
 def update_statistics_deleting_group(struc, my_dict):
   print("I am here")
