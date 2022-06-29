@@ -170,7 +170,7 @@ class RandomWord(BoxLayout):
         label1 = Label(text = "Random Word", color = ( 0 , 0 , 0 , 1), font_name='mona')
         self.add_widget(label1)
         if randomw is not None:
-            label2 = Label(text = randomw.word, color = ( 0 , 0 , 0 , 1), font_name='mona')
+            label2 = Label(text = randomw.word, color = ( 0 , 0 , 0 , 1), font_name='mona', font_size='50dp')
             self.add_widget(label2)
             if spoilerButtonState[0] is False:
                 button1 = Button(text ='Reading Spoiler')
@@ -259,7 +259,7 @@ class OptionsContents(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.label1 = "Total Words saved in the app: " + str(my_dict["TotalWords"])
-        self.label2 = "Total words saved right now in groups: " + str(my_dict["WordsInGroups"])
+        self.label2 = "Total words in groups: " + str(my_dict["WordsInGroups"])
         self.label3 = "Total flashcard groups saved: " + str(len(my_dict["groups"]))
         self.label4 = "Total Nouns saved: " + str(my_dict["TotalNouns"])
         self.label5 = "Total Verbs saved: " + str(my_dict["TotalVerbs"])
@@ -315,14 +315,14 @@ class PracticeScreenInteractive(Screen):
                 txt = "The next word will be available in {} years, try adding a new word!".format(jw * -1)
                 lab1 = Label(pos_hint={'center_x':.5, 'center_y':.5}, text = txt, size_hint=(1,.3), font_size ='25sp')
             self.add_widget(lab1)
-            contb = Button(text = "Return home", size_hint=(.5,None), size=(0,dp(40)), pos_hint={'center_x':.5})
+            contb = Button(text = "Return home", size_hint=(.5,None), size=(0,dp(50)), pos_hint={'center_x':.5}, font_size='30dp')
             contb.bind(on_press = self.returnHome)
             self.add_widget(contb)
         else:
             jwtxt = "What's the pronunciation for \n{}? What does it mean?".format(jw.word)
             lab = Label(pos_hint={'center_x':.5, 'center_y':.5}, text = jwtxt, size_hint=(1,.3), font_size ='50sp', font_name='mona')
             self.add_widget(lab)
-            b = Button(text = "Show Answer", size_hint=(.5,None), size=(0,dp(40)), pos_hint={'center_x':.5})
+            b = Button(text = "Show Answer", size_hint=(.5,None), size=(0,dp(50)), pos_hint={'center_x':.5}, font_size='30dp')
             b.bind(on_press = self.showAnswer)
             self.add_widget(b)
             PracticeScreenInteractive.showButton = b
@@ -331,7 +331,7 @@ class PracticeScreenInteractive(Screen):
     
     def getNextButton(self):
         self.clear_widgets()
-        b = Button(text = "Get Question", size_hint=(.5,None), size=(0,dp(40)), pos_hint={'center_x':.5})
+        b = Button(text = "Get Question", size_hint=(.5,None), size=(0,dp(50)), pos_hint={'center_x':.5}, font_size='30dp')
         b.bind(on_press = self.getNextQuestion)
         self.add_widget(b)
 
@@ -341,22 +341,22 @@ class PracticeScreenInteractive(Screen):
         jw = PracticeScreenInteractive.questionWord
         jwtxt = "The correct reading of {} is {}, it means: {}.".format(jw.word,jw.reading,jw.meaning)
         bl = BoxLayout(orientation = "horizontal")
-        b0 = Button(text = "0", size_hint=(.5,None), size=(0,dp(40)))
+        b0 = Button(text = "0", size_hint=(.5,None), size=(0,dp(50)), font_size='30dp')
         b0.bind(on_press = lambda x:self.gradeQuestion(0))
         bl.add_widget(b0)
-        b1 = Button(text = "1", size_hint=(.5,None), size=(0,dp(40)))
+        b1 = Button(text = "1", size_hint=(.5,None), size=(0,dp(50)), font_size='30dp')
         b1.bind(on_press = lambda x:self.gradeQuestion(1))
         bl.add_widget(b1)
-        b2 = Button(text = "2", size_hint=(.5,None), size=(0,dp(40)))
+        b2 = Button(text = "2", size_hint=(.5,None), size=(0,dp(50)), font_size='30dp')
         b2.bind(on_press = lambda x:self.gradeQuestion(2))
         bl.add_widget(b2)
-        b3 = Button(text = "3", size_hint=(.5,None), size=(0,dp(40)))
+        b3 = Button(text = "3", size_hint=(.5,None), size=(0,dp(50)), font_size='30dp')
         b3.bind(on_press = lambda x:self.gradeQuestion(3))
         bl.add_widget(b3)
-        b4 = Button(text = "4", size_hint=(.5,None), size=(0,dp(40)))
+        b4 = Button(text = "4", size_hint=(.5,None), size=(0,dp(50)), font_size='30dp')
         b4.bind(on_press = lambda x:self.gradeQuestion(4))
         bl.add_widget(b4)
-        b5 = Button(text = "5", size_hint=(.5,None), size=(0,dp(40)))
+        b5 = Button(text = "5", size_hint=(.5,None), size=(0,dp(50)), font_size='30dp')
         b5.bind(on_press = lambda x:self.gradeQuestion(5))
         bl.add_widget(b5)
         self.add_widget(bl)
@@ -403,8 +403,6 @@ class JButton(Button):
         print(my_dict["practice_box"])
         print("Recent words queue:")
         print(my_dict["recent"])
-        print("Tags tree")
-        print(my_dict["tags"])
         FlashcardGroupScreen.setText(self.custom_label)
 
 #This one is found at home screen
@@ -438,7 +436,7 @@ class FlashcardGroupScreen(Screen):
         self.add_widget(fgsc)
     
     def setWord(self, jw:JWord):
-        b = Button(text = jw.word, size_hint=(.5, .5), font_name='mona')
+        b = Button(text = jw.word, size_hint=(.5,None), size=(0,dp(50)), font_name='mona', font_size='30dp', background_normal="resources/bb1.png", background_down="resources/bb2.png")
         self.add_widget(b)
 
     def addRecentWords(self):
@@ -516,7 +514,7 @@ class AllWordsInsideGroup(StackLayout):
 
     def setWords(self, jw:JWord):
         WordInformation.showTags = True
-        b = Button(text = jw.word, size_hint=(.5,None), size=(0,dp(40)), font_name='mona')
+        b = Button(text = jw.word, size_hint=(.5,None), size=(0,dp(50)), font_name='mona', font_size='30dp', background_normal="resources/bb1.png", background_down="resources/bb2.png")
         b.bind(on_press = lambda x: self.word_contents(jw))
         self.add_widget(b)
     
@@ -592,21 +590,21 @@ class WordInformation(BoxLayout):
         if word_data.english != None and word_data.word != None and word_data.reading != None and word_data.part_of_speech != None and word_data.meaning != None:
             wordInformationFound = True
             layout0 = BoxLayout(orientation='vertical', size_hint= (.8, .8), pos_hint={'center_x':0.5, 'center_y':0.5})
-            l1 = Label(text = "English: " + word_data.english, color = (0, 0, 0, 1), size_hint= (1, .10))
+            l1 = Label(text = "English: " + word_data.english, color = (0, 0, 0, 1), size_hint= (1, .10), font_size='30dp')
             layout0.add_widget(l1)
-            l2 = Label(text = "Japanese writing: " + word_data.word, font_name='mona', color = (0, 0, 0, 1), size_hint= (1, .10))
+            l2 = Label(text = "Japanese writing: " + word_data.word, font_name='mona', color = (0, 0, 0, 1), size_hint= (1, .10), font_size='30dp')
             layout0.add_widget(l2)
-            l3 = Label(text = "Reading: " + word_data.reading, font_name='mona', color = (0, 0, 0, 1), size_hint= (1, .10))
+            l3 = Label(text = "Reading: " + word_data.reading, font_name='mona', color = (0, 0, 0, 1), size_hint= (1, .10), font_size='30dp')
             layout0.add_widget(l3)
-            l4 = Label(text = "Part of speech: " + word_data.part_of_speech, color = (0, 0, 0, 1), size_hint= (1, .10))
+            l4 = Label(text = "Part of speech: " + word_data.part_of_speech, color = (0, 0, 0, 1), size_hint= (1, .10), font_size='30dp')
             layout0.add_widget(l4)
-            l5 = Label(text = "Meaning: " + word_data.meaning, color = (0, 0, 0, 1), size_hint= (1, .10))
+            l5 = Label(text = "Meaning: " + word_data.meaning, color = (0, 0, 0, 1), size_hint= (1, .10), font_size='30dp')
             layout0.add_widget(l5)
             if WordInformation.showTags:
                 layout1 = BoxLayout(orientation='horizontal', size_hint= (.5, .15), pos_hint={'center_x':0.5, 'center_y':0.5})
                 tagIn = TextInput(multiline = False, font_name='mona', size_hint= (1, .3), pos_hint={'center_x':0, 'center_y':0.5})
                 tagIn.bind(on_text_validate=lambda x:self.addTag(word_data, tagIn.text, tagIn))
-                ll = Label(text = "Add Tag: ", color = (.2, .2, .2, 1), size_hint= (.5, .3), pos_hint={'center_x':0.5, 'center_y':0.5})
+                ll = Label(text = "Add a Tag: ", color = (.3, .3, .3, 3), size_hint= (.5, .3), pos_hint={'center_x':0.5, 'center_y':0.5})
                 layout1.add_widget(ll)
                 layout1.add_widget(tagIn)
                 layout0.add_widget(layout1)
@@ -617,8 +615,10 @@ class WordInformation(BoxLayout):
             self.add_widget(l1)
 
     def addTag(self, jword, tag, box):
-        fsg.tagWord(jword, tag, my_dict)
         box.text = ""
+        if len(tag) > 23:
+            box.text = "Tag was too long."
+        fsg.tagWord(jword, tag, my_dict)
 
 
 
@@ -757,7 +757,7 @@ class AllRecentWords(StackLayout):
     
     def setWords(self, jw:JWord):
         WordInformation.showTags = True
-        b = Button(text = jw.word, size_hint=(.5,None), size=(0,dp(40)), font_name='mona')
+        b = Button(text = jw.word, size_hint=(.5,None), size=(0,dp(50)), font_name='mona', font_size='30dp', background_normal="resources/bb1.png", background_down="resources/bb2.png")
         b.bind(on_press = lambda x: self.word_contents(jw))
         self.add_widget(b)
     
@@ -793,7 +793,7 @@ class RecentWordsScreen(Screen):
         self.add_widget(fgsc)
 
     def setWord(self, jw:JWord):
-        b = Button(text = jw.word, size_hint=(.5, None), font_name='mona')
+        b = Button(text = jw.word, size_hint=(.5,None), size=(0,dp(50)), font_name='mona', font_size='30dp', background_normal="resources/bb1.png", background_down="resources/bb2.png")
         self.add_widget(b)
 
     def addRecentWords(self):
@@ -826,7 +826,7 @@ class AllSearchResults(StackLayout):
         super().__init__(**kwargs)
         if SearchResultsScreen.found_word != None:
             jw = SearchResultsScreen.found_word
-            b = Button(text = jw.word, background_color = (1,0,0,1), size_hint=(.5,None), size=(0,dp(40)), font_name='mona')
+            b = Button(text = jw.word, background_color = (1,0,0,1), size_hint=(.5,None), size=(0,dp(50)), font_name='mona', font_size='30dp')
             b.bind(on_press = lambda x: self.word_contents(jw))
             self.add_widget(b)
             if my_dict["search_results"].getSize() != 0:
@@ -839,7 +839,7 @@ class AllSearchResults(StackLayout):
     
     def setWords(self, jw:JWord):
         WordInformation.showTags = True
-        b = Button(text = jw.word, size_hint=(.5,None), size=(0,dp(40)), font_name='mona')
+        b = Button(text = jw.word, size_hint=(.5,None), size=(0,dp(50)), font_name='mona', font_size='30dp', background_normal="resources/bb1.png", background_down="resources/bb2.png")
         b.bind(on_press = lambda x: self.word_contents(jw))
         self.add_widget(b)
     
@@ -868,7 +868,7 @@ class SearchResults(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         struc_size = str(fsg.getSizeOfGroup(my_dict["recent"]))
-        b = Button(text="Recently added"+": "+struc_size, size_hint=(.5,None), size=(0,dp(40)))
+        b = Button(text="Recently added"+": "+struc_size, size_hint=(.5,None), size=(0,dp(40)), custom_label=i)
         b.bind(on_release = SearchResults.onClickButton)
         self.add_widget(b)
 
@@ -886,7 +886,7 @@ class SearchResultsScreen(Screen):
         self.add_widget(fgsc)
 
     def setWord(self, jw:JWord):
-        b = Button(text = jw.word, size_hint=(.5, .5), font_name='mona')
+        b = Button(text = jw.word, size_hint=(.5,None), size=(0,dp(50)), font_name='mona', font_size='30dp', background_normal="resources/bb1.png", background_down="resources/bb2.png")
         self.add_widget(b)
 
     def addRecentWords(self):
