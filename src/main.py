@@ -515,6 +515,7 @@ class AllWordsInsideGroup(StackLayout):
                         self.setWords(element)
 
     def setWords(self, jw:JWord):
+        WordInformation.showTags = True
         b = Button(text = jw.word, size_hint=(.5,None), size=(0,dp(40)), font_name='mona')
         b.bind(on_press = lambda x: self.word_contents(jw))
         self.add_widget(b)
@@ -558,6 +559,7 @@ class AddWordContents(BoxLayout):
         word_data = fsg.get_word_data_graphic(word)
         print(word_data)
         if word_data != None:
+            WordInformation.showTags = False
             sm.add_widget(WordConfirmation())
             sm.transition.direction = "left"
             sm.current = "WordConfirmation"
@@ -578,6 +580,7 @@ class WordConfirmationContents(BoxLayout):
 
 
 class WordInformation(BoxLayout):
+    showTags = True
     def on_pre_enter(self):
         self.clear_widgets()
         self.__init__()
@@ -599,13 +602,14 @@ class WordInformation(BoxLayout):
             layout0.add_widget(l4)
             l5 = Label(text = "Meaning: " + word_data.meaning, color = (0, 0, 0, 1), size_hint= (1, .10))
             layout0.add_widget(l5)
-            layout1 = BoxLayout(orientation='horizontal', size_hint= (.5, .15), pos_hint={'center_x':0.5, 'center_y':0.5})
-            tagIn = TextInput(multiline = False, font_name='mona', size_hint= (1, .3), pos_hint={'center_x':0, 'center_y':0.5})
-            tagIn.bind(on_text_validate=lambda x:self.addTag(word_data, tagIn.text, tagIn))
-            ll = Label(text = "Add Tag: ", color = (.2, .2, .2, 1), size_hint= (.5, .3), pos_hint={'center_x':0.5, 'center_y':0.5})
-            layout1.add_widget(ll)
-            layout1.add_widget(tagIn)
-            layout0.add_widget(layout1)
+            if WordInformation.showTags:
+                layout1 = BoxLayout(orientation='horizontal', size_hint= (.5, .15), pos_hint={'center_x':0.5, 'center_y':0.5})
+                tagIn = TextInput(multiline = False, font_name='mona', size_hint= (1, .3), pos_hint={'center_x':0, 'center_y':0.5})
+                tagIn.bind(on_text_validate=lambda x:self.addTag(word_data, tagIn.text, tagIn))
+                ll = Label(text = "Add Tag: ", color = (.2, .2, .2, 1), size_hint= (.5, .3), pos_hint={'center_x':0.5, 'center_y':0.5})
+                layout1.add_widget(ll)
+                layout1.add_widget(tagIn)
+                layout0.add_widget(layout1)
             self.add_widget(layout0)
         else:
             wordInformationFound = False
@@ -752,6 +756,7 @@ class AllRecentWords(StackLayout):
         my_dict["recent"].traverse(self.setWords)
     
     def setWords(self, jw:JWord):
+        WordInformation.showTags = True
         b = Button(text = jw.word, size_hint=(.5,None), size=(0,dp(40)), font_name='mona')
         b.bind(on_press = lambda x: self.word_contents(jw))
         self.add_widget(b)
@@ -833,6 +838,7 @@ class AllSearchResults(StackLayout):
             my_dict["search_results"].traverse(self.setWords)
     
     def setWords(self, jw:JWord):
+        WordInformation.showTags = True
         b = Button(text = jw.word, size_hint=(.5,None), size=(0,dp(40)), font_name='mona')
         b.bind(on_press = lambda x: self.word_contents(jw))
         self.add_widget(b)
