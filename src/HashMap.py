@@ -1,6 +1,6 @@
 from random import randint as r
 from LinkList import LinkList
-from Tag import Tag
+from Nodes import Tag
 
 class HashMap():
   PRIME = 908070605040302010203040506070809 #>max code of word, max digits in tag: 23
