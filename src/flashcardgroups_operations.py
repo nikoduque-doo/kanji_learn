@@ -126,8 +126,8 @@ def load_existing_fgroups():
       current_dict["groups"]["My adjectives"] = av"""
       current_dict["groups"]["1"] = test1
 
-    end_time = time.perf_counter_ns()
-    print("Time to enter: {}".format(end_time - start_time))
+    """end_time = time.perf_counter_ns()
+    print("Time to enter: {}".format(end_time - start_time))"""
     if False: #Set to True to add to practice box, False to deactivate
       current_dict["practice_box"] = BinaryHeap()
       current_dict["practice_box"].insert(JWord("english", "右", "Noun", "thing", "asd"))
@@ -142,7 +142,7 @@ def load_existing_fgroups():
       current_dict["practice_box"].insert(JWord("english", "暗い", "Noun", "thing", "asd"))
       current_dict["practice_box"].insert(JWord("english", "走る", "Noun", "thing", "asd"))
 
-    avg = 0
+    """avg = 0
     items = 100
     for i in range(items):
       start_time = time.perf_counter_ns()
@@ -151,7 +151,7 @@ def load_existing_fgroups():
       end_time = time.perf_counter_ns()
       avg += end_time - start_time
     
-    print(avg/items)
+    print(avg/items)"""
     update_recent_words(current_dict)
     return current_dict
 
