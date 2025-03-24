@@ -1,4 +1,4 @@
 # Tankaiki
-<img src="![LOGO](src/resources/tankaiki.png)" alt="drawing" width="150"/>
+![LOGO](src/resources/tankaiki.png =250x)"
 
 Estructuras de Datos 2022 - Grupo 5-2
